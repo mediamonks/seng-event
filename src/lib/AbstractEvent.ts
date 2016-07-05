@@ -9,6 +9,7 @@ let _callListenerResult = CallListenerResult.NONE;
 abstract class AbstractEvent implements IEvent
 {
 	public currentTarget:IEventDispatcher = null;
+	public target:IEventDispatcher = null;
 	public eventPhase:EventPhase = EventPhase.NONE;
 	public timeStamp:number;
 
@@ -17,7 +18,6 @@ abstract class AbstractEvent implements IEvent
 	constructor(public type:string,
 	            public bubbles:boolean = false,
 	            public cancelable:boolean = false,
-	            public target:IEventDispatcher = null,
 	            setTimeStamp:boolean = false)
 	{
 		this.timeStamp = setTimeStamp ? Date.now() : 0;
