@@ -1,11 +1,11 @@
 let _callListenerResult = 0 /* NONE */;
 class AbstractEvent {
-    constructor(type, bubbles = false, cancelable = false, target = null, setTimeStamp = false) {
+    constructor(type, bubbles = false, cancelable = false, setTimeStamp = false) {
         this.type = type;
         this.bubbles = bubbles;
         this.cancelable = cancelable;
-        this.target = target;
         this.currentTarget = null;
+        this.target = null;
         this.eventPhase = 0 /* NONE */;
         this._defaultPrevented = false;
         this.callListener = (listener) => {

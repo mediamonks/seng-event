@@ -71,6 +71,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.CallListenerResult = CallListenerResult_1.default;
 	var AbstractEvent_1 = __webpack_require__(8);
 	exports.AbstractEvent = AbstractEvent_1.default;
+	__webpack_require__(9);
+	__webpack_require__(11);
+	__webpack_require__(10);
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = EventDispatcher_1.default;
 
@@ -188,12 +191,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        else {
 	        }
 	    };
-	    EventDispatcher.prototype._listenerSorter = function (e1, e2) {
-	        return e2.priority - e1.priority;
-	    };
 	    EventDispatcher.prototype.dispose = function () {
 	        this.removeAllEventListeners();
 	        _super.prototype.dispose.call(this);
+	    };
+	    EventDispatcher.prototype._listenerSorter = function (e1, e2) {
+	        return e2.priority - e1.priority;
 	    };
 	    return EventDispatcher;
 	}(seng_disposable_1.default));
@@ -348,17 +351,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	var _callListenerResult = 0 /* NONE */;
 	var AbstractEvent = (function () {
-	    function AbstractEvent(type, bubbles, cancelable, target, setTimeStamp) {
+	    function AbstractEvent(type, bubbles, cancelable, setTimeStamp) {
 	        var _this = this;
 	        if (bubbles === void 0) { bubbles = false; }
 	        if (cancelable === void 0) { cancelable = false; }
-	        if (target === void 0) { target = null; }
 	        if (setTimeStamp === void 0) { setTimeStamp = false; }
 	        this.type = type;
 	        this.bubbles = bubbles;
 	        this.cancelable = cancelable;
-	        this.target = target;
 	        this.currentTarget = null;
+	        this.target = null;
 	        this.eventPhase = 0 /* NONE */;
 	        this._defaultPrevented = false;
 	        this.callListener = function (listener) {
@@ -394,6 +396,83 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = AbstractEvent;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var EventTypeUtil_1 = __webpack_require__(10);
+	var AbstractEvent_1 = __webpack_require__(8);
+	var CommonEvent = (function (_super) {
+	    __extends(CommonEvent, _super);
+	    function CommonEvent() {
+	        _super.apply(this, arguments);
+	    }
+	    CommonEvent.prototype.clone = function () {
+	        return new CommonEvent(this.type, this.bubbles, this.cancelable);
+	    };
+	    CommonEvent.COMPLETE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    CommonEvent.UPDATE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    CommonEvent.INIT = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    CommonEvent.CHANGE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    CommonEvent.OPEN = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    CommonEvent.CLOSE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    CommonEvent.RESIZE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+	    return CommonEvent;
+	}(AbstractEvent_1.default));
+	EventTypeUtil_1.generateEventTypes({ CommonEvent: CommonEvent });
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = CommonEvent;
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.EVENT_TYPE_PLACEHOLDER = '__EventTypeUtil::EVENT_TYPE_PLACEHOLDER';
+	exports.generateEventTypes = function (targets) {
+	    Object.keys(targets).forEach(function (name) {
+	        var target = targets[name];
+	        Object.keys(target).forEach(function (prop) {
+	            if (target[prop] === exports.EVENT_TYPE_PLACEHOLDER) {
+	                target[prop] = name + "/" + prop;
+	            }
+	        });
+	    });
+	};
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var AbstractEvent_1 = __webpack_require__(8);
+	var BasicEvent = (function (_super) {
+	    __extends(BasicEvent, _super);
+	    function BasicEvent() {
+	        _super.apply(this, arguments);
+	    }
+	    BasicEvent.prototype.clone = function () {
+	        return new BasicEvent(this.type, this.bubbles, this.cancelable);
+	    };
+	    return BasicEvent;
+	}(AbstractEvent_1.default));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = BasicEvent;
 
 
 /***/ }

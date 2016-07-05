@@ -202,12 +202,12 @@ System.register("lib/EventDispatcher", ['seng-disposable', "lib/EventListenerDat
                     else {
                     }
                 };
-                EventDispatcher.prototype._listenerSorter = function (e1, e2) {
-                    return e2.priority - e1.priority;
-                };
                 EventDispatcher.prototype.dispose = function () {
                     this.removeAllEventListeners();
                     _super.prototype.dispose.call(this);
+                };
+                EventDispatcher.prototype._listenerSorter = function (e1, e2) {
+                    return e2.priority - e1.priority;
                 };
                 return EventDispatcher;
             }(seng_disposable_2.default));
@@ -262,17 +262,16 @@ System.register("lib/AbstractEvent", [], function(exports_7, context_7) {
         execute: function() {
             _callListenerResult = 0 /* NONE */;
             AbstractEvent = (function () {
-                function AbstractEvent(type, bubbles, cancelable, target, setTimeStamp) {
+                function AbstractEvent(type, bubbles, cancelable, setTimeStamp) {
                     var _this = this;
                     if (bubbles === void 0) { bubbles = false; }
                     if (cancelable === void 0) { cancelable = false; }
-                    if (target === void 0) { target = null; }
                     if (setTimeStamp === void 0) { setTimeStamp = false; }
                     this.type = type;
                     this.bubbles = bubbles;
                     this.cancelable = cancelable;
-                    this.target = target;
                     this.currentTarget = null;
+                    this.target = null;
                     this.eventPhase = 0 /* NONE */;
                     this._defaultPrevented = false;
                     this.callListener = function (listener) {
@@ -310,9 +309,91 @@ System.register("lib/AbstractEvent", [], function(exports_7, context_7) {
         }
     }
 });
-System.register("index", ["lib/EventDispatcher", "lib/EventPhase", "lib/EventListenerData", "lib/CallListenerResult", "lib/AbstractEvent"], function(exports_8, context_8) {
+System.register("lib/util/EventTypeUtil", [], function(exports_8, context_8) {
     "use strict";
     var __moduleName = context_8 && context_8.id;
+    var EVENT_TYPE_PLACEHOLDER, generateEventTypes;
+    return {
+        setters:[],
+        execute: function() {
+            exports_8("EVENT_TYPE_PLACEHOLDER", EVENT_TYPE_PLACEHOLDER = '__EventTypeUtil::EVENT_TYPE_PLACEHOLDER');
+            exports_8("generateEventTypes", generateEventTypes = function (targets) {
+                Object.keys(targets).forEach(function (name) {
+                    var target = targets[name];
+                    Object.keys(target).forEach(function (prop) {
+                        if (target[prop] === EVENT_TYPE_PLACEHOLDER) {
+                            target[prop] = name + "/" + prop;
+                        }
+                    });
+                });
+            });
+        }
+    }
+});
+System.register("lib/event/CommonEvent", ["lib/util/EventTypeUtil", "lib/AbstractEvent"], function(exports_9, context_9) {
+    "use strict";
+    var __moduleName = context_9 && context_9.id;
+    var EventTypeUtil_1, AbstractEvent_1;
+    var CommonEvent;
+    return {
+        setters:[
+            function (EventTypeUtil_1_1) {
+                EventTypeUtil_1 = EventTypeUtil_1_1;
+            },
+            function (AbstractEvent_1_1) {
+                AbstractEvent_1 = AbstractEvent_1_1;
+            }],
+        execute: function() {
+            CommonEvent = (function (_super) {
+                __extends(CommonEvent, _super);
+                function CommonEvent() {
+                    _super.apply(this, arguments);
+                }
+                CommonEvent.prototype.clone = function () {
+                    return new CommonEvent(this.type, this.bubbles, this.cancelable);
+                };
+                CommonEvent.COMPLETE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                CommonEvent.UPDATE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                CommonEvent.INIT = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                CommonEvent.CHANGE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                CommonEvent.OPEN = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                CommonEvent.CLOSE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                CommonEvent.RESIZE = EventTypeUtil_1.EVENT_TYPE_PLACEHOLDER;
+                return CommonEvent;
+            }(AbstractEvent_1.default));
+            EventTypeUtil_1.generateEventTypes({ CommonEvent: CommonEvent });
+            exports_9("default",CommonEvent);
+        }
+    }
+});
+System.register("lib/event/BasicEvent", ["lib/AbstractEvent"], function(exports_10, context_10) {
+    "use strict";
+    var __moduleName = context_10 && context_10.id;
+    var AbstractEvent_2;
+    var BasicEvent;
+    return {
+        setters:[
+            function (AbstractEvent_2_1) {
+                AbstractEvent_2 = AbstractEvent_2_1;
+            }],
+        execute: function() {
+            BasicEvent = (function (_super) {
+                __extends(BasicEvent, _super);
+                function BasicEvent() {
+                    _super.apply(this, arguments);
+                }
+                BasicEvent.prototype.clone = function () {
+                    return new BasicEvent(this.type, this.bubbles, this.cancelable);
+                };
+                return BasicEvent;
+            }(AbstractEvent_2.default));
+            exports_10("default",BasicEvent);
+        }
+    }
+});
+System.register("index", ["lib/EventDispatcher", "lib/EventPhase", "lib/EventListenerData", "lib/CallListenerResult", "lib/AbstractEvent", "lib/event/CommonEvent", "lib/event/BasicEvent", "lib/util/EventTypeUtil"], function(exports_11, context_11) {
+    "use strict";
+    var __moduleName = context_11 && context_11.id;
     var EventDispatcher_1;
     return {
         setters:[
@@ -320,27 +401,30 @@ System.register("index", ["lib/EventDispatcher", "lib/EventPhase", "lib/EventLis
                 EventDispatcher_1 = EventDispatcher_1_1;
             },
             function (EventPhase_1_1) {
-                exports_8({
+                exports_11({
                     "EventPhase": EventPhase_1_1["default"]
                 });
             },
             function (EventListenerData_2_1) {
-                exports_8({
+                exports_11({
                     "EventListenerData": EventListenerData_2_1["default"]
                 });
             },
             function (CallListenerResult_1_1) {
-                exports_8({
+                exports_11({
                     "CallListenerResult": CallListenerResult_1_1["default"]
                 });
             },
-            function (AbstractEvent_1_1) {
-                exports_8({
-                    "AbstractEvent": AbstractEvent_1_1["default"]
+            function (AbstractEvent_3_1) {
+                exports_11({
+                    "AbstractEvent": AbstractEvent_3_1["default"]
                 });
-            }],
+            },
+            function (_1) {},
+            function (_2) {},
+            function (_3) {}],
         execute: function() {
-            exports_8("default",EventDispatcher_1.default);
+            exports_11("default",EventDispatcher_1.default);
         }
     }
 });

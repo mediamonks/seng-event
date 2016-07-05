@@ -96,12 +96,12 @@ export default class EventDispatcher extends Disposable {
         else {
         }
     }
-    _listenerSorter(e1, e2) {
-        return e2.priority - e1.priority;
-    }
     dispose() {
         this.removeAllEventListeners();
         super.dispose();
+    }
+    _listenerSorter(e1, e2) {
+        return e2.priority - e1.priority;
     }
 }
 export const getCallTree = (target, bubbles) => {
