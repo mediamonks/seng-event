@@ -342,7 +342,6 @@ define(function() { return /******/ (function(modules) { // webpackBootstrap
 	var _callListenerResult = 0 /* NONE */;
 	var AbstractEvent = (function () {
 	    function AbstractEvent(type, bubbles, cancelable, setTimeStamp) {
-	        var _this = this;
 	        if (bubbles === void 0) { bubbles = false; }
 	        if (cancelable === void 0) { cancelable = false; }
 	        if (setTimeStamp === void 0) { setTimeStamp = false; }
@@ -353,11 +352,6 @@ define(function() { return /******/ (function(modules) { // webpackBootstrap
 	        this.target = null;
 	        this.eventPhase = 0 /* NONE */;
 	        this._defaultPrevented = false;
-	        this.callListener = function (listener) {
-	            _callListenerResult = 0 /* NONE */;
-	            listener.call(null, _this);
-	            return _callListenerResult;
-	        };
 	        this.timeStamp = setTimeStamp ? Date.now() : 0;
 	    }
 	    Object.defineProperty(AbstractEvent.prototype, "defaultPrevented", {
@@ -381,6 +375,11 @@ define(function() { return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else {
 	        }
+	    };
+	    AbstractEvent.prototype.callListener = function (listener) {
+	        _callListenerResult = 0 /* NONE */;
+	        listener.call(null, this);
+	        return _callListenerResult;
 	    };
 	    return AbstractEvent;
 	}());

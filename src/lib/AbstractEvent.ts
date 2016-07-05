@@ -53,12 +53,12 @@ abstract class AbstractEvent implements IEvent
 		}
 	}
 
-	public callListener = (listener:Listener):CallListenerResult =>
+	public callListener(listener:Listener):CallListenerResult
 	{
 		_callListenerResult = CallListenerResult.NONE;
 		listener.call(null, this);
 		return _callListenerResult;
-	};
+	}
 
 	public abstract clone():AbstractEvent;
 }

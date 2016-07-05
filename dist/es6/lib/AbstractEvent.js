@@ -8,11 +8,6 @@ class AbstractEvent {
         this.target = null;
         this.eventPhase = 0 /* NONE */;
         this._defaultPrevented = false;
-        this.callListener = (listener) => {
-            _callListenerResult = 0 /* NONE */;
-            listener.call(null, this);
-            return _callListenerResult;
-        };
         this.timeStamp = setTimeStamp ? Date.now() : 0;
     }
     get defaultPrevented() {
@@ -32,6 +27,11 @@ class AbstractEvent {
         }
         else {
         }
+    }
+    callListener(listener) {
+        _callListenerResult = 0 /* NONE */;
+        listener.call(null, this);
+        return _callListenerResult;
     }
 }
 export default AbstractEvent;
