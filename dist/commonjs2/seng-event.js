@@ -297,6 +297,7 @@ module.exports =
 	            this.dispatcher.removeEventListener(this.type, this.listener, this.useCapture);
 	            this.dispatcher = null;
 	        }
+	        _super.prototype.dispose.call(this);
 	    };
 	    return EventListenerData;
 	}(seng_disposable_1.default));

@@ -13,5 +13,6 @@ export default class EventListenerData extends Disposable {
             this.dispatcher.removeEventListener(this.type, this.listener, this.useCapture);
             this.dispatcher = null;
         }
+        super.dispose();
     }
 }
