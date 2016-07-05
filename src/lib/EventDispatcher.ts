@@ -152,16 +152,16 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		}
 	}
 
-	private _listenerSorter(e1:EventListenerData, e2:EventListenerData):number
-	{
-		return e2.priority - e1.priority;
-	}
-
 	public dispose():void
 	{
 		this.removeAllEventListeners();
 
 		super.dispose();
+	}
+
+	private _listenerSorter(e1:EventListenerData, e2:EventListenerData):number
+	{
+		return e2.priority - e1.priority;
 	}
 }
 
