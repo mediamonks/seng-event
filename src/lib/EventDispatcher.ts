@@ -11,7 +11,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	private _listeners:EventListenerMap = {};
 	private _target:IEventDispatcher;
 
-	constructor(target?:IEventDispatcher, parent:EventDispatcher = null)
+	constructor(parent:EventDispatcher = null, target?:IEventDispatcher)
 	{
 		super();
 
