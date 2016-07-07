@@ -493,4 +493,216 @@ describe('EventDispatcher "A"', () =>
 			});
 		});
 	});
+
+	describe("#addEventListener()", () =>
+	{
+		describe('without useCapture and priority arguments', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			const listenerData = A.addEventListener('T', A_handler);
+			it('should return EventListenerData with useCapture==false', () =>
+			{
+				expect(listenerData.useCapture).to.be.false;
+			});
+			it('should return EventListenerData with priority==0', () =>
+			{
+				expect(listenerData.priority).to.equal(0);
+			});
+		});
+
+		describe('called on "A" while handling an event with the same eventType', () =>
+		{
+			describe('during the target phase of the event', () =>
+			{
+				const A = new EventDispatcher();
+				const A_handler2 = sinon.spy();
+				const A_handler1 = () =>
+				{
+					A.addEventListener('T', A_handler2, false, 2);
+				};
+				A.addEventListener('T', A_handler1, false, 1);
+
+				const event = new BasicEvent('T', true);
+				A.dispatchEvent(event);
+				it('should not call the handler', () =>
+				{
+					expect(A_handler2).not.to.have.been.called;
+				});
+			});
+
+			describe('during the capture phase of the event', () =>
+			{
+				const P2 = new EventDispatcher();
+				const P2_handler = () =>
+				{
+					A.addEventListener('T', A_handler);
+				};
+				P2.addEventListener('T', P2_handler, true, 1);
+
+				const P1 = new EventDispatcher(P2);
+
+				const A = new EventDispatcher(P1);
+				const A_handler = sinon.spy();
+
+				const event = new BasicEvent('T', true);
+				A.dispatchEvent(event);
+
+				it('should call the handler', () =>
+				{
+					expect(A_handler).to.have.been.called;
+				});
+			});
+		});
+
+		describe('called on a parent of "A" while handling a bubbling event with the same eventType during the target phase', () =>
+		{
+			describe('with useCapture==false', () =>
+			{
+				const P1 = new EventDispatcher();
+				const A = new EventDispatcher(P1);
+				const P1_handler = sinon.spy();
+				const A_handler = () =>
+				{
+					P1.addEventListener('T', P1_handler, false);
+				};
+				A.addEventListener('T', A_handler);
+
+				const event = new BasicEvent('T', true);
+				A.dispatchEvent(event);
+				it('should call the handler', () =>
+				{
+					expect(P1_handler).to.have.been.called;
+				});
+			});
+			describe('with useCapture==true', () =>
+			{
+				const P1 = new EventDispatcher();
+				const A = new EventDispatcher(P1);
+				const P1_handler = sinon.spy();
+				const A_handler = () =>
+				{
+					P1.addEventListener('T', P1_handler, true);
+				};
+				A.addEventListener('T', A_handler);
+
+				const event = new BasicEvent('T', true);
+				A.dispatchEvent(event);
+				it('should not call the handler', () =>
+				{
+					expect(P1_handler).not.to.have.been.called;
+				});
+			});
+		});
+	});
+
+	describe('#hasEventListener()', () =>
+	{
+		describe('when there is a listener that matches the supplied type, handler and useCapture', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			A.addEventListener('T', A_handler, false, 2);
+
+			it('should return true', () =>
+			{
+				expect(A.hasEventListener('T', A_handler, false)).to.be.true;
+			});
+		});
+		describe('when there is a listener that has the same type and useCapture but a different handler', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			const A_handler2 = () => {};
+			A.addEventListener('T', A_handler, false, 2);
+
+			it('should return false', () =>
+			{
+				expect(A.hasEventListener('T', A_handler2, false)).to.be.false;
+			});
+		});
+		describe('when there is a listener that has the same type and handler but a different useCapture', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			A.addEventListener('T', A_handler, true, 2);
+
+			it('should return false', () =>
+			{
+				expect(A.hasEventListener('T', A_handler, false)).to.be.false;
+			});
+		});
+		describe('when there is a listener that has the same handler and useCapture but a different type', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			A.addEventListener('T', A_handler, false, 2);
+
+			it('should return false', () =>
+			{
+				expect(A.hasEventListener('Q', A_handler, false)).to.be.false;
+			});
+		});
+		describe('when there is a listener with the same eventType, handler and useCapture==true and the useCapture argument is omitted', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			A.addEventListener('T', A_handler, true, 2);
+
+			it('should return true', () =>
+			{
+				expect(A.hasEventListener('T', A_handler)).to.be.true;
+			});
+		});
+		describe('when there is a listener with the same eventType and the useCapture and listener arguments are omitted', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			A.addEventListener('T', A_handler, true, 2);
+
+			it('should return true', () =>
+			{
+				expect(A.hasEventListener('T')).to.be.true;
+			});
+		});
+	});
+
+	describe('#willTrigger()', () =>
+	{
+		describe('when there is an event listener of the same type on "A"', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = () => {};
+			A.addEventListener('T', A_handler, false, 2);
+
+			it('should return true', () =>
+			{
+				expect(A.willTrigger('T')).to.be.true;
+			});
+		});
+		describe('when there is an event listener of the same type on a parent of "A"', () =>
+		{
+			const P1 = new EventDispatcher();
+			const A = new EventDispatcher(P1);
+			const P1_handler = () => {};
+			P1.addEventListener('T', P1_handler);
+
+			it('should return true', () =>
+			{
+				expect(A.willTrigger('T')).to.be.true;
+			});
+		});
+		describe('when there is an event listener of a different type on a parent of "A"', () =>
+		{
+			const P1 = new EventDispatcher();
+			const A = new EventDispatcher(P1);
+			const P1_handler = () => {};
+			P1.addEventListener('T', P1_handler);
+
+			it('should return false', () =>
+			{
+				expect(A.willTrigger('Q')).to.be.false;
+			});
+		});
+	});
 });
