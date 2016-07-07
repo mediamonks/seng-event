@@ -92,7 +92,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	{
 		if(typeof listener === 'undefined')
 		{
-			return this._listeners[eventType] && this._listeners[eventType].length > 0;
+			return !!this._listeners[eventType] && this._listeners[eventType].length > 0;
 		}
 		else if(!this._listeners[eventType])
 		{
@@ -114,7 +114,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 
 	public willTrigger(eventType:string):boolean
 	{
-		return this.hasEventListener(eventType) || (this.parent && this.parent.willTrigger(eventType));
+		return this.hasEventListener(eventType) || (!!this.parent && this.parent.willTrigger(eventType));
 	}
 
 	public removeEventListener(eventType:string, listener:Listener, useCapture:boolean = false):void
