@@ -3,6 +3,8 @@ import EventDispatcher, {Listener} from "./EventDispatcher";
 
 export default class EventListenerData extends Disposable
 {
+	public isRemoved:boolean = false;
+
 	constructor(public dispatcher:EventDispatcher,
 	            public type:string,
 	            public listener:Listener,

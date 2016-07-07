@@ -7,6 +7,7 @@ export default class EventListenerData extends Disposable {
         this.listener = listener;
         this.useCapture = useCapture;
         this.priority = priority;
+        this.isRemoved = false;
     }
     dispose() {
         if (this.dispatcher) {

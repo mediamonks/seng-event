@@ -1,4 +1,4 @@
-var SengEvent =
+var SengBoilerplate =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -83,7 +83,7 @@ var SengEvent =
 	var EventListenerData_1 = __webpack_require__(5);
 	var EventDispatcher = (function (_super) {
 	    __extends(EventDispatcher, _super);
-	    function EventDispatcher(target, parent) {
+	    function EventDispatcher(parent, target) {
 	        if (parent === void 0) { parent = null; }
 	        _super.call(this);
 	        this._listeners = {};
@@ -123,32 +123,32 @@ var SengEvent =
 	        }
 	        return false;
 	    };
-	    EventDispatcher.prototype.addEventListener = function (type, listener, useCapture, priority) {
+	    EventDispatcher.prototype.addEventListener = function (eventType, listener, useCapture, priority) {
 	        if (useCapture === void 0) { useCapture = false; }
 	        if (priority === void 0) { priority = 0; }
-	        if (typeof (this._listeners[type]) === 'undefined') {
-	            this._listeners[type] = [];
+	        if (typeof (this._listeners[eventType]) === 'undefined') {
+	            this._listeners[eventType] = [];
 	        }
 	        // todo: log in debug mode
 	        var isDebugMode = false;
-	        if (isDebugMode && this.hasEventListener(type, listener, useCapture)) {
+	        if (isDebugMode && this.hasEventListener(eventType, listener, useCapture)) {
 	        }
 	        // end todo
-	        var data = new EventListenerData_1.default(this, type, listener, useCapture, priority);
-	        this._listeners[type].push(data);
-	        this._listeners[type].sort(this._listenerSorter);
+	        var data = new EventListenerData_1.default(this, eventType, listener, useCapture, priority);
+	        this._listeners[eventType].push(data);
+	        this._listeners[eventType].sort(this._listenerSorter);
 	        return data;
 	    };
-	    EventDispatcher.prototype.hasEventListener = function (type, listener, useCapture) {
+	    EventDispatcher.prototype.hasEventListener = function (eventType, listener, useCapture) {
 	        if (typeof listener === 'undefined') {
-	            return this._listeners[type] && this._listeners[type].length > 0;
+	            return this._listeners[eventType] && this._listeners[eventType].length > 0;
 	        }
-	        else if (!this._listeners[type]) {
+	        else if (!this._listeners[eventType]) {
 	            return false;
 	        }
 	        else {
-	            for (var i = 0; i < this._listeners[type].length; i++) {
-	                var listenerData = this._listeners[type][i];
+	            for (var i = 0; i < this._listeners[eventType].length; i++) {
+	                var listenerData = this._listeners[eventType][i];
 	                if (listenerData.listener === listener && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture)) {
 	                    return true;
 	                }
@@ -156,31 +156,15 @@ var SengEvent =
 	            return false;
 	        }
 	    };
-	    EventDispatcher.prototype.willTrigger = function (type) {
-	        return this.hasEventListener(type) || (this.parent && this.parent.willTrigger(type));
+	    EventDispatcher.prototype.willTrigger = function (eventType) {
+	        return this.hasEventListener(eventType) || (this.parent && this.parent.willTrigger(eventType));
 	    };
-	    EventDispatcher.prototype.removeEventListener = function (type, listener, useCapture) {
+	    EventDispatcher.prototype.removeEventListener = function (eventType, listener, useCapture) {
 	        if (useCapture === void 0) { useCapture = false; }
-	        if ((type in this._listeners) && (this._listeners[type] instanceof Array)) {
-	            for (var i = this._listeners[type].length; i; i--) {
-	                var listenerData = this._listeners[type][i - 1];
-	                if (listenerData.listener === listener && listenerData.useCapture === useCapture) {
-	                    this._listeners[type].splice(i - 1, 1);
-	                }
-	            }
-	        }
-	        else {
-	        }
+	        exports.removeListenersFrom(this._listeners, false, eventType, listener, useCapture);
 	    };
-	    EventDispatcher.prototype.removeAllEventListeners = function (type) {
-	        if (type === void 0) {
-	            this._listeners = {};
-	        }
-	        else if ((type in this._listeners) && (this._listeners[type] instanceof Array)) {
-	            this._listeners[type].length = 0;
-	        }
-	        else {
-	        }
+	    EventDispatcher.prototype.removeAllEventListeners = function (eventType) {
+	        exports.removeListenersFrom(this._listeners, true, eventType);
 	    };
 	    EventDispatcher.prototype.dispose = function () {
 	        this.removeAllEventListeners();
@@ -193,6 +177,39 @@ var SengEvent =
 	}(seng_disposable_1.default));
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = EventDispatcher;
+	exports.removeListenersFrom = function (listeners, removeAll, eventType, listener, useCapture) {
+	    // build an array with arrays of events for each eventType we want to remove from
+	    var removeFrom = [];
+	    if (eventType) {
+	        // eventType argument is set, just remove from this type
+	        if ((eventType in listeners) && (listeners[eventType] instanceof Array)) {
+	            removeFrom.push(listeners[eventType]);
+	        }
+	    }
+	    else {
+	        // eventType not set, add all event types with listeners
+	        for (var i in listeners) {
+	            if (listeners.hasOwnProperty(i) && listeners[i] instanceof Array) {
+	                removeFrom.push(listeners[i]);
+	            }
+	        }
+	    }
+	    if (removeFrom.length) {
+	        for (var i = 0; i < removeFrom.length; i++) {
+	            var listenersForType = removeFrom[i];
+	            for (var j = listenersForType.length; j; j--) {
+	                var listenerData = listenersForType[j - 1];
+	                if (removeAll || (listenerData.listener === listener && listenerData.useCapture === useCapture)) {
+	                    listenersForType.splice(j - 1, 1);
+	                    // mark the listener as removed, because it might still be active in the current event loop
+	                    listenerData.isRemoved = true;
+	                }
+	            }
+	        }
+	    }
+	    else {
+	    }
+	};
 	exports.getCallTree = function (target, bubbles) {
 	    var callTree = [];
 	    var parents = exports.getParents(target);
@@ -215,11 +232,11 @@ var SengEvent =
 	    return parents;
 	};
 	exports.callListeners = function (listeners, event) {
-	    var listenersOfType = listeners[event.type] || [];
+	    var listenersOfType = listeners[event.type] ? listeners[event.type].slice() : [];
 	    var propagationIsStopped = false;
 	    for (var i = 0; i < listenersOfType.length; i++) {
 	        var disabledOnPhase = listenersOfType[i].useCapture ? 3 /* BUBBLING_PHASE */ : 1 /* CAPTURING_PHASE */;
-	        if (event.eventPhase !== disabledOnPhase) {
+	        if (event.eventPhase !== disabledOnPhase && !listenersOfType[i].isRemoved) {
 	            var callResult = event.callListener(listenersOfType[i].listener);
 	            if (callResult > 0 /* NONE */) {
 	                propagationIsStopped = true;
@@ -291,6 +308,7 @@ var SengEvent =
 	        this.listener = listener;
 	        this.useCapture = useCapture;
 	        this.priority = priority;
+	        this.isRemoved = false;
 	    }
 	    EventListenerData.prototype.dispose = function () {
 	        if (this.dispatcher) {

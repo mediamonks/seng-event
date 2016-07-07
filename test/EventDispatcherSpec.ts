@@ -38,6 +38,42 @@ describe('EventDispatcher "A"', () =>
 						expect(A_handler).to.have.been.calledOnce;
 					});
 				});
+				describe('and an event listener "A_handler2() for eventType "T" with priority==2 that removes the "A_handler()" listener', () =>
+				{
+					const A = new EventDispatcher();
+					const A_handler = sinon.spy();
+					A.addEventListener('T', A_handler);
+					const A_handler2 = sinon.spy(() =>
+					{
+						A.removeEventListener('T', A_handler);
+					});
+					A.addEventListener('T', A_handler2, false, 2);
+
+					const event = new BasicEvent('T', false);
+					A.dispatchEvent(event);
+					it('should not call "A_handler()"', () =>
+					{
+						expect(A_handler).not.to.have.been.called;
+					});
+				});
+				describe('and an event listener "A_handler2() for eventType "T" with priority==2 that calls A.removeAllEventListeners()', () =>
+				{
+					const A = new EventDispatcher();
+					const A_handler = sinon.spy();
+					A.addEventListener('T', A_handler);
+					const A_handler2 = sinon.spy(() =>
+					{
+						A.removeAllEventListeners();
+					});
+					A.addEventListener('T', A_handler2, false, 2);
+
+					const event = new BasicEvent('T', false);
+					A.dispatchEvent(event);
+					it('should not call "A_handler()"', () =>
+					{
+						expect(A_handler).not.to.have.been.called;
+					});
+				});
 				describe('and a parent EventDispatcher "P1"', () =>
 				{
 					describe('with an event listener with handler "P1_handler()" for eventType "T"', () =>
@@ -202,6 +238,25 @@ describe('EventDispatcher "A"', () =>
 						});
 					});
 				});
+
+				describe('after the method is called', () =>
+				{
+					const A = new EventDispatcher();
+					const A_handler = () => {};
+					A.addEventListener('T', A_handler);
+
+					const event = new BasicEvent('T', false);
+					A.dispatchEvent(event);
+
+					it('should have set the currentTarget of the event to null', () =>
+					{
+						expect(event.currentTarget).to.be.null;
+					});
+					it('should have set the target of the event to EventDispatcher "A"', () =>
+					{
+						expect(event.target).to.equal(A);
+					});
+				});
 			});
 
 			describe('and an event listener for eventType "Q"', () =>
@@ -216,6 +271,43 @@ describe('EventDispatcher "A"', () =>
 				{
 					expect(handler).not.to.have.been.called;
 				})
+			});
+
+
+			describe('and event listeners for eventType "T" with handlers "A_handler()", "B_handler()", "C_handler()" and "D_handler()"' +
+				'where "B_handler()" removes the listener with "A_handler()"', () =>
+			{
+				const A = new EventDispatcher();
+				const A_handler = sinon.spy();
+				const B_handler = sinon.spy(() => A.removeEventListener('T', A_handler));
+				const C_handler = sinon.spy();
+				const D_handler = sinon.spy();
+				A.addEventListener('T', A_handler);
+				A.addEventListener('T', B_handler);
+				A.addEventListener('T', C_handler);
+				A.addEventListener('T', D_handler);
+
+				const event = new BasicEvent('T', false);
+				A.dispatchEvent(event);
+				it('should call "A_handler()"', () =>
+				{
+					expect(A_handler).to.have.been.calledOnce;
+				});
+				it('should call "C_handler()"', () =>
+				{
+					expect(C_handler).to.have.been.calledOnce;
+				});
+				it('should call "D_handler()"', () =>
+				{
+					expect(D_handler).to.have.been.calledOnce;
+				});
+
+				it('should call the handlers in the order ABCD', () =>
+				{
+					expect(A_handler).to.have.been.calledBefore(B_handler);
+					expect(B_handler).to.have.been.calledBefore(C_handler);
+					expect(C_handler).to.have.been.calledBefore(D_handler);
+				});
 			});
 		});
 		describe('with an event that has eventType=="T" and bubbles==true', () =>
@@ -377,6 +469,26 @@ describe('EventDispatcher "A"', () =>
 				it('should not call "C_handler()"', () =>
 				{
 					expect(C_handler).not.to.have.been.called;
+				});
+			});
+
+			describe('and the same event listener with handler "A_handler()" for eventType "T" added 6 times', () =>
+			{
+				const A = new EventDispatcher();
+				const A_handler = sinon.spy();
+				A.addEventListener('T', A_handler);
+				A.addEventListener('T', A_handler);
+				A.addEventListener('T', A_handler);
+				A.addEventListener('T', A_handler);
+				A.addEventListener('T', A_handler);
+				A.addEventListener('T', A_handler);
+
+				const event = new BasicEvent('T', true);
+				A.dispatchEvent(event);
+
+				it('should call "A_handler()" exactly 6 times', () =>
+				{
+					expect(A_handler.callCount).to.equal(6);
 				});
 			});
 		});

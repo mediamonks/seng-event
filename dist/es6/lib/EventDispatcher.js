@@ -1,7 +1,7 @@
 import Disposable from 'seng-disposable';
 import EventListenerData from "./EventListenerData";
 export default class EventDispatcher extends Disposable {
-    constructor(target, parent = null) {
+    constructor(parent = null, target) {
         super();
         this._listeners = {};
         this._target = target || this;
@@ -40,30 +40,30 @@ export default class EventDispatcher extends Disposable {
         }
         return false;
     }
-    addEventListener(type, listener, useCapture = false, priority = 0) {
-        if (typeof (this._listeners[type]) === 'undefined') {
-            this._listeners[type] = [];
+    addEventListener(eventType, listener, useCapture = false, priority = 0) {
+        if (typeof (this._listeners[eventType]) === 'undefined') {
+            this._listeners[eventType] = [];
         }
         // todo: log in debug mode
         const isDebugMode = false;
-        if (isDebugMode && this.hasEventListener(type, listener, useCapture)) {
+        if (isDebugMode && this.hasEventListener(eventType, listener, useCapture)) {
         }
         // end todo
-        const data = new EventListenerData(this, type, listener, useCapture, priority);
-        this._listeners[type].push(data);
-        this._listeners[type].sort(this._listenerSorter);
+        const data = new EventListenerData(this, eventType, listener, useCapture, priority);
+        this._listeners[eventType].push(data);
+        this._listeners[eventType].sort(this._listenerSorter);
         return data;
     }
-    hasEventListener(type, listener, useCapture) {
+    hasEventListener(eventType, listener, useCapture) {
         if (typeof listener === 'undefined') {
-            return this._listeners[type] && this._listeners[type].length > 0;
+            return this._listeners[eventType] && this._listeners[eventType].length > 0;
         }
-        else if (!this._listeners[type]) {
+        else if (!this._listeners[eventType]) {
             return false;
         }
         else {
-            for (let i = 0; i < this._listeners[type].length; i++) {
-                const listenerData = this._listeners[type][i];
+            for (let i = 0; i < this._listeners[eventType].length; i++) {
+                const listenerData = this._listeners[eventType][i];
                 if (listenerData.listener === listener && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture)) {
                     return true;
                 }
@@ -71,30 +71,14 @@ export default class EventDispatcher extends Disposable {
             return false;
         }
     }
-    willTrigger(type) {
-        return this.hasEventListener(type) || (this.parent && this.parent.willTrigger(type));
+    willTrigger(eventType) {
+        return this.hasEventListener(eventType) || (this.parent && this.parent.willTrigger(eventType));
     }
-    removeEventListener(type, listener, useCapture = false) {
-        if ((type in this._listeners) && (this._listeners[type] instanceof Array)) {
-            for (let i = this._listeners[type].length; i; i--) {
-                let listenerData = this._listeners[type][i - 1];
-                if (listenerData.listener === listener && listenerData.useCapture === useCapture) {
-                    this._listeners[type].splice(i - 1, 1);
-                }
-            }
-        }
-        else {
-        }
+    removeEventListener(eventType, listener, useCapture = false) {
+        removeListenersFrom(this._listeners, false, eventType, listener, useCapture);
     }
-    removeAllEventListeners(type) {
-        if (type === void 0) {
-            this._listeners = {};
-        }
-        else if ((type in this._listeners) && (this._listeners[type] instanceof Array)) {
-            this._listeners[type].length = 0;
-        }
-        else {
-        }
+    removeAllEventListeners(eventType) {
+        removeListenersFrom(this._listeners, true, eventType);
     }
     dispose() {
         this.removeAllEventListeners();
@@ -104,6 +88,39 @@ export default class EventDispatcher extends Disposable {
         return e2.priority - e1.priority;
     }
 }
+export const removeListenersFrom = (listeners, removeAll, eventType, listener, useCapture) => {
+    // build an array with arrays of events for each eventType we want to remove from
+    const removeFrom = [];
+    if (eventType) {
+        // eventType argument is set, just remove from this type
+        if ((eventType in listeners) && (listeners[eventType] instanceof Array)) {
+            removeFrom.push(listeners[eventType]);
+        }
+    }
+    else {
+        // eventType not set, add all event types with listeners
+        for (let i in listeners) {
+            if (listeners.hasOwnProperty(i) && listeners[i] instanceof Array) {
+                removeFrom.push(listeners[i]);
+            }
+        }
+    }
+    if (removeFrom.length) {
+        for (let i = 0; i < removeFrom.length; i++) {
+            const listenersForType = removeFrom[i];
+            for (let j = listenersForType.length; j; j--) {
+                let listenerData = listenersForType[j - 1];
+                if (removeAll || (listenerData.listener === listener && listenerData.useCapture === useCapture)) {
+                    listenersForType.splice(j - 1, 1);
+                    // mark the listener as removed, because it might still be active in the current event loop
+                    listenerData.isRemoved = true;
+                }
+            }
+        }
+    }
+    else {
+    }
+};
 export const getCallTree = (target, bubbles) => {
     const callTree = [];
     const parents = getParents(target);
@@ -126,11 +143,11 @@ export const getParents = (target) => {
     return parents;
 };
 export const callListeners = (listeners, event) => {
-    const listenersOfType = listeners[event.type] || [];
+    const listenersOfType = listeners[event.type] ? [...listeners[event.type]] : [];
     let propagationIsStopped = false;
     for (let i = 0; i < listenersOfType.length; i++) {
         const disabledOnPhase = listenersOfType[i].useCapture ? 3 /* BUBBLING_PHASE */ : 1 /* CAPTURING_PHASE */;
-        if (event.eventPhase !== disabledOnPhase) {
+        if (event.eventPhase !== disabledOnPhase && !listenersOfType[i].isRemoved) {
             const callResult = event.callListener(listenersOfType[i].listener);
             if (callResult > 0 /* NONE */) {
                 propagationIsStopped = true;
