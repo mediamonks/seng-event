@@ -1,14 +1,14 @@
 import IEvent from "./IEvent";
 import EventListenerData from "./EventListenerData";
-import {Listener} from "./EventDispatcher";
+import {EventHandler} from "./EventDispatcher";
 
 interface IEventDispatcher
 {
 	dispatchEvent(event:IEvent):boolean;
-	addEventListener(type:string, listener:Listener, useCapture?:boolean, priority?:number):EventListenerData;
-	hasEventListener(type:string, listener?:Listener, useCapture?:boolean):boolean;
+	addEventListener(type:string, handler:EventHandler, useCapture?:boolean, priority?:number):EventListenerData;
+	hasEventListener(type:string, handler?:EventHandler, useCapture?:boolean):boolean;
 	willTrigger(type:string):boolean;
-	removeEventListener(type:string, listener:Listener, useCapture?:boolean):void;
+	removeEventListener(type:string, handler:EventHandler, useCapture?:boolean):void;
 	removeAllEventListeners(type?:string):void;
 	dispose():void;
 }

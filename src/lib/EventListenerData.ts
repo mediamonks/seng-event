@@ -1,5 +1,5 @@
 import Disposable from "seng-disposable";
-import EventDispatcher, {Listener} from "./EventDispatcher";
+import EventDispatcher, {EventHandler} from "./EventDispatcher";
 
 export default class EventListenerData extends Disposable
 {
@@ -7,7 +7,7 @@ export default class EventListenerData extends Disposable
 
 	constructor(public dispatcher:EventDispatcher,
 	            public type:string,
-	            public listener:Listener,
+	            public handler:EventHandler,
 	            public useCapture:boolean,
 	            public priority:number)
 	{
@@ -18,7 +18,7 @@ export default class EventListenerData extends Disposable
 	{
 		if (this.dispatcher)
 		{
-			this.dispatcher.removeEventListener(this.type, this.listener, this.useCapture);
+			this.dispatcher.removeEventListener(this.type, this.handler, this.useCapture);
 			this.dispatcher = null;
 		}
 		super.dispose();

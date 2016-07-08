@@ -66,7 +66,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		return false;
 	}
 
-	public addEventListener(eventType:string, listener:Listener, useCapture:boolean = false, priority:number = 0):EventListenerData
+	public addEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false, priority:number = 0):EventListenerData
 	{
 		if(typeof(this._listeners[eventType]) === 'undefined')
 		{
@@ -75,22 +75,22 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 
 		// todo: log in debug mode
 		const isDebugMode = false;
-		if(isDebugMode && this.hasEventListener(eventType, listener, useCapture))
+		if(isDebugMode && this.hasEventListener(eventType, handler, useCapture))
 		{
 			// log.warn(trying to add double listener)
 		}
 		// end todo
 
-		const data:EventListenerData = new EventListenerData(this, eventType, listener, useCapture, priority);
+		const data:EventListenerData = new EventListenerData(this, eventType, handler, useCapture, priority);
 		this._listeners[eventType].push(data);
 		this._listeners[eventType].sort(this._listenerSorter);
 
 		return data;
 	}
 
-	public hasEventListener(eventType:string, listener?:Listener, useCapture?:boolean):boolean
+	public hasEventListener(eventType:string, handler?:EventHandler, useCapture?:boolean):boolean
 	{
-		if(typeof listener === 'undefined')
+		if(typeof handler === 'undefined')
 		{
 			return !!this._listeners[eventType] && this._listeners[eventType].length > 0;
 		}
@@ -103,7 +103,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 			for(let i = 0; i < this._listeners[eventType].length; i++)
 			{
 				const listenerData:EventListenerData = this._listeners[eventType][i];
-				if(listenerData.listener === listener && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture))
+				if(listenerData.handler === handler && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture))
 				{
 					return true;
 				}
@@ -117,9 +117,9 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		return this.hasEventListener(eventType) || (!!this.parent && this.parent.willTrigger(eventType));
 	}
 
-	public removeEventListener(eventType:string, listener:Listener, useCapture:boolean = false):void
+	public removeEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false):void
 	{
-		removeListenersFrom(this._listeners, eventType, listener, useCapture);
+		removeListenersFrom(this._listeners, eventType, handler, useCapture);
 	}
 
 	public removeAllEventListeners(eventType?:string):void
@@ -140,7 +140,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	}
 }
 
-export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, listener?:Listener, useCapture?:boolean) =>
+export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, listener?:EventHandler, useCapture?:boolean) =>
 {
 	for(let i in listeners)
 	{
@@ -152,7 +152,7 @@ export const removeListenersFrom = (listeners:EventListenerMap, eventType?:strin
 			for(let j = listenersForType.length; j; j--)
 			{
 				let listenerData:EventListenerData = listenersForType[j - 1];
-				if((!listener || listener === listenerData.listener) && (typeof useCapture === 'undefined' || useCapture == listenerData.useCapture))
+				if((!listener || listener === listenerData.handler) && (typeof useCapture === 'undefined' || useCapture == listenerData.useCapture))
 				{
 					listenersForType.splice(j - 1, 1);
 					// mark the listener as removed, because it might still be active in the current event loop
@@ -207,7 +207,7 @@ export const callListeners = (listeners:EventListenerMap, event:IEvent):boolean 
 		const disabledOnPhase = listenersOfType[i].useCapture ? EventPhase.BUBBLING_PHASE : EventPhase.CAPTURING_PHASE;
 		if(event.eventPhase !== disabledOnPhase && !listenersOfType[i].isRemoved)
 		{
-			const callResult:number = event.callListener(listenersOfType[i].listener);
+			const callResult:number = event.callListener(listenersOfType[i].handler);
 
 			if(callResult > CallListenerResult.NONE)
 			{
@@ -224,4 +224,4 @@ export const callListeners = (listeners:EventListenerMap, event:IEvent):boolean 
 };
 
 type EventListenerMap = {[type:string]:Array<EventListenerData>};
-export type Listener = (event?:IEvent) => any;
+export type EventHandler = (event?:IEvent) => any;

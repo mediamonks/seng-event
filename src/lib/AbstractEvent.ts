@@ -1,7 +1,7 @@
 import IEvent from "./IEvent";
 import EventPhase from "./EventPhase";
 import IEventDispatcher from "./IEventDispatcher";
-import {Listener} from './EventDispatcher';
+import {EventHandler} from './EventDispatcher';
 import CallListenerResult from "./CallListenerResult";
 
 let _callListenerResult = CallListenerResult.NONE;
@@ -53,10 +53,10 @@ abstract class AbstractEvent implements IEvent
 		}
 	}
 
-	public callListener(listener:Listener):CallListenerResult
+	public callListener(handler:EventHandler):CallListenerResult
 	{
 		_callListenerResult = CallListenerResult.NONE;
-		listener.call(null, this);
+		handler.call(null, this);
 		return _callListenerResult;
 	}
 

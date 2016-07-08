@@ -1,6 +1,6 @@
 import IEventDispatcher from "./IEventDispatcher";
 import EventPhase from "./EventPhase";
-import {Listener} from "./EventDispatcher";
+import {EventHandler} from "./EventDispatcher";
 import CallListenerResult from "./CallListenerResult";
 
 interface IEvent
@@ -17,7 +17,7 @@ interface IEvent
 
 	eventPhase:EventPhase;
 
-	callListener(listener:Listener):CallListenerResult;
+	callListener(handler:EventHandler):CallListenerResult;
 	clone():IEvent;
 	stopPropagation():void;
 	stopImmediatePropagation():void;
