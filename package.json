@@ -21,7 +21,7 @@
     "typescript-es6": "tsc -p ./ -t es6 -m es6 --outDir ./dist/es6/",
     "webpack-dist": "node script/webpack.js",
     "doc": "npm-run-all -p typedoc yuidoc",
-    "typedoc": "typedoc --out doc/typedoc/ src/",
+    "typedoc": "typedoc --out doc/typedoc/ --mode file src/",
     "yuidoc": "yuidoc -o doc/yuidoc/ -t ./node_modules/yuidoc-mediamonks-theme -H ./node_modules/yuidoc-mediamonks-theme/helpers/helpers.js src/",
     "generate": "npm-run-all clean compile test-unit doc",
     "build": "npm-run-all clean compile",

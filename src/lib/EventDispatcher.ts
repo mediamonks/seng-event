@@ -5,12 +5,25 @@ import EventListenerData from "./EventListenerData";
 import EventPhase from "./EventPhase";
 import CallListenerResult from "./CallListenerResult";
 
+/**
+ * Base class that adds the ability to dispatch and listen for events.
+ */
 export default class EventDispatcher extends Disposable implements IEventDispatcher
 {
 	public parent:EventDispatcher;
 	private _listeners:EventListenerMap = {};
 	private _target:IEventDispatcher;
 
+	/**
+	 * Creates an EventDispatcher instance.
+	 * @param parent If set, registers the given EventDispatcher instance as parent. This
+	 * child-parent relationship is used in the event chain during the capture phase of
+	 * events and the bubbling phase of bubbling events. For more information on event
+	 * bubbling and capturing, see [[dispatchEvent]]
+	 * @param target If set, will set the [[IEvent.target|target]] attribute of all events
+	 * dispatched by this EventDispatcher to the given object. If not set, will use this instance
+	 * as a target for dispatched events.
+	 */
 	constructor(parent:EventDispatcher = null, target?:IEventDispatcher)
 	{
 		super();
@@ -19,6 +32,31 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		this.parent = parent;
 	}
 
+	/**
+	 * Dispatches the given event. The dispatch consists of three phases:
+	 * 1. The capture phase. We walk through all ancestors of this EventDispatcher, with the
+	 * top-most instance first and the direct parent of this EventDispatcher last. On each
+	 * ancestor, we call all event handlers that are added with the _useCapture_ argument
+	 * set to _true_ and the _eventType_ set to the same [[IEvent.type|type]] as
+	 * the given event.
+	 * If this EventDispatcher has no parent, this phase will be skipped.
+	 * 2. The target phase. In this phase we call all event handlers on this EventDispatcher
+	 * instance that listen for the same [[IEvent.type|type]] as the given event.
+	 * 3. The bubbling phase. This phase will only be executed if the given event has the
+	 * [[IEvent.bubbles|bubbles]] property set to _true_. If so, we will again walk through
+	 * all ancestors of this EventDispatcher, but in the reverse order: the direct parent
+	 * of this instance first and the top-most parent last. On every ancestor, we will call
+	 * all event handlers that are added with the _useCapture_ argument set to _false_ and the
+	 * _eventType_ set to the same [[IEvent.type|type]] as the given event.
+	 * @param event The event to dispatch
+	 * @returns If one of the handlers that have been called during this dispatch
+	 * called [[IEvent.preventDefault|event.preventDefault()]], this method will return _false_.
+	 * If no handlers have been called or none of the handlers have called
+	 * [[IEvent.preventDefault|event.preventDefault()]], this method will return _true_.
+	 *
+	 * _Please note: [[IEvent.preventDefault|preventDefault()]] can only be called on
+	 * events that have their [[IEvent.cancelable|cancelable]] property set to true_
+	 */
 	public dispatchEvent(event:IEvent):boolean
 	{
 		if(this.isDisposed())
@@ -66,6 +104,30 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		return true;
 	}
 
+	/**
+	 * Adds a new event listener. The given handler function will be called in the following cases:
+	 *  - An event with a [[IEvent.type|type]] that is equal to the given _eventType_ is dispatched
+	 *  on this EventDispatcher instance.
+	 *  - An event with a [[IEvent.type|type]] that is equal to the given _eventType_ is dispatched
+	 *  on a child EventDispatcher, and the _useCapture_ parameter is set to _true_
+	 *  - An event with [[IEvent.bubbles|bubbles]] set to _true_ and a [[IEvent.type|type]] that
+	 *  is equal to the given _eventType_ is dispatched on a child EventDispatcher, and the
+	 *  _useCapture_ parameter is set to _false_
+	 *
+	 * @see [[dispatchEvent]] for more info on the which event listeners are called during
+	 * capturing and bubbling
+	 * @param eventType The eventType to listen for
+	 * @param handler The handler function that will be called when a matching event is dispatched.
+	 * This function will retrieve the dispatched [[IEvent|event]] as a parameter
+	 * @param useCapture Indicates if this handler should be called during the capturing phase
+	 * of an event chain. If and only if this is set to _false_ will this handler be called
+	 * during the bubbling phase of an event chain.
+	 * @param priority A number that indicates the priority of this event listener relative
+	 * to other event listeners of the same type on this EventDispatcher instance. A higher number
+	 * indicates that this listener will be called earlier.
+	 * @returns An object describing the listener that has a [[EventListenerData.dispose|dispose()]]
+	 * method to remove the listener.
+	 */
 	public addEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false, priority:number = 0):EventListenerData
 	{
 		if(typeof(this._listeners[eventType]) === 'undefined')
@@ -88,6 +150,16 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		return data;
 	}
 
+	/**
+	 * Checks if an event listener matching the given parameters exists on this EventDispatcher
+	 * instance.
+	 * @param eventType Will only look for event listeners with this _eventType_
+	 * @param handler If set, will only match event listeners that have the same handler function
+	 * @param useCapture If set, will only match event listeners that have the same _useCapture_
+	 * argument. _Please note: if no useCapture argument was provided to [[addEventListener]], it
+	 * is set to false by default_
+	 * @returns {boolean} True if one or more event listeners exist
+	 */
 	public hasEventListener(eventType:string, handler?:EventHandler, useCapture?:boolean):boolean
 	{
 		if(typeof handler === 'undefined')
@@ -117,6 +189,15 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		return this.hasEventListener(eventType) || (!!this.parent && this.parent.willTrigger(eventType));
 	}
 
+	/**
+	 * Removes all event listeners that match the given parameters from this EventDispatcher
+	 * instance.
+	 * @param eventType Only event listeners of that have this _eventType_ are removed
+	 * @param handler Only event listeners that have this handler function will be removed
+	 * @param useCapture Only event listeners that have been added with the same _useCapture_
+	 * parameter will be removed. _Please note: if no useCapture argument is provided, only
+	 * event listeners that have useCapture set to false will be removed._
+	 */
 	public removeEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false):void
 	{
 		removeListenersFrom(this._listeners, eventType, handler, useCapture);
