@@ -1,4 +1,4 @@
-export const EVENT_TYPE_PLACEHOLDER:string = '__EventTypeUtil::EVENT_TYPE_PLACEHOLDER';
+export const EVENT_TYPE_PLACEHOLDER:string = '__eventTypeUtil::EVENT_TYPE_PLACEHOLDER';
 
 export const generateEventTypes = (targets:{[name:string]:any}):void =>
 {

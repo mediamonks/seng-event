@@ -7,6 +7,6 @@ export {default as CallListenerResult} from './lib/CallListenerResult';
 export {default as AbstractEvent} from './lib/AbstractEvent';
 import './lib/event/CommonEvent';
 import './lib/event/BasicEvent';
-import './lib/util/EventTypeUtil';
+import './lib/util/eventTypeUtils';
 
 export default _export;
