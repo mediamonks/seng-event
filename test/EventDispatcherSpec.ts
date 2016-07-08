@@ -1,9 +1,10 @@
-import EventDispatcher from '../src/lib/EventDispatcher';
+import EventDispatcher, {getParents, getCallTree, removeListenersFrom, callListeners} from '../src/lib/EventDispatcher';
 import BasicEvent from "../src/lib/event/BasicEvent";
 import chai = require('chai');
 import sinon = require('sinon');
 import sinonChai = require('sinon-chai');
 import IEvent from "../src/lib/IEvent";
+import EventListenerData from "../src/lib/EventListenerData";
 const {expect} = chai;
 chai.use(sinonChai);
 
@@ -332,23 +333,55 @@ describe('EventDispatcher "A"', () =>
 
 					describe('and an event listener with handler "P1_handler2()" for eventType "T" with useCapture==true', () =>
 					{
-						const P1 = new EventDispatcher();
-						const P1_handler = sinon.spy();
-						P1.addEventListener('T', P1_handler, false);
-						const P1_handler2 = sinon.spy();
-						P1.addEventListener('T', P1_handler2, true);
-
-						const A = new EventDispatcher(P1);
-
-						const event = new BasicEvent('T', true);
-						A.dispatchEvent(event);
-						it('should call "P1_handler2()" once', () =>
+						describe('where no handler calls event.preventDefault()', () =>
 						{
-							expect(P1_handler2).to.have.been.calledOnce;
+							const P1 = new EventDispatcher();
+							const P1_handler = sinon.spy();
+							P1.addEventListener('T', P1_handler, false);
+							const P1_handler2 = sinon.spy();
+							P1.addEventListener('T', P1_handler2, true);
+
+							const A = new EventDispatcher(P1);
+
+							const event = new BasicEvent('T', true, true);
+							const result = A.dispatchEvent(event);
+							it('should call "P1_handler2()" once', () =>
+							{
+								expect(P1_handler2).to.have.been.calledOnce;
+							});
+							it('should call "P1_handler2()" before "P1_handler()"', () =>
+							{
+								expect(P1_handler2).to.have.been.calledBefore(P1_handler);
+							});
+							it('should return false', () =>
+							{
+								expect(result).to.be.false;
+							});
 						});
-						it('should call "P1_handler2()" before "P1_handler()"', () =>
+						describe('where "P1_handler2()" calls event.preventDefault()', () =>
 						{
-							expect(P1_handler2).to.have.been.calledBefore(P1_handler);
+							const P1 = new EventDispatcher();
+							const P1_handler = sinon.spy();
+							P1.addEventListener('T', P1_handler, false);
+							const P1_handler2 = sinon.spy((event:IEvent) => event.preventDefault());
+							P1.addEventListener('T', P1_handler2, true);
+
+							const A = new EventDispatcher(P1);
+
+							const event = new BasicEvent('T', true, true);
+							const result = A.dispatchEvent(event);
+							it('should call "P1_handler2()" once', () =>
+							{
+								expect(P1_handler2).to.have.been.calledOnce;
+							});
+							it('should call "P1_handler2()" before "P1_handler()"', () =>
+							{
+								expect(P1_handler2).to.have.been.calledBefore(P1_handler);
+							});
+							it('should return true', () =>
+							{
+								expect(result).to.be.true;
+							});
 						});
 					});
 
@@ -421,34 +454,66 @@ describe('EventDispatcher "A"', () =>
 						{
 							describe('that has event listeners for eventType "T" with handlers "P3_handler1()" and "P3_handler2()" with useCapture==true and useCapture==false', () =>
 							{
-								const P3 = new EventDispatcher();
-								const P3_handler1 = sinon.spy();
-								P3.addEventListener('T', P3_handler1, true);
-								const P3_handler2 = sinon.spy();
-								P3.addEventListener('T', P3_handler2, false);
-								const P2 = new EventDispatcher(P3);
-
-								const P1 = new EventDispatcher(P2);
-								const P1_handler = sinon.spy();
-								P1.addEventListener('T', P1_handler, false);
-
-								const A = new EventDispatcher(P1);
-
-								const event = new BasicEvent('T', true);
-								A.dispatchEvent(event);
-								it('should call "P3_handler1()" once', () =>
+								describe('where no handler calls event.preventDefault()', () =>
 								{
-									expect(P3_handler1).to.have.been.calledOnce;
+									const P3 = new EventDispatcher();
+									const P3_handler1 = sinon.spy();
+									P3.addEventListener('T', P3_handler1, true);
+									const P3_handler2 = sinon.spy();
+									P3.addEventListener('T', P3_handler2, false);
+									const P2 = new EventDispatcher(P3);
+
+									const P1 = new EventDispatcher(P2);
+									const P1_handler = sinon.spy();
+									P1.addEventListener('T', P1_handler, false);
+
+									const A = new EventDispatcher(P1);
+
+									const event = new BasicEvent('T', true, true);
+									const result = A.dispatchEvent(event);
+
+									it('should return false', () =>
+									{
+										expect(result).to.be.false;
+									});
+
+									it('should call "P3_handler1()" once', () =>
+									{
+										expect(P3_handler1).to.have.been.calledOnce;
+									});
+
+									it('should call "P3_handler2()" once', () =>
+									{
+										expect(P3_handler2).to.have.been.calledOnce;
+									});
+
+									it('should call "P3_handler1()" before "P3_handler2()"', () =>
+									{
+										expect(P3_handler1).to.have.been.calledBefore(P3_handler2);
+									});
 								});
-
-								it('should call "P3_handler2()" once', () =>
+								describe('where "P3_handler2()" calls event.preventDefault()', () =>
 								{
-									expect(P3_handler2).to.have.been.calledOnce;
-								});
+									const P3 = new EventDispatcher();
+									const P3_handler1 = () => {};
+									P3.addEventListener('T', P3_handler1, true);
+									const P3_handler2 = (event:IEvent) => event.preventDefault();
+									P3.addEventListener('T', P3_handler2, false);
+									const P2 = new EventDispatcher(P3);
 
-								it('should call "P3_handler1()" before "P3_handler2()"', () =>
-								{
-									expect(P3_handler1).to.have.been.calledBefore(P3_handler2);
+									const P1 = new EventDispatcher(P2);
+									const P1_handler = () => {};
+									P1.addEventListener('T', P1_handler, false);
+
+									const A = new EventDispatcher(P1);
+
+									const event = new BasicEvent('T', true, true);
+									const result = A.dispatchEvent(event);
+
+									it('should return true', () =>
+									{
+										expect(result).to.be.true;
+									});
 								});
 							})
 						});
@@ -703,6 +768,631 @@ describe('EventDispatcher "A"', () =>
 			{
 				expect(A.willTrigger('Q')).to.be.false;
 			});
+		});
+	});
+
+	describe('#removeEventListener()', () =>
+	{
+		describe('with arguments that match multiple event listeners', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = sinon.spy();
+			A.addEventListener('T', A_handler);
+			A.addEventListener('T', A_handler, false);
+			A.addEventListener('T', A_handler, false, 2);
+
+			A.removeEventListener('T', A_handler, false);
+			const event = new BasicEvent('T', true);
+			A.dispatchEvent(event);
+			it('should prevent the event handler from being called on dispatch', () =>
+			{
+				expect(A_handler).to.not.have.been.called;
+			});
+		});
+
+		describe('with arguments that match an event listener and useCapture truthy but not strictly true', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = sinon.spy();
+			A.addEventListener('T', A_handler, true);
+
+			A.removeEventListener('T', A_handler, <any> 5);
+			const event = new BasicEvent('T', true);
+			A.dispatchEvent(event);
+			it('should prevent the event handler from being called on dispatch', () =>
+			{
+				expect(A_handler).to.not.have.been.called;
+			});
+		});
+
+		describe('with arguments that match and event listener and useCapture falsy but not strictly false', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = sinon.spy();
+			A.addEventListener('T', A_handler, false);
+
+			A.removeEventListener('T', A_handler, null);
+			const event = new BasicEvent('T', true);
+			A.dispatchEvent(event);
+			it('should prevent the event handler from being called on dispatch', () =>
+			{
+				expect(A_handler).to.not.have.been.called;
+			});
+		});
+
+		describe('when there is a listener with matching type and handler but a different useCapture', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = sinon.spy();
+			A.addEventListener('T', A_handler);
+
+			A.removeEventListener('T', A_handler, true);
+			const event = new BasicEvent('T', true);
+			A.dispatchEvent(event);
+			it('should still call the handler on dispatch', () =>
+			{
+				expect(A_handler).to.have.been.called;
+			});
+		});
+
+		describe('when there is a listener with matching handler and useCapture but a different type', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler = sinon.spy();
+			A.addEventListener('T', A_handler);
+
+			A.removeEventListener('Q', A_handler, false);
+			const event = new BasicEvent('T', true);
+			A.dispatchEvent(event);
+			it('should still call the handler on dispatch', () =>
+			{
+				expect(A_handler).to.have.been.called;
+			});
+		});
+
+		describe('when there is a listener with matching type and useCapture but a different handler', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler1 = sinon.spy();
+			const A_handler2 = () => {};
+			A.addEventListener('T', A_handler1, true);
+
+			A.removeEventListener('T', A_handler2, true);
+			const event = new BasicEvent('T', true);
+			A.dispatchEvent(event);
+			it('should still call the handler on dispatch', () =>
+			{
+				expect(A_handler1).to.have.been.called;
+			});
+		});
+	});
+
+	describe('#removeAllEventListeners()', () =>
+	{
+		describe('when no type is passed', () =>
+		{
+			const P1 = new EventDispatcher();
+			const P1_handler = sinon.spy();
+			P1.addEventListener('T1', P1_handler, true);
+
+			const A = new EventDispatcher(P1);
+			const A_handler1 = sinon.spy();
+			const A_handler2 = sinon.spy();
+			const A_handler3 = sinon.spy();
+			A.addEventListener('T1', A_handler1, true);
+			A.addEventListener('T1', A_handler1, false);
+			A.addEventListener('T2', A_handler1, false);
+			A.addEventListener('T2', A_handler2, true);
+			A.addEventListener('T3', A_handler3, true);
+			A.addEventListener('T3', A_handler3, false);
+			A.addEventListener('T3', A_handler1);
+
+			A.removeAllEventListeners();
+			const eventT1 = new BasicEvent('T1', true);
+			const eventT2 = new BasicEvent('T2', true);
+			const eventT3 = new BasicEvent('T3', true);
+			A.dispatchEvent(eventT1);
+			A.dispatchEvent(eventT2);
+			A.dispatchEvent(eventT3);
+
+			it('should remove all event handlers on the same target', () =>
+			{
+				expect(A_handler1).not.to.have.been.called;
+				expect(A_handler2).not.to.have.been.called;
+				expect(A_handler3).not.to.have.been.called;
+			});
+
+			it('should not prevent event handlers on a parent target from being called', () =>
+			{
+				expect(P1_handler).to.have.been.called;
+			});
+		});
+		describe('when there are event handlers that match the given eventType and other handlers that don\'t', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler1 = sinon.spy();
+			const A_handler2 = sinon.spy();
+			const A_handler3 = sinon.spy();
+			const A_handlerQ = sinon.spy();
+			A.addEventListener('T', A_handler1, true);
+			A.addEventListener('T', A_handler2, false);
+			A.addEventListener('T', A_handler3);
+			A.addEventListener('Q', A_handlerQ);
+
+			A.removeAllEventListeners('T');
+			const eventT = new BasicEvent('T', true);
+			const eventQ = new BasicEvent('Q', true);
+			A.dispatchEvent(eventT);
+			A.dispatchEvent(eventQ);
+
+			it('should prevent the matching event handlers from being called', () =>
+			{
+				expect(A_handler1).not.to.have.been.called;
+				expect(A_handler2).not.to.have.been.called;
+				expect(A_handler3).not.to.have.been.called;
+			});
+
+			it('should not remove the event handlers for different eventTypes', () =>
+			{
+				expect(A_handlerQ).to.have.been.called;
+			});
+		});
+	});
+
+	describe('#dispose()', () =>
+	{
+		const A = new EventDispatcher();
+		const A_handler = sinon.spy();
+		A.addEventListener('T', A_handler);
+		A.dispose();
+		const event = new BasicEvent('T');
+
+		it('should not dispatch events after disposed', () =>
+		{
+			const listener = A.dispatchEvent(event);
+			expect(A_handler).to.not.have.been.called;
+			expect(event.target).to.be.null;
+		});
+	});
+});
+
+describe('getParents()', () =>
+{
+	describe('on a EventDispatcher without parents', () =>
+	{
+		const A = new EventDispatcher();
+		const parents = getParents(A);
+
+		it('should return an empty array', () =>
+		{
+			expect(parents).to.be.instanceOf(Array);
+			expect(parents).to.have.lengthOf(0);
+		});
+	});
+	describe('on an EventDispatcher with 3 parents', () =>
+	{
+		const P3 = new EventDispatcher();
+		const P2 = new EventDispatcher(P3);
+		const P1 = new EventDispatcher(P2);
+		const A = new EventDispatcher(P1);
+		const parents = getParents(A);
+
+		it('should return an array of length 3', () =>
+		{
+			expect(parents).to.be.instanceOf(Array);
+			expect(parents).to.have.lengthOf(3);
+		});
+		it('should return all the parent instances in root-last order', () =>
+		{
+			expect(parents[2]).to.equal(P3);
+			expect(parents[1]).to.equal(P2);
+			expect(parents[0]).to.equal(P1);
+		});
+	});
+});
+
+describe('getCallTree()', () =>
+{
+	describe('on a EventDispatcher without parents', () =>
+	{
+		describe('with bubbles==false', () =>
+		{
+			const A = new EventDispatcher();
+			const callTree = getCallTree(A, false);
+
+			it('should return an array with just the EventDispatcher instance', () =>
+			{
+				expect(callTree).to.be.instanceOf(Array);
+				expect(callTree).to.have.lengthOf(1);
+				expect(callTree[0]).to.equal(A);
+			});
+		});
+		describe('with bubbles==true', () =>
+		{
+			const A = new EventDispatcher();
+			const callTree = getCallTree(A, true);
+
+			it('should return an array with just the EventDispatcher instance', () =>
+			{
+				expect(callTree).to.be.instanceOf(Array);
+				expect(callTree).to.have.lengthOf(1);
+				expect(callTree[0]).to.equal(A);
+			});
+		});
+	});
+	describe('on an EventDispatcher with 3 parents', () =>
+	{
+		describe('with bubbles==false', () =>
+		{
+			const P3 = new EventDispatcher();
+			const P2 = new EventDispatcher(P3);
+			const P1 = new EventDispatcher(P2);
+			const A = new EventDispatcher(P1);
+			const callTree = getCallTree(A, false);
+
+			it('should return an array of length 4', () =>
+			{
+				expect(callTree).to.be.instanceOf(Array);
+				expect(callTree).to.have.lengthOf(4);
+			});
+			it('should return an array that starts with the parent instances in root-first order', () =>
+			{
+				expect(callTree[0]).to.equal(P3);
+				expect(callTree[1]).to.equal(P2);
+				expect(callTree[2]).to.equal(P1);
+			});
+			it('should return an array that ends with the EventDispatcher target instance', () =>
+			{
+				expect(callTree[callTree.length-1]).to.equal(A);
+			});
+		});
+		describe('with bubbles==true', () =>
+		{
+			const P3 = new EventDispatcher();
+			const P2 = new EventDispatcher(P3);
+			const P1 = new EventDispatcher(P2);
+			const A = new EventDispatcher(P1);
+			const callTree = getCallTree(A, true);
+
+			it('should return an array of length 7', () =>
+			{
+				expect(callTree).to.be.instanceOf(Array);
+				expect(callTree).to.have.lengthOf(7);
+			});
+			it('should return an array that starts with the parent instances in root-first order', () =>
+			{
+				expect(callTree[0]).to.equal(P3);
+				expect(callTree[1]).to.equal(P2);
+				expect(callTree[2]).to.equal(P1);
+			});
+			it('should return an array that has the target instance on index 3', () =>
+			{
+				expect(callTree[3]).to.equal(A);
+			});
+			it('should return an array that ends with the parent instances in root-last order', () =>
+			{
+				expect(callTree[callTree.length - 1]).to.equal(P3);
+				expect(callTree[callTree.length - 2]).to.equal(P2);
+				expect(callTree[callTree.length - 3]).to.equal(P1);
+			});
+		});
+	});
+});
+
+describe('removeListenersFrom()', () =>
+{
+	describe('with no arguments other than listeners', () =>
+	{
+		const A = new EventDispatcher();
+		const A_handler1 = sinon.spy();
+		const A_handler2 = sinon.spy();
+		const A_handler3 = sinon.spy();
+
+		const PListener = new EventListenerData(A, 'P', A_handler1, false, 5);
+		const RListener = new EventListenerData(A, 'R', A_handler2, false, 0);
+		const QListener = new EventListenerData(A, 'Q', A_handler1, false, 3);
+		const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+			'P' : [
+				PListener,
+				new EventListenerData(A, 'P', A_handler1, false, 3),
+				new EventListenerData(A, 'P', A_handler2, true, 0),
+				new EventListenerData(A, 'P', A_handler2, false, 0),
+				new EventListenerData(A, 'P', A_handler3, false, 0)
+			],
+			'Q' : [
+				new EventListenerData(A, 'Q', A_handler1, true, 8),
+				QListener,
+				new EventListenerData(A, 'Q', A_handler2, true, 0)
+			],
+			'R' : [
+				RListener,
+				new EventListenerData(A, 'R', A_handler3, false, 0)
+			]
+		};
+		removeListenersFrom(eventListeners);
+		it('should remove all event listeners', () =>
+		{
+			expect(eventListeners['P']).to.have.lengthOf(0);
+			expect(eventListeners['Q']).to.have.lengthOf(0);
+			expect(eventListeners['R']).to.have.lengthOf(0);
+		});
+		it('should set isRemoved==true on all event listener data', () =>
+		{
+			expect(PListener.isRemoved).to.be.true;
+			expect(QListener.isRemoved).to.be.true;
+			expect(RListener.isRemoved).to.be.true;
+		})
+	});
+	describe('with a given eventType', () =>
+	{
+		describe('and no other arguments', () =>
+		{
+			const A = new EventDispatcher();
+			const A_handler1 = sinon.spy();
+			const A_handler2 = sinon.spy();
+			const A_handler3 = sinon.spy();
+
+			const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+				'P' : [
+					new EventListenerData(A, 'P', A_handler1, false, 5),
+					new EventListenerData(A, 'P', A_handler1, false, 3),
+					new EventListenerData(A, 'P', A_handler2, true, 0),
+					new EventListenerData(A, 'P', A_handler2, false, 0),
+					new EventListenerData(A, 'P', A_handler3, false, 0)
+				],
+				'Q' : [
+					new EventListenerData(A, 'Q', A_handler1, true, 8),
+					new EventListenerData(A, 'Q', A_handler1, false, 3),
+					new EventListenerData(A, 'Q', A_handler2, true, 0)
+				],
+				'R' : [
+					new EventListenerData(A, 'R', A_handler2, false, 0),
+					new EventListenerData(A, 'R', A_handler3, false, 0)
+				]
+			};
+			removeListenersFrom(eventListeners, 'Q');
+			it('should remove all event listeners of that eventType', () =>
+			{
+				expect(eventListeners['Q']).to.have.lengthOf(0);
+			});
+			it('should not remove event listeners of other eventType', () =>
+			{
+				expect(eventListeners['R']).to.have.lengthOf(2);
+				expect(eventListeners['P']).to.have.lengthOf(5);
+			});
+		});
+
+		describe('and a given handler', () =>
+		{
+			describe('but no useCapture argument provided', () =>
+			{
+				const A = new EventDispatcher();
+				const A_handler1 = sinon.spy();
+				const A_handler2 = sinon.spy();
+				const A_handler3 = sinon.spy();
+
+				const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+					'P' : [
+						new EventListenerData(A, 'P', A_handler1, false, 5),
+						new EventListenerData(A, 'P', A_handler1, false, 3),
+						new EventListenerData(A, 'P', A_handler1, true, 0),
+						new EventListenerData(A, 'P', A_handler2, false, 0),
+						new EventListenerData(A, 'P', A_handler3, false, 0)
+					],
+					'R' : [
+						new EventListenerData(A, 'R', A_handler1, false, 0),
+						new EventListenerData(A, 'R', A_handler3, false, 0)
+					]
+				};
+				removeListenersFrom(eventListeners, 'P', A_handler1);
+				it('should only remove event listeners that match the eventType and handler', () =>
+				{
+					expect(eventListeners['P']).to.have.lengthOf(2);
+				});
+			});
+			describe('and useCapture set to false', () =>
+			{
+				const A = new EventDispatcher();
+				const A_handler1 = sinon.spy();
+				const A_handler2 = sinon.spy();
+				const A_handler3 = sinon.spy();
+
+				const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+					'P' : [
+						new EventListenerData(A, 'P', A_handler1, false, 5),
+						new EventListenerData(A, 'P', A_handler1, false, 3),
+						new EventListenerData(A, 'P', A_handler1, true, 0),
+						new EventListenerData(A, 'P', A_handler2, false, 0),
+						new EventListenerData(A, 'P', A_handler3, false, 0)
+					],
+					'R' : [
+						new EventListenerData(A, 'R', A_handler1, false, 0),
+						new EventListenerData(A, 'R', A_handler3, false, 0)
+					]
+				};
+				removeListenersFrom(eventListeners, 'P', A_handler1, false);
+				it('should only remove event listeners that match the eventType and handler and useCapture==false', () =>
+				{
+					expect(eventListeners['P']).to.have.lengthOf(3);
+				});
+			});
+		});
+	});
+	describe('with useCapture==false but handler==null and eventType==null', () =>
+	{
+		const A = new EventDispatcher();
+		const A_handler1 = sinon.spy();
+		const A_handler2 = sinon.spy();
+		const A_handler3 = sinon.spy();
+
+		const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+			'P' : [
+				new EventListenerData(A, 'P', A_handler1, false, 5),
+				new EventListenerData(A, 'P', A_handler1, false, 3),
+				new EventListenerData(A, 'P', A_handler2, true, 0),
+				new EventListenerData(A, 'P', A_handler2, false, 0),
+				new EventListenerData(A, 'P', A_handler3, false, 0)
+			],
+			'Q' : [
+				new EventListenerData(A, 'Q', A_handler1, true, 8),
+				new EventListenerData(A, 'Q', A_handler1, false, 3),
+				new EventListenerData(A, 'Q', A_handler2, true, 0)
+			],
+			'R' : [
+				new EventListenerData(A, 'R', A_handler2, false, 0),
+				new EventListenerData(A, 'R', A_handler3, false, 0)
+			]
+		};
+		removeListenersFrom(eventListeners, null, null, false);
+
+		it('should remove all event listeners that have useCapture==false', () =>
+		{
+			expect(eventListeners['P']).to.have.lengthOf(1);
+			expect(eventListeners['Q']).to.have.lengthOf(2);
+			expect(eventListeners['R']).to.have.lengthOf(0);
+		});
+	});
+});
+
+describe('callListeners()', () =>
+{
+	describe('with listeners that have the same eventType as the provided event', () =>
+	{
+
+		describe('none of which call event.stopPropagation() or event.stopImmediatePropagation()', () =>
+		{
+			const A = new EventDispatcher();
+			const P_handler1 = sinon.spy();
+			const P_handler2 = sinon.spy();
+			const P_handler3 = sinon.spy();
+			const Q_handler = sinon.spy();
+			const R_handler = sinon.spy();
+
+			const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+				'P' : [
+					new EventListenerData(A, 'P', P_handler1, false, 5),
+					new EventListenerData(A, 'P', P_handler1, false, 3),
+					new EventListenerData(A, 'P', P_handler2, true, 0),
+					new EventListenerData(A, 'P', P_handler2, false, 0),
+					new EventListenerData(A, 'P', P_handler3, false, 0)
+				],
+				'Q' : [
+					new EventListenerData(A, 'Q', Q_handler, true, 8),
+					new EventListenerData(A, 'Q', Q_handler, false, 3),
+					new EventListenerData(A, 'Q', Q_handler, true, 0)
+				],
+				'R' : [
+					new EventListenerData(A, 'R', R_handler, false, 0),
+					new EventListenerData(A, 'R', R_handler, false, 0)
+				]
+			};
+
+			const event = new BasicEvent('P');
+			const result = callListeners(eventListeners, event);
+			it('should call all the handlers of matching listeners', () =>
+			{
+				expect(P_handler1).to.be.calledTwice;
+				expect(P_handler2).to.be.calledTwice;
+				expect(P_handler3).to.be.called;
+			});
+			it('should not call handlers of listeners for other eventTypes', () =>
+			{
+				expect(Q_handler).not.to.be.called;
+				expect(R_handler).not.to.be.called;
+			});
+			it('should return false', () =>
+			{
+				expect(result).to.be.false;
+			});
+		});
+
+		describe('one of which calls event.stopPropagation()', () =>
+		{
+			const A = new EventDispatcher();
+			const P_handler1 = sinon.spy();
+			const P_handler2 = sinon.spy((event:IEvent) => event.stopPropagation());
+			const P_handler3 = sinon.spy();
+
+			const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+				'P' : [
+					new EventListenerData(A, 'P', P_handler1, false, 5),
+					new EventListenerData(A, 'P', P_handler1, false, 3),
+					new EventListenerData(A, 'P', P_handler2, true, 0),
+					new EventListenerData(A, 'P', P_handler2, false, 0),
+					new EventListenerData(A, 'P', P_handler3, false, 0)
+				]
+			};
+
+			const event = new BasicEvent('P');
+			const result = callListeners(eventListeners, event);
+			it('should return true', () =>
+			{
+				expect(result).to.be.true;
+			});
+			it('should call all the handlers for listeners of that eventType', () =>
+			{
+				expect(P_handler1).to.be.calledTwice;
+				expect(P_handler2).to.be.calledTwice;
+				expect(P_handler3).to.be.called;
+			});
+		});
+
+		describe('one of which calls event.stopImmediatePropagation()', () =>
+		{
+			const A = new EventDispatcher();
+			const P_handler1 = sinon.spy();
+			const P_handler2 = sinon.spy((event:IEvent) => event.stopImmediatePropagation());
+			const P_handler3 = sinon.spy();
+
+			const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+				'P' : [
+					new EventListenerData(A, 'P', P_handler1, false, 5),
+					new EventListenerData(A, 'P', P_handler1, false, 3),
+					new EventListenerData(A, 'P', P_handler2, true, 0),
+					new EventListenerData(A, 'P', P_handler2, false, 0),
+					new EventListenerData(A, 'P', P_handler3, false, 0)
+				]
+			};
+
+			const event = new BasicEvent('P');
+			const result = callListeners(eventListeners, event);
+			it('should return true', () =>
+			{
+				expect(result).to.be.true;
+			});
+			it('should call all the handlers of listeners before that listener in the array of that eventType ', () =>
+			{
+				expect(P_handler1).to.be.calledTwice;
+			});
+			it('should not call the handlers of listeners after that listener in the array of that eventType ', () =>
+			{
+				expect(P_handler2).to.be.calledOnce;
+				expect(P_handler3).not.to.be.called;
+			});
+		});
+	});
+
+	describe('with no listeners that match the provided event', () =>
+	{
+		const A = new EventDispatcher();
+		const P_handler = () => {};
+
+		const eventListeners = <{[name:string] : Array<EventListenerData>}> {
+			'P' : [
+				new EventListenerData(A, 'P', P_handler, false, 5),
+				new EventListenerData(A, 'P', P_handler, false, 3),
+				new EventListenerData(A, 'P', P_handler, true, 0),
+				new EventListenerData(A, 'P', P_handler, false, 0),
+				new EventListenerData(A, 'P', P_handler, false, 0)
+			]
+		};
+
+		const event = new BasicEvent('Q');
+		const result = callListeners(eventListeners, event);
+
+		it('should return false', () =>
+		{
+			expect(result).to.be.false;
 		});
 	});
 });
