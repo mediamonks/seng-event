@@ -140,7 +140,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	}
 }
 
-export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, listener?:EventHandler, useCapture?:boolean) =>
+export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, handler?:EventHandler, useCapture?:boolean) =>
 {
 	for(let i in listeners)
 	{
@@ -152,7 +152,7 @@ export const removeListenersFrom = (listeners:EventListenerMap, eventType?:strin
 			for(let j = listenersForType.length; j; j--)
 			{
 				let listenerData:EventListenerData = listenersForType[j - 1];
-				if((!listener || listener === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture))
+				if((!handler || handler === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture))
 				{
 					listenersForType.splice(j - 1, 1);
 					// mark the listener as removed, because it might still be active in the current event loop
