@@ -119,12 +119,12 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 
 	public removeEventListener(eventType:string, listener:Listener, useCapture:boolean = false):void
 	{
-		removeListenersFrom(this._listeners, false, eventType, listener, useCapture);
+		removeListenersFrom(this._listeners, eventType, listener, useCapture);
 	}
 
 	public removeAllEventListeners(eventType?:string):void
 	{
-		removeListenersFrom(this._listeners, true, eventType);
+		removeListenersFrom(this._listeners, eventType);
 	}
 
 	public dispose():void
@@ -140,52 +140,31 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	}
 }
 
-export const removeListenersFrom = (listeners:EventListenerMap, removeAll:boolean,
-                                    eventType?:string, listener?:Listener, useCapture?:boolean) =>
+export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, listener?:Listener, useCapture?:boolean) =>
 {
-	// build an array with arrays of events for each eventType we want to remove from
-	const removeFrom:Array<Array<EventListenerData>> = [];
-	if(eventType)
+	for(let i in listeners)
 	{
-		// eventType argument is set, just remove from this type
-		if((eventType in listeners) && (listeners[eventType] instanceof Array))
+		const matchesEventType = !eventType || i === eventType;
+		if(matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array)
 		{
-			removeFrom.push(listeners[eventType]);
-		}
-	}
-	else
-	{
-		// eventType not set, add all event types with listeners
-		for(let i in listeners)
-		{
-			if(listeners.hasOwnProperty(i) && listeners[i] instanceof Array)
-			{
-				removeFrom.push(listeners[i]);
-			}
-		}
-	}
-
-	if(removeFrom.length)
-	{
-		for(let i = 0; i < removeFrom.length; i++)
-		{
-			const listenersForType:Array<EventListenerData> = removeFrom[i];
-
+			const listenersForType = listeners[i];
+			// traverse the array in reverse. this will make sure removal does not affect the loop
 			for(let j = listenersForType.length; j; j--)
 			{
 				let listenerData:EventListenerData = listenersForType[j - 1];
-				if(removeAll || (listenerData.listener === listener && listenerData.useCapture === useCapture))
+				if((!listener || listener === listenerData.listener) && (typeof useCapture === 'undefined' || useCapture == listenerData.useCapture))
 				{
 					listenersForType.splice(j - 1, 1);
 					// mark the listener as removed, because it might still be active in the current event loop
 					listenerData.isRemoved = true;
 				}
 			}
+			// If an eventType was provided, this will be the only property where we need to remove listeners
+			if(eventType)
+			{
+				break;
+			}
 		}
-	}
-	else
-	{
-		// todo: _log.warn('trying to remove event that has no listeners "' + type + '"');
 	}
 };
 
