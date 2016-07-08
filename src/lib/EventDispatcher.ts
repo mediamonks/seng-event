@@ -61,9 +61,9 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 				}
 			}
 			event.currentTarget = null;
-			return event.defaultPrevented;
+			return !event.defaultPrevented;
 		}
-		return false;
+		return true;
 	}
 
 	public addEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false, priority:number = 0):EventListenerData
@@ -144,25 +144,28 @@ export const removeListenersFrom = (listeners:EventListenerMap, eventType?:strin
 {
 	for(let i in listeners)
 	{
-		const matchesEventType = !eventType || i === eventType;
-		if(matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array)
+		if(listeners.hasOwnProperty(i))
 		{
-			const listenersForType = listeners[i];
-			// traverse the array in reverse. this will make sure removal does not affect the loop
-			for(let j = listenersForType.length; j; j--)
+			const matchesEventType = !eventType || i === eventType;
+			if(matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array)
 			{
-				let listenerData:EventListenerData = listenersForType[j - 1];
-				if((!handler || handler === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture))
+				const listenersForType = listeners[i];
+				// traverse the array in reverse. this will make sure removal does not affect the loop
+				for(let j = listenersForType.length; j; j--)
 				{
-					listenersForType.splice(j - 1, 1);
-					// mark the listener as removed, because it might still be active in the current event loop
-					listenerData.isRemoved = true;
+					let listenerData:EventListenerData = listenersForType[j - 1];
+					if((!handler || handler === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture))
+					{
+						listenersForType.splice(j - 1, 1);
+						// mark the listener as removed, because it might still be active in the current event loop
+						listenerData.isRemoved = true;
+					}
 				}
-			}
-			// If an eventType was provided, this will be the only property where we need to remove listeners
-			if(eventType)
-			{
-				break;
+				// If an eventType was provided, this will be the only property where we need to remove listeners
+				if(eventType)
+				{
+					break;
+				}
 			}
 		}
 	}

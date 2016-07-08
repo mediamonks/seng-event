@@ -353,9 +353,9 @@ describe('EventDispatcher "A"', () =>
 							{
 								expect(P1_handler2).to.have.been.calledBefore(P1_handler);
 							});
-							it('should return false', () =>
+							it('should return true', () =>
 							{
-								expect(result).to.be.false;
+								expect(result).to.be.true;
 							});
 						});
 						describe('where "P1_handler2()" calls event.preventDefault()', () =>
@@ -378,9 +378,9 @@ describe('EventDispatcher "A"', () =>
 							{
 								expect(P1_handler2).to.have.been.calledBefore(P1_handler);
 							});
-							it('should return true', () =>
+							it('should return false', () =>
 							{
-								expect(result).to.be.true;
+								expect(result).to.be.false;
 							});
 						});
 					});
@@ -472,9 +472,9 @@ describe('EventDispatcher "A"', () =>
 									const event = new BasicEvent('T', true, true);
 									const result = A.dispatchEvent(event);
 
-									it('should return false', () =>
+									it('should return true', () =>
 									{
-										expect(result).to.be.false;
+										expect(result).to.be.true;
 									});
 
 									it('should call "P3_handler1()" once', () =>
@@ -510,9 +510,9 @@ describe('EventDispatcher "A"', () =>
 									const event = new BasicEvent('T', true, true);
 									const result = A.dispatchEvent(event);
 
-									it('should return true', () =>
+									it('should return false', () =>
 									{
-										expect(result).to.be.true;
+										expect(result).to.be.false;
 									});
 								});
 							})
