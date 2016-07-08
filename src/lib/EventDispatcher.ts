@@ -10,8 +10,22 @@ import CallListenerResult from "./CallListenerResult";
  */
 export default class EventDispatcher extends Disposable implements IEventDispatcher
 {
+	/**
+	 * The parent EventDispatcher instance. If this instance has no parent, this value will be
+	 * set to _null_. The parent is used in the bubbling and capturing phases of events.
+	 * @see [[dispatchEvent]] for more information on the bubbling and capturing chain
+	 */
 	public parent:EventDispatcher;
+	/**
+	 * An object containing all event listeners by [[IEvent.type|event type]]. Each value
+	 * on this object is an Array of [[EventListenerData]] objects for each event listener
+	 * added with that type.
+	 */
 	private _listeners:EventListenerMap = {};
+	/**
+	 * The value that will be set as [[IEvent.target|target]] on events that are dispatched
+	 * by this EventDispatcher instance.
+	 */
 	private _target:IEventDispatcher;
 
 	/**
@@ -48,6 +62,11 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * of this instance first and the top-most parent last. On every ancestor, we will call
 	 * all event handlers that are added with the _useCapture_ argument set to _false_ and the
 	 * _eventType_ set to the same [[IEvent.type|type]] as the given event.
+	 *
+	 * If any of the event handlers call [[IEvent.stopPropagation|stopPropagation()]], we will
+	 * skip all event handlers that occur on a target later in the event chain. If an event handler
+	 * calls [[IEvent.stopImmediatePropagation|stopImmediatePropagation()]], we will also skip
+	 * any event handlers on the same target in the event chain.
 	 * @param event The event to dispatch
 	 * @returns If one of the handlers that have been called during this dispatch
 	 * called [[IEvent.preventDefault|event.preventDefault()]], this method will return _false_.
@@ -184,6 +203,12 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		}
 	}
 
+	/**
+	 * Checks if an event listener with a [[EventListenerData.type|type]] of the given _eventType_ exists
+	 * on this EventDispatcher or any ancestor EventDispatcher instance.
+	 * @param eventType The event type to check for
+	 * @returns _true_ if a matching listener is found
+	 */
 	public willTrigger(eventType:string):boolean
 	{
 		return this.hasEventListener(eventType) || (!!this.parent && this.parent.willTrigger(eventType));
@@ -192,6 +217,11 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	/**
 	 * Removes all event listeners that match the given parameters from this EventDispatcher
 	 * instance.
+	 *
+	 * _Please note: if you remove an event listener during the dispatch of an event it will
+	 * not be called as long as it is removed while on a target earlier in the event chain. If
+	 * it is removed while processing the same target, the listener will still be executed during
+	 * this event chain and will be removed afterwards_
 	 * @param eventType Only event listeners of that have this _eventType_ are removed
 	 * @param handler Only event listeners that have this handler function will be removed
 	 * @param useCapture Only event listeners that have been added with the same _useCapture_
@@ -203,11 +233,27 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		removeListenersFrom(this._listeners, eventType, handler, useCapture);
 	}
 
+	/**
+	 * Removes all event listeners that have a [[IEvent.type|type]] of the given _eventType_
+	 * from this EventDispatcher instance, regardless of their [[EventListenerData.handler|handler]] or
+	 * [[EventListenerData.useCapture|useCapture]] property.
+	 *
+	 * _Please note: if you remove an event listener during the dispatch of an event it will
+	 * not be called as long as it is removed while on a target earlier in the event chain. If
+	 * it is removed while processing the same target, the listener will still be executed during
+	 * this event chain and will be removed afterwards_
+	 * @param eventType The [[IEvent.type|type]] of event to remove. If not provided, all event listeners
+	 * will be removed regardless of their type.
+	 */
 	public removeAllEventListeners(eventType?:string):void
 	{
 		removeListenersFrom(this._listeners, eventType);
 	}
 
+	/**
+	 * Cleans up this EventListener instance. No event handlers on this EventDispatcher will be called
+	 * and future calls to dispatchEvent() will be ignored.
+	 */
 	public dispose():void
 	{
 		this.removeAllEventListeners();
@@ -215,12 +261,30 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		super.dispose();
 	}
 
+	/**
+	 * Method that is used to sort arrays of event listeners based on their [[EventListenerData.priority|priority]]
+	 * property. Higher priority will be sorted before lower priority values.
+	 * @param e1 The first event listener to compare
+	 * @param e2 The other event listener to compare to
+	 * @returns A number that indicates the sorting according to the JS sort() method.
+	 */
 	private _listenerSorter(e1:EventListenerData, e2:EventListenerData):number
 	{
 		return e2.priority - e1.priority;
 	}
 }
 
+/**
+ * Helper function for [[EventDispatcher.removeEventListener]] and [[EventDispatcher.removeAllEventListeners]].
+ * Will remove all event listeners that match the given parameters from the given event listener map object.
+ * This function differs from [[EventDispatcher.removeEventListener|removeEventListener()]] in that it does not
+ * use default values when you emit one of the parameters. Instead, it will remove event listeners of all
+ * possible values for that parameter.
+ * @param listeners A map of listeners to remove from. See [[EventDispatcher._listeners]]
+ * @param eventType If set, will only remove listeners added with this _eventType_
+ * @param handler If set, will only remove listeners with this _handler_
+ * @param useCapture If set, will only remove listeners with the same value for _useCapture_
+ */
 export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, handler?:EventHandler, useCapture?:boolean) =>
 {
 	for(let i in listeners)
@@ -252,6 +316,33 @@ export const removeListenersFrom = (listeners:EventListenerMap, eventType?:strin
 	}
 };
 
+/**
+ * Gets an array of all parent EventDispatcher instances of the given EventDispatcher. The direct
+ * parent (if it has one) will be first in the Array, and the most top-level parent will be last.
+ * @param target The instance to get parents for
+ * @returns {Array<EventDispatcher>} The array of parents
+ */
+export const getParents = (target:EventDispatcher):Array<EventDispatcher> =>
+{
+	let currentTarget:EventDispatcher = target;
+	const parents:Array<EventDispatcher> = [];
+	while(currentTarget.parent)
+	{
+		currentTarget = currentTarget.parent;
+		parents.push(currentTarget);
+	}
+	return parents;
+};
+
+/**
+ * Gets an array that represents the entire call tree when an event is dispatched on the given target.
+ * See [[EventDispatcher.dispatchEvent]] for more information on the event phases
+ * @param target The target to get the call tree for
+ * @param bubbles If true, will also include the target instances of the _bubbling_ phase. If false, will
+ * only include the _capture_ and _target_ phases.
+ * @returns An array of EventDispatcher instances in the order that an event will travel during dispatch
+ * on the given target.
+ */
 export const getCallTree = (target:EventDispatcher, bubbles:boolean):Array<EventDispatcher> =>
 {
 	const callTree:Array<EventDispatcher> = [];
@@ -269,18 +360,17 @@ export const getCallTree = (target:EventDispatcher, bubbles:boolean):Array<Event
 	return callTree;
 };
 
-export const getParents = (target:EventDispatcher):Array<EventDispatcher> =>
-{
-	let currentTarget:EventDispatcher = target;
-	const parents:Array<EventDispatcher> = [];
-	while(currentTarget.parent)
-	{
-		currentTarget = currentTarget.parent;
-		parents.push(currentTarget);
-	}
-	return parents;
-};
-
+/**
+ * Calls all listeners on the given event listener map that should be called when the given event is
+ * dispatched. If no matching listeners are present, this function has no effect
+ * @param listeners The object that contains listeners to call. Has the same format as the
+ * [[EventDispatcher._listeners|_listeners]] property on [[EventDispatcher]]
+ * @param event The event that may trigger listeners in the map
+ * @returns True if any of the listeners call [[IEvent.stopPropagation|stopPropagation()]] or
+ * [[IEvent.stopImmediatePropagation|stopImmediatePropagation]]. False if no listeners are called or none
+ * of them call [[IEvent.stopPropagation|stopPropagation()]] or
+ * [[IEvent.stopImmediatePropagation|stopImmediatePropagation]]
+ */
 export const callListeners = (listeners:EventListenerMap, event:IEvent):boolean =>
 {
 	const listenersOfType:Array<EventListenerData> = listeners[event.type] ? [...listeners[event.type]] : [];
@@ -307,5 +397,13 @@ export const callListeners = (listeners:EventListenerMap, event:IEvent):boolean 
 	return propagationIsStopped;
 };
 
+/**
+ * Type alias for the [[EventDispatcher._listeners]] property that contains all listeners for
+ * an EventDispatcher instance
+ */
 type EventListenerMap = {[type:string]:Array<EventListenerData>};
+
+/**
+ * Type alias for event handler functions that can be passed to [[EventDispatcher.addEventListener]]
+ */
 export type EventHandler = (event?:IEvent) => any;
