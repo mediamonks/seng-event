@@ -49,7 +49,7 @@ abstract class AbstractEvent implements IEvent
 		}
 		else
 		{
-			// todo: log not cancelable
+			throw new Error('Called preventDefault on a non-cancelable event');
 		}
 	}
 
