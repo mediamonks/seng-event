@@ -6,7 +6,12 @@ import EventPhase from "./EventPhase";
 import CallListenerResult from "./CallListenerResult";
 
 /**
- * Base class that adds the ability to dispatch and listen for events.
+ * Base class that adds the ability to dispatch events and attach handlers that should be
+ * called when such events are triggered.
+ *
+ * This EventDispatcher also supports event capturing and bubbling phases, heavily inspired
+ * by existing event dispatching systems like the functionality described in the
+ * [DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
  */
 export default class EventDispatcher extends Disposable implements IEventDispatcher
 {
