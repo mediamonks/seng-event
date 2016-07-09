@@ -64,9 +64,9 @@ generateEventTypes({FooEvent});
 
 // listener for events
 const foo = new Foo();
-const exampleHandler = () => 
+const exampleHandler = (event:FooEvent) => 
 {
-  console.log('Handler called!');
+  console.log('Handler called!', event.type, event.target);
 }
 foo.addEventListener(FooEvent.COMPLETE, exampleHandler);
 
