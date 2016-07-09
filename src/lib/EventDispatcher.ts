@@ -219,9 +219,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * instance.
 	 *
 	 * _Please note: if you remove an event listener during the dispatch of an event it will
-	 * not be called as long as it is removed while on a target earlier in the event chain. If
-	 * it is removed while processing the same target, the listener will still be executed during
-	 * this event chain and will be removed afterwards_
+	 * not be called anymore, even if it was supposed to be called in the same event chain_
 	 * @param eventType Only event listeners of that have this _eventType_ are removed
 	 * @param handler Only event listeners that have this handler function will be removed
 	 * @param useCapture Only event listeners that have been added with the same _useCapture_
@@ -239,9 +237,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * [[EventListenerData.useCapture|useCapture]] property.
 	 *
 	 * _Please note: if you remove an event listener during the dispatch of an event it will
-	 * not be called as long as it is removed while on a target earlier in the event chain. If
-	 * it is removed while processing the same target, the listener will still be executed during
-	 * this event chain and will be removed afterwards_
+	 * not be called anymore, even if it was supposed to be called in the same event chain_
 	 * @param eventType The [[IEvent.type|type]] of event to remove. If not provided, all event listeners
 	 * will be removed regardless of their type.
 	 */
