@@ -1,4 +1,4 @@
-import { generateEventTypes, EVENT_TYPE_PLACEHOLDER } from "../util/EventTypeUtil";
+import { generateEventTypes, EVENT_TYPE_PLACEHOLDER } from "../util/eventTypeUtils";
 import AbstractEvent from "../AbstractEvent";
 class CommonEvent extends AbstractEvent {
     clone() {

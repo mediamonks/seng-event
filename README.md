@@ -23,14 +23,25 @@ dispatching systems like the functionality described in the
 npm i -S seng-event
 ```
 
-Or grab one of the following files from the `/dist/` folder for manual use:
+### manual
 
-- **umd** (bundled with webpack)
-- **amd** (bundled with webpack)
-- **commonjs2** (bundled with webpack, but why don't you use npm?)
-- **browser** (bundled with webpack, available as `window.SengEvent`)
-- **system**
-- **es6**
+You can clone this repository and build the distribution files for use in
+the browser yourself, and grab one of the following files from the
+`/dist/` folder:
+
+```sh
+git clone git@github.com:mediamonks/seng-event.git
+cd seng-event
+npm i
+npm run build-dist
+```
+
+- **/dist/umd** (bundled with webpack)
+- **/dist/amd** (bundled with webpack)
+- **/dist/commonjs2** (bundled with webpack, but why don't you use npm?)
+- **/dist/browser** (bundled with webpack, available as `window.SengEvent`)
+- **/dist/system**
+- **/dist/es6**
 
 ## Basic usage
 
