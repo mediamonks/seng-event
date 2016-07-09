@@ -77,7 +77,7 @@ foo.dispatchEvent(new FooEvent(FooEvent.COMPLETE));
 
 ## Documentation
 
-View the [generated documentation](https://rawgit.com/MediaMonks/seng-event/master/doc/typedoc/index.html).
+View the [generated documentation](https://rawgit.com/mediamonks/seng-event/master/doc/typedoc/index.html).
 
 
 ## Building
@@ -87,7 +87,7 @@ and [Node.js](http://nodejs.org/) installed.
 
 Clone a copy of the repo:
 ```sh
-git clone https://github.com/MediaMonks/seng-event.git
+git clone https://github.com/mediamonks/seng-event.git
 ```
 
 Change to the seng-event directory:
