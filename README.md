@@ -5,8 +5,16 @@
 [![npm](https://img.shields.io/npm/dm/seng-event.svg?maxAge=2592000)](https://www.npmjs.com/package/seng-event)
 
 # seng-event
+Provides Classes and utilities for dispatching and listening to events.
 
-Add a description here...
+Provides an _EventDispatcher_ base class that adds the ability to dispatch events and attach handlers that 
+should be called when such events are triggered. New event classes can be created by extending the _AbstractEvent_
+class provided in this module. This module also provides basic event classes _BasicEvent_ and _CommonEvent_ that
+are ready to be used with _EventDispatcher_.
+
+_seng-event_ also supports event capturing and bubbling phases, heavily inspired by existing event 
+dispatching systems like the functionality described in the 
+[DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
 
 
 ## Installation
@@ -24,13 +32,35 @@ Or grab one of the following files from the `/dist/` folder for manual use:
 - **system**
 - **es6**
 
-## Usage
+## Basic usage
 
 ```ts
-import SengEvent from 'seng-event';
-// import SengEvent from 'seng-event/lib/classname';
+import EventDispatcher, {AbstractEvent} from 'seng-event';
+import {generateEventTypes, EVENT_TYPE_PLACEHOLDER} from 'seng-event/lib/util/eventTypeUtils';
 
-// do something with SengEvent
+// extend EventDispatcher
+class Foo extends EventDispatcher {
+  ...
+}
+
+// Create your own event class
+class FooEvent extends AbstractEvent {
+   ...
+   public static COMPLETE:string = EVENT_TYPE_PLACEHOLDER;
+   ...
+}
+generateEventTypes({FooEvent});
+
+// listener for events
+const foo = new Foo();
+const exampleHandler = () => 
+{
+  console.log('Handler called!');
+}
+foo.addEventListener(FooEvent.COMPLETE, exampleHandler);
+
+// dispatch an event (will execute exampleHandler and log 'Handler called!')
+foo.dispatchEvent(new FooEvent(FooEvent.COMPLETE));  
 ```
 
 
