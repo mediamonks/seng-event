@@ -33,7 +33,7 @@ module.exports = function()
 			// in the case of a "plain global browser library", this
 			// will be used as the reference to our module that is
 			// hung off of the window object.
-			library: "SengBoilerplate"
+			library: "SengEvent"
 		},
 		module: {
 			loaders: [
