@@ -16,15 +16,44 @@ after_script:
   - codeclimate-test-reporter < coverage/lcov.info
   - node_modules/.bin/coveralls < coverage/lcov.info
 
+before_deploy:
+  - npm run build-dist && node ./script/package-dist.js
+
 deploy:
-  provider: npm
-  email: 'devmonk@mediamonks.com'
-  api_key:
-    secure: 'F+DBXK0ApScPCz0RdqQ+di88aP97K83j7wpn8iaeip6CdjoodMeeUwVXKMs08It0SaUEHQTbVhOkPju8BKBUju9sCvIGe4n5EsBa0Uu0f2/Vl1m6nfRU1+lQHtfgfnJzdt2J8LZnOFBpf0V5s0h6xXGEoXKO2NH6j0QLEmLsck405Ju23SERIqyad2iXSwl7ZS2ScmbmQUOXXWGVQZ9iaY8RcKkagpCw1LS8hTzN5fKFCNLLy7ABkWBTSDVlNxl0xolTSAxiYt0cWN3JJnNV38D2loVx9wT4ldSk81fucGK/+9n5s9ZQTwM1FFe43xpfm2Jzb0VHF6sbRD2KWalswgUoYpy4qU9n6kTPqK0GaxLeQvYKfgl2w24wseaD2xI/tCUlSL/vtAVtD7mm5RM/tcvv6kl9/LIbZlcyr+5zinidwIr4ZxW7PqbqcDlPzh8eAcAmYSCrFcJ9ZT7ZAbniS1dghGRTIR+LJWU5UuaxYLcIMK3mdD72EsvFU39VNQRCRPR64ediREWnwADbVqBOxDuEBMLp6yHYAF45WX2kukAPkHh1FKUPIDNSWq2Zy3K5dau0QdaZnQAUfHAkviMo+nGROwHSEnUk/b1DkRw7bgRBONWLG9nQDr87Fus6ZYtD2qSaI67omufnskZ9UU4FpB8nBRzaCEwCVEiDVesSfYw='
-  on:
-    tags: true
-    node: '4'
-  skip_cleanup: true
+  - provider: npm
+    email: 'devmonk@mediamonks.com'
+    api_key:
+      secure: 'F+DBXK0ApScPCz0RdqQ+di88aP97K83j7wpn8iaeip6CdjoodMeeUwVXKMs08It0SaUEHQTbVhOkPju8BKBUju9sCvIGe4n5EsBa0Uu0f2/Vl1m6nfRU1+lQHtfgfnJzdt2J8LZnOFBpf0V5s0h6xXGEoXKO2NH6j0QLEmLsck405Ju23SERIqyad2iXSwl7ZS2ScmbmQUOXXWGVQZ9iaY8RcKkagpCw1LS8hTzN5fKFCNLLy7ABkWBTSDVlNxl0xolTSAxiYt0cWN3JJnNV38D2loVx9wT4ldSk81fucGK/+9n5s9ZQTwM1FFe43xpfm2Jzb0VHF6sbRD2KWalswgUoYpy4qU9n6kTPqK0GaxLeQvYKfgl2w24wseaD2xI/tCUlSL/vtAVtD7mm5RM/tcvv6kl9/LIbZlcyr+5zinidwIr4ZxW7PqbqcDlPzh8eAcAmYSCrFcJ9ZT7ZAbniS1dghGRTIR+LJWU5UuaxYLcIMK3mdD72EsvFU39VNQRCRPR64ediREWnwADbVqBOxDuEBMLp6yHYAF45WX2kukAPkHh1FKUPIDNSWq2Zy3K5dau0QdaZnQAUfHAkviMo+nGROwHSEnUk/b1DkRw7bgRBONWLG9nQDr87Fus6ZYtD2qSaI67omufnskZ9UU4FpB8nBRzaCEwCVEiDVesSfYw='
+    on:
+      tags: true
+      node: '4'
+    skip_cleanup: true
+
+  - provider: s3
+    access_key_id:
+      secure: "o5FE+DG2mViQny5CmuEim3AeALw+DCyHlSkKIyqoR1JIO1TeB5eIMwRea7Av4RSXiJNjhNe90Cizw+WuPe0KngJfdCqUHFvnBl1yZr3282II/FcPAdlliZV+NSoxWmRNkJN7oZ0GamUDTMB62CAEr+11438jOuWzIAkSllGI3sIMXHN4opjaCYvIJYj7DW4mklTUS/X0bPGX9db4rZN9IEXs4s8Uez0Hxp2j01A/sJJ35JXRhD6Mcm4wa7PUnab0oB7FTBAt+L6n+ulUw+JYQd+JfPNxJ+cYrhWIVzKPWduWYgPOTw8atzdI0JMXGh5XCdV+2QRWfl00Xm4swyz0ydWoQZpfkeNBumeu/p6bvW4b3+n/Rel2KuKYg2wVAxj43iea58R44VU9SdjmtXIGy4gk4JqdyMhsB2resE/GaO0GYQTECsRO6avbPnL//lKuFdDM9fqRvdRNfpsB5gAqBryVdd6QwZjEwlPcDeRZMLFMBZh/aTzCCOaczK+fRlpMHzommoJb5ivYgDKSvoppTYMEVBiJJNAYBN9YnhZLPU57XyGRwO+BPakAaqrYpBQOvTPZ3AGk0G8sXA/BgexYt0k9vqQVUF5MbvqJ4mJ3r4A2F3C95eYNfRIp8ZztHVhNT+goo0qDjLi/veTJp6q182rlHMs3Ve4JhgllbQHDFdI="
+    secret_access_key:
+      secure: "tNnJ/k7MaL35jRnPJMNMFK0Rouo4UL9M4B3D8RTThh2AZamvVrYDm5edsRsONBq/bzN4JDjGmYBAozmleU0Zx2woCRTVslquTwDvD8xONzxAr9N4HCBBsvMKJo4pxFwFwueI3Mvg+YtECoZA3r+ht9hM9dynGvYqZzC5OSlpDp9fXBoiFJ16Wyrwx+btsC5j03XOpEwtt8cfZo6rp9fnrslYsCKwXGhkMLzpBJdoH+iYaNqqmZPcAnqZRQbYaAXzr3ew7EqfrsgiTs8IzR/Y1BGBae7Df2CoYjdGq9JILAY3C3vPnd5tfA6gqEaXyoyHVCMtG1Af1ezQoo7qzt1Xj1EtgbW2SWfLLG8BAAdyJP51+xQnlpSH3YZZ6Fmiw42u2FUljpj99nGdh2+ZR4roM6NfAo5DJQeoV+vyxAFf8vtuCLeqLNlkitYrUq+sEQOPLWzo3b+VWjDNaiHZWAMxfVpAwZNAAslHhpdQ0e/q7WfvHdXvnuVUOJ7I/GYaAJv62acJw2AgG9y8w8Z1QbZj3IO+tvGwxD7sc3PP6SvVGtqs4ZbcOMokHfWb69GrDGwC3lHJD20sth6GFxycJIC8nffufNGRuxkBI2vopA24PiRCii95vP5ovw7gR/Zc93GPaK5pF1C8sy7WFxtjSyevTaKcPjA2pAb0G3KnQbVVXoQ="
+    bucket: "mediamonks-development"
+    local_dir: 'dist'
+    upload-dir: 'seng/libs'
+    on:
+      tags: true
+      node: '4'
+    skip_cleanup: true
+    region: eu-west-1
+
+  - provider: releases
+    api_key:
+      secure: "wM4xu2lE+BtrcHhU7WkDZjiM5sqitE2y9JrX/AgoDc5hKxtunYX2nzy7PZiHDFZixg6x2h+1jAQb08imT3Uk8McCWsm2NGrCgz41fc2/DSQqJ3j/XTBYGZ3qDH3Gay0DbS+zHdLHhO21VmjclHZIx6o29T+SozrlV5il/QlforxvcyXqDO4c302DdBDZbAL2SNggsH2OXWHNs8lQDtbCxUZuYECG5YELMNfrTKdUV5UhUAIWaCED/DZ97BnslrsDM9g1V+wuJeu2u5WuoGo5QDyWRqYH42WkWd1y551ikwRHao0nfYxIRyhXUkUOSojoREyg6uM7RXcGwHBkJE1pBXQLFeq0ifR9L7FDsVOkAMPRn1D40fulNDf28ioudpMaZzpRO3McVigNcBnzU1Bton07qL6HcKScJZT+o2S4wD4RBKwBeT+wSoso8QpXcWMs5hHVEmcRowKJ4YkjeoEIaO0qugoNC95AiBEkabvbc84ftmZ8Oki7fBvqxW2ZNqJzvBKbgQGS/aiSKn6rwbBO0G0tkgF3CHJMh8VHgSbM+NdtMHSfl9+qjj6mOHRZZk4fM4Eg6aLIdh5h6X00Evr4fOMhH4GKUoK7FYwsz78r/bLEe/ywhEe0BwhMS7z9a09DqB9XY4HsEGzNBQH9mJ2Xy1VUSFsxqggaB8AS2TjXKN0="
+    file:
+      - "seng-*.zip"
+      - "seng-*.tar.gz"
+    file_glob: true
+    on:
+      tags: true
+      node: '4'
+    skip_cleanup: true
 
 addons:
   code_climate:
