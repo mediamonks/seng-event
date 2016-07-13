@@ -10,11 +10,9 @@
     "removeComments": false,
     "noEmitHelpers": true,
     "sourceMap": false,
-    "inlineSourceMap": false,
-    "outDir": "./"
+    "inlineSourceMap": true
   },
   "files": [
-    "./typings/index.d.ts",
-    "./src/index.ts"
+    "typings/index.d.ts"
   ]
 }
