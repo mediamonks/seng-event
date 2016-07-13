@@ -11,10 +11,8 @@ module.exports = function()
 		devtool: 'inline-source-map',
 
 		resolve: {
-			extensions: ['', '.js', '.ts']
+			extensions: ['', '.ts', '.js']
 		},
-		// entry is the "main" source file we want to include/import
-		entry: './test/index.ts',
 
 		verbose: true,
 
