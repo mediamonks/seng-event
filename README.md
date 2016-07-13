@@ -105,11 +105,6 @@ script before committing, so you can be sure that everything checks out.
 View [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 
-## Changelog
-
-View [CHANGELOG.md](./CHANGELOG.md)
-
-
 ## Authors
 
 View [AUTHORS.md](./AUTHORS.md)
