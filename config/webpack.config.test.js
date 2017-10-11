@@ -13,8 +13,8 @@ module.exports = function()
 		resolve: {
 			extensions: ['', '.ts', '.js']
 		},
-
-		verbose: true,
+		// entry is the "main" source file we want to include/import
+		entry: './test/index.ts',
 
 		module: {
 			loaders: [
@@ -30,8 +30,9 @@ module.exports = function()
 					test: /\.ts$/,
 					exclude: /node_modules/,
 					loader: 'awesome-typescript-loader',
+
 					query: {
-						tsconfig: 'config/tsconfig.test.json'
+						configFileName: './config/tsconfig.test.json'
 					}
 				}
 			],

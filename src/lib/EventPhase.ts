@@ -1,8 +1,7 @@
 /**
  * An enum for possible event phases that an event can be in
  */
-const enum EventPhase
-{
+const enum EventPhase {
 	/**
 	 * Indicates that the event is currently not being dispatched
 	 */
@@ -20,7 +19,7 @@ const enum EventPhase
 	 * Indicates that we are currently moving back up from the parent of the target EventDispatcher to
 	 * the top-most EventDispatcher instance.
 	 */
-	BUBBLING_PHASE = 3
+	BUBBLING_PHASE = 3,
 }
 
 

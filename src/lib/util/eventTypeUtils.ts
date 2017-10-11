@@ -2,7 +2,7 @@
  * Constant string that can be used as a placeholder for the static event types on an
  * [[IEvent]] class. See [[generateEventTypes]] for usage.
  */
-export const EVENT_TYPE_PLACEHOLDER:string = '__eventTypeUtil::EVENT_TYPE_PLACEHOLDER';
+export const EVENT_TYPE_PLACEHOLDER: string = '__eventTypeUtil::EVENT_TYPE_PLACEHOLDER';
 
 /**
  * It is common practice to have static properties on an [[AbstractEvent|event class]] that indicate
@@ -71,15 +71,11 @@ export const EVENT_TYPE_PLACEHOLDER:string = '__eventTypeUtil::EVENT_TYPE_PLACEH
  * and the classes themselves as values: `{ 'Class1' : Class1, 'Class2' : Class2 }`. Using the new ES6 property
  * names shorthand, we can simplify that to the following: `{ Class1, Class2 }`.
  */
-export const generateEventTypes = (targets:{[name:string]:Object}):void =>
-{
-	Object.keys(targets).forEach(name =>
-	{
+export const generateEventTypes = (targets: { [name: string]: Object }): void => {
+	Object.keys(targets).forEach(name => {
 		const target = targets[name];
-		Object.keys(target).forEach(prop =>
-		{
-			if (target[prop] === EVENT_TYPE_PLACEHOLDER)
-			{
+		Object.keys(target).forEach(prop => {
+			if (target[prop] === EVENT_TYPE_PLACEHOLDER) {
 				target[prop] = `${name}/${prop}`;
 			}
 		});

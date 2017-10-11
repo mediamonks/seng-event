@@ -19,6 +19,12 @@ dispatching systems like the functionality described in the
 
 ## Installation
 
+### yarn / npm
+
+```sh
+yarn add seng-event
+```
+
 ```sh
 npm i -S seng-event
 ```
@@ -62,7 +68,7 @@ foo.dispatchEvent(new FooEvent(FooEvent.COMPLETE));
 
 ## Documentation
 
-View the [generated documentation](https://rawgit.com/mediamonks/seng-event/master/doc/typedoc/index.html).
+View the [generated documentation](http://mediamonks.github.io/seng-event/).
 
 
 ## Building
@@ -82,27 +88,32 @@ cd seng-event
 
 Install dev dependencies:
 ```sh
-npm install
+yarn
 ```
 
 Use one of the following main scripts:
 ```sh
-npm run build   		# build this project
-npm run generate   		# generate all artifacts (compiles ts, webpack, docs and coverage)
-npm run typings			# install .d.ts dependencies (done on install)
-npm run test-unit    	# run the unit tests
-npm run validate		# runs validation scripts, including test, lint and coverage check
-npm run lint			# run tslint on this project
-npm run doc				# generate typedoc and yuidoc documentation
-npm run typescript-npm	# just compile the typescript output used in the npm module
+yarn build           # build this project
+yarn dev             # run dev-watch mode, serving example/index.html in the browser
+yarn generate        # generate all artifacts (compiles ts, webpack, docs and coverage)
+yarn typings         # install .d.ts dependencies (done on install)
+yarn test:unit       # run the unit tests
+yarn validate        # runs validation scripts, including test, lint and coverage check
+yarn lint            # run tslint on this project
+yarn doc             # generate typedoc documentation
 ```
 
-When installing this module, it adds a pre-commit hook, that runs the `validate`
+When installing this module, it adds a pre-push hook, that runs the `validate`
 script before committing, so you can be sure that everything checks out.
 
 ## Contribute
 
 View [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+
+## Changelog
+
+View [CHANGELOG.md](./CHANGELOG.md)
 
 
 ## Authors

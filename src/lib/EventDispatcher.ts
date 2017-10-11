@@ -1,9 +1,9 @@
 import Disposable from 'seng-disposable';
-import IEventDispatcher from "./IEventDispatcher";
-import IEvent from "./IEvent";
-import EventListenerData from "./EventListenerData";
-import EventPhase from "./EventPhase";
-import CallListenerResult from "./CallListenerResult";
+import IEventDispatcher from './IEventDispatcher';
+import IEvent from './IEvent';
+import EventListenerData from './EventListenerData';
+import EventPhase from './EventPhase';
+import CallListenerResult from './CallListenerResult';
 
 /**
  * Base class that adds the ability to dispatch events and attach handlers that should be
@@ -13,25 +13,24 @@ import CallListenerResult from "./CallListenerResult";
  * by existing event dispatching systems like the functionality described in the
  * [DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
  */
-export default class EventDispatcher extends Disposable implements IEventDispatcher
-{
+export default class EventDispatcher extends Disposable implements IEventDispatcher {
 	/**
 	 * The parent EventDispatcher instance. If this instance has no parent, this value will be
 	 * set to _null_. The parent is used in the bubbling and capturing phases of events.
 	 * @see [[dispatchEvent]] for more information on the bubbling and capturing chain
 	 */
-	public parent:EventDispatcher;
+	public parent: EventDispatcher;
 	/**
 	 * An object containing all event listeners by [[IEvent.type|event type]]. Each value
 	 * on this object is an Array of [[EventListenerData]] objects for each event listener
 	 * added with that type.
 	 */
-	private _listeners:EventListenerMap = {};
+	private _listeners: EventListenerMap = {};
 	/**
 	 * The value that will be set as [[IEvent.target|target]] on events that are dispatched
 	 * by this EventDispatcher instance.
 	 */
-	private _target:IEventDispatcher;
+	private _target: IEventDispatcher;
 
 	/**
 	 * Creates an EventDispatcher instance.
@@ -43,8 +42,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * dispatched by this EventDispatcher to the given object. If not set, will use this instance
 	 * as a target for dispatched events.
 	 */
-	constructor(parent:EventDispatcher = null, target?:IEventDispatcher)
-	{
+	constructor(parent: EventDispatcher = null, target?: IEventDispatcher) {
 		super();
 
 		this._target = target || this;
@@ -81,43 +79,35 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * _Please note: [[IEvent.preventDefault|preventDefault()]] can only be called on
 	 * events that have their [[IEvent.cancelable|cancelable]] property set to true_
 	 */
-	public dispatchEvent(event:IEvent):boolean
-	{
-		if(this.isDisposed())
-		{
+	public dispatchEvent(event: IEvent): boolean {
+		if (this.isDisposed()) {
 			// todo: _log.error("Can't dispatchEvent on a disposed EventDispatcher");
 		}
-		else
-		{
+		else {
 			// todo: on debug builds, check willTrigger and log if false
 
 			const callTree = getCallTree(this, event.bubbles);
 			event.target = this._target;
 			event.eventPhase = callTree.length === 1 ? EventPhase.AT_TARGET : EventPhase.CAPTURING_PHASE;
 
-			for(let i = 0; i < callTree.length; i++)
-			{
+			for (let i = 0; i < callTree.length; i++) {
 				const currentTarget = callTree[i];
 				event.currentTarget = currentTarget;
-				if(currentTarget === this)
-				{
+				if (currentTarget === this) {
 					event.eventPhase = EventPhase.AT_TARGET;
 				}
 
 				const propagationIsStopped = callListeners(currentTarget._listeners, event);
-				if(propagationIsStopped)
-				{
+				if (propagationIsStopped) {
 					event.eventPhase = EventPhase.NONE;
 					break;
 				}
 
-				if(i === callTree.length - 1)
-				{
+				if (i === callTree.length - 1) {
 					// after last target in tree, reset eventPhase to NONE
 					event.eventPhase = EventPhase.NONE;
 				}
-				else if(currentTarget === this)
-				{
+				else if (currentTarget === this) {
 					// after target === currentTarget we will enter the bubbling phase
 					event.eventPhase = EventPhase.BUBBLING_PHASE;
 				}
@@ -152,22 +142,19 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * @returns An object describing the listener that has a [[EventListenerData.dispose|dispose()]]
 	 * method to remove the listener.
 	 */
-	public addEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false, priority:number = 0):EventListenerData
-	{
-		if(typeof(this._listeners[eventType]) === 'undefined')
-		{
+	public addEventListener(eventType: string, handler: EventHandler, useCapture: boolean = false, priority: number = 0): EventListenerData {
+		if (typeof(this._listeners[eventType]) === 'undefined') {
 			this._listeners[eventType] = [];
 		}
 
 		// todo: log in debug mode
 		const isDebugMode = false;
-		if(isDebugMode && this.hasEventListener(eventType, handler, useCapture))
-		{
+		if (isDebugMode && this.hasEventListener(eventType, handler, useCapture)) {
 			// log.warn(trying to add double listener)
 		}
 		// end todo
 
-		const data:EventListenerData = new EventListenerData(this, eventType, handler, useCapture, priority);
+		const data: EventListenerData = new EventListenerData(this, eventType, handler, useCapture, priority);
 		this._listeners[eventType].push(data);
 		this._listeners[eventType].sort(this._listenerSorter);
 
@@ -184,23 +171,17 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * is set to false by default_
 	 * @returns {boolean} True if one or more event listeners exist
 	 */
-	public hasEventListener(eventType:string, handler?:EventHandler, useCapture?:boolean):boolean
-	{
-		if(typeof handler === 'undefined')
-		{
+	public hasEventListener(eventType: string, handler?: EventHandler, useCapture?: boolean): boolean {
+		if (typeof handler === 'undefined') {
 			return !!this._listeners[eventType] && this._listeners[eventType].length > 0;
 		}
-		else if(!this._listeners[eventType])
-		{
+		else if (!this._listeners[eventType]) {
 			return false;
 		}
-		else
-		{
-			for(let i = 0; i < this._listeners[eventType].length; i++)
-			{
-				const listenerData:EventListenerData = this._listeners[eventType][i];
-				if(listenerData.handler === handler && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture))
-				{
+		else {
+			for (let i = 0; i < this._listeners[eventType].length; i++) {
+				const listenerData: EventListenerData = this._listeners[eventType][i];
+				if (listenerData.handler === handler && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture)) {
 					return true;
 				}
 			}
@@ -214,8 +195,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * @param eventType The event type to check for
 	 * @returns _true_ if a matching listener is found
 	 */
-	public willTrigger(eventType:string):boolean
-	{
+	public willTrigger(eventType: string): boolean {
 		return this.hasEventListener(eventType) || (!!this.parent && this.parent.willTrigger(eventType));
 	}
 
@@ -231,8 +211,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * parameter will be removed. _Please note: if no useCapture argument is provided, only
 	 * event listeners that have useCapture set to false will be removed._
 	 */
-	public removeEventListener(eventType:string, handler:EventHandler, useCapture:boolean = false):void
-	{
+	public removeEventListener(eventType: string, handler: EventHandler, useCapture: boolean = false): void {
 		removeListenersFrom(this._listeners, eventType, handler, useCapture);
 	}
 
@@ -246,8 +225,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * @param eventType The [[IEvent.type|type]] of event to remove. If not provided, all event listeners
 	 * will be removed regardless of their type.
 	 */
-	public removeAllEventListeners(eventType?:string):void
-	{
+	public removeAllEventListeners(eventType?: string): void {
 		removeListenersFrom(this._listeners, eventType);
 	}
 
@@ -255,8 +233,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * Cleans up this EventListener instance. No event handlers on this EventDispatcher will be called
 	 * and future calls to dispatchEvent() will be ignored.
 	 */
-	public dispose():void
-	{
+	public dispose(): void {
 		this.removeAllEventListeners();
 
 		super.dispose();
@@ -269,8 +246,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * @param e2 The other event listener to compare to
 	 * @returns A number that indicates the sorting according to the JS sort() method.
 	 */
-	private _listenerSorter(e1:EventListenerData, e2:EventListenerData):number
-	{
+	private _listenerSorter(e1: EventListenerData, e2: EventListenerData): number {
 		return e2.priority - e1.priority;
 	}
 }
@@ -286,30 +262,23 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
  * @param handler If set, will only remove listeners with this _handler_
  * @param useCapture If set, will only remove listeners with the same value for _useCapture_
  */
-export const removeListenersFrom = (listeners:EventListenerMap, eventType?:string, handler?:EventHandler, useCapture?:boolean) =>
-{
-	for(let i in listeners)
-	{
-		if(listeners.hasOwnProperty(i))
-		{
+export const removeListenersFrom = (listeners: EventListenerMap, eventType?: string, handler?: EventHandler, useCapture?: boolean) => {
+	for (let i in listeners) {
+		if (listeners.hasOwnProperty(i)) {
 			const matchesEventType = !eventType || i === eventType;
-			if(matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array)
-			{
+			if (matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array) {
 				const listenersForType = listeners[i];
 				// traverse the array in reverse. this will make sure removal does not affect the loop
-				for(let j = listenersForType.length; j; j--)
-				{
-					let listenerData:EventListenerData = listenersForType[j - 1];
-					if((!handler || handler === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture))
-					{
+				for (let j = listenersForType.length; j; j--) {
+					let listenerData: EventListenerData = listenersForType[j - 1];
+					if ((!handler || handler === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture)) {
 						listenersForType.splice(j - 1, 1);
 						// mark the listener as removed, because it might still be active in the current event loop
 						listenerData.isRemoved = true;
 					}
 				}
 				// If an eventType was provided, this will be the only property where we need to remove listeners
-				if(eventType)
-				{
+				if (eventType) {
 					break;
 				}
 			}
@@ -323,12 +292,10 @@ export const removeListenersFrom = (listeners:EventListenerMap, eventType?:strin
  * @param target The instance to get parents for
  * @returns {Array<EventDispatcher>} The array of parents
  */
-export const getParents = (target:EventDispatcher):Array<EventDispatcher> =>
-{
-	let currentTarget:EventDispatcher = target;
-	const parents:Array<EventDispatcher> = [];
-	while(currentTarget.parent)
-	{
+export const getParents = (target: EventDispatcher): Array<EventDispatcher> => {
+	let currentTarget: EventDispatcher = target;
+	const parents: Array<EventDispatcher> = [];
+	while (currentTarget.parent) {
 		currentTarget = currentTarget.parent;
 		parents.push(currentTarget);
 	}
@@ -344,18 +311,15 @@ export const getParents = (target:EventDispatcher):Array<EventDispatcher> =>
  * @returns An array of EventDispatcher instances in the order that an event will travel during dispatch
  * on the given target.
  */
-export const getCallTree = (target:EventDispatcher, bubbles:boolean):Array<EventDispatcher> =>
-{
-	const callTree:Array<EventDispatcher> = [];
-	const parents:Array<EventDispatcher> = getParents(target);
+export const getCallTree = (target: EventDispatcher, bubbles: boolean): Array<EventDispatcher> => {
+	const callTree: Array<EventDispatcher> = [];
+	const parents: Array<EventDispatcher> = getParents(target);
 
-	for(let i = parents.length; i; i--)
-	{
+	for (let i = parents.length; i; i--) {
 		callTree.push(parents[i - 1]);
 	}
 	callTree.push(target);
-	if(bubbles)
-	{
+	if (bubbles) {
 		Array.prototype.push.apply(callTree, parents);
 	}
 	return callTree;
@@ -372,23 +336,18 @@ export const getCallTree = (target:EventDispatcher, bubbles:boolean):Array<Event
  * of them call [[IEvent.stopPropagation|stopPropagation()]] or
  * [[IEvent.stopImmediatePropagation|stopImmediatePropagation]]
  */
-export const callListeners = (listeners:EventListenerMap, event:IEvent):boolean =>
-{
-	const listenersOfType:Array<EventListenerData> = listeners[event.type] ? [...listeners[event.type]] : [];
+export const callListeners = (listeners: EventListenerMap, event: IEvent): boolean => {
+	const listenersOfType: Array<EventListenerData> = listeners[event.type] ? [...listeners[event.type]] : [];
 	let propagationIsStopped = false;
 
-	for(let i = 0; i < listenersOfType.length; i++)
-	{
+	for (let i = 0; i < listenersOfType.length; i++) {
 		const disabledOnPhase = listenersOfType[i].useCapture ? EventPhase.BUBBLING_PHASE : EventPhase.CAPTURING_PHASE;
-		if(event.eventPhase !== disabledOnPhase && !listenersOfType[i].isRemoved)
-		{
-			const callResult:number = event.callListener(listenersOfType[i].handler);
+		if (event.eventPhase !== disabledOnPhase && !listenersOfType[i].isRemoved) {
+			const callResult: number = event.callListener(listenersOfType[i].handler);
 
-			if(callResult > CallListenerResult.NONE)
-			{
+			if (callResult > CallListenerResult.NONE) {
 				propagationIsStopped = true;
-				if(callResult === CallListenerResult.IMMEDIATE_PROPAGATION_STOPPED)
-				{
+				if (callResult === CallListenerResult.IMMEDIATE_PROPAGATION_STOPPED) {
 					break;
 				}
 			}
@@ -402,9 +361,9 @@ export const callListeners = (listeners:EventListenerMap, event:IEvent):boolean 
  * Type alias for the [[EventDispatcher._listeners]] property that contains all listeners for
  * an EventDispatcher instance
  */
-type EventListenerMap = {[type:string]:Array<EventListenerData>};
+type EventListenerMap = { [type: string]: Array<EventListenerData> };
 
 /**
  * Type alias for event handler functions that can be passed to [[EventDispatcher.addEventListener]]
  */
-export type EventHandler = (event?:IEvent) => any;
+export type EventHandler = (event?: IEvent) => any;

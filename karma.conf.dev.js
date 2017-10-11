@@ -23,8 +23,7 @@ module.exports = function(config)
 		preprocessors: {
 			'./src/**/*.ts': [
 				'webpack',
-				'sourcemap',
-				'coverage'
+				'sourcemap'
 			],
 			'./test/**/*.ts': [
 				'webpack'
@@ -38,30 +37,7 @@ module.exports = function(config)
 
 		// A lot of plugins are available for test results reporting.
 		// You can find them here: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['progress', 'coverage', 'karma-remap-istanbul'],
-
-		// Simple summary (printed to the console) and JSON file which we will remap back to TypeScript.
-		coverageReporter: {
-			dir: 'coverage',
-			reporters: [
-				// reporters not supporting the `file` property
-				{ type: 'json', subdir: '.' },
-				// { type: 'lcov', subdir: '.' },
-
-				{ type: 'text' }
-			]
-		},
-
-		// Map code coverage result back to TypeScript using `karma-remap-istanbul`.
-		remapIstanbulReporter: {
-			src: 'coverage/coverage-final.json',
-			reports: {
-				lcovonly: 'coverage/lcov.info',
-				html: 'coverage/report'
-			},
-			timeoutNotCreated: 5000,
-			timeoutNoMoreFiles: 1000
-		},
+		reporters: ['mocha'],
 
 		// level of logging
 		// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
