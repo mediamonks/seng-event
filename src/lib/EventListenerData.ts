@@ -22,11 +22,12 @@ export default class EventListenerData extends Disposable {
 	 * @param priority Set to the _priority_ argument passed to [[EventDispatcher.addEventListener|addEventListener]].
 	 * Used to sort the listener within the [[EventDispatcher._listeners|_listeners]] object of the EventDispatcher
 	 */
-	constructor(public dispatcher: EventDispatcher,
-	            public type: string,
-	            public handler: EventHandler,
-	            public useCapture: boolean,
-	            public priority: number) {
+	constructor(
+		public dispatcher: EventDispatcher,
+		public type: string,
+		public handler: EventHandler,
+		public useCapture: boolean,
+		public priority: number) {
 		super();
 	}
 

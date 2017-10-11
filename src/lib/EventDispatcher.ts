@@ -82,8 +82,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	public dispatchEvent(event: IEvent): boolean {
 		if (this.isDisposed()) {
 			// todo: _log.error("Can't dispatchEvent on a disposed EventDispatcher");
-		}
-		else {
+		} else {
 			// todo: on debug builds, check willTrigger and log if false
 
 			const callTree = getCallTree(this, event.bubbles);
@@ -106,8 +105,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 				if (i === callTree.length - 1) {
 					// after last target in tree, reset eventPhase to NONE
 					event.eventPhase = EventPhase.NONE;
-				}
-				else if (currentTarget === this) {
+				} else if (currentTarget === this) {
 					// after target === currentTarget we will enter the bubbling phase
 					event.eventPhase = EventPhase.BUBBLING_PHASE;
 				}
@@ -142,7 +140,12 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * @returns An object describing the listener that has a [[EventListenerData.dispose|dispose()]]
 	 * method to remove the listener.
 	 */
-	public addEventListener(eventType: string, handler: EventHandler, useCapture: boolean = false, priority: number = 0): EventListenerData {
+	public addEventListener(
+		eventType: string,
+		handler: EventHandler,
+		useCapture: boolean = false,
+		priority: number = 0,
+	): EventListenerData {
 		if (typeof(this._listeners[eventType]) === 'undefined') {
 			this._listeners[eventType] = [];
 		}
@@ -174,14 +177,15 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	public hasEventListener(eventType: string, handler?: EventHandler, useCapture?: boolean): boolean {
 		if (typeof handler === 'undefined') {
 			return !!this._listeners[eventType] && this._listeners[eventType].length > 0;
-		}
-		else if (!this._listeners[eventType]) {
+		} else if (!this._listeners[eventType]) {
 			return false;
-		}
-		else {
+		} else {
 			for (let i = 0; i < this._listeners[eventType].length; i++) {
 				const listenerData: EventListenerData = this._listeners[eventType][i];
-				if (listenerData.handler === handler && (typeof useCapture === 'undefined' || useCapture === listenerData.useCapture)) {
+				if (
+					listenerData.handler === handler &&
+					(typeof useCapture === 'undefined' || useCapture === listenerData.useCapture)
+				) {
 					return true;
 				}
 			}
@@ -262,16 +266,23 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
  * @param handler If set, will only remove listeners with this _handler_
  * @param useCapture If set, will only remove listeners with the same value for _useCapture_
  */
-export const removeListenersFrom = (listeners: EventListenerMap, eventType?: string, handler?: EventHandler, useCapture?: boolean) => {
-	for (let i in listeners) {
+export const removeListenersFrom = (
+	listeners: EventListenerMap,
+	eventType?: string,
+	handler?: EventHandler,
+	useCapture?: boolean) => {
+	for (const i in listeners) {
 		if (listeners.hasOwnProperty(i)) {
 			const matchesEventType = !eventType || i === eventType;
 			if (matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array) {
 				const listenersForType = listeners[i];
 				// traverse the array in reverse. this will make sure removal does not affect the loop
 				for (let j = listenersForType.length; j; j--) {
-					let listenerData: EventListenerData = listenersForType[j - 1];
-					if ((!handler || handler === listenerData.handler) && (typeof useCapture === 'undefined' || !!useCapture == listenerData.useCapture)) {
+					const listenerData: EventListenerData = listenersForType[j - 1];
+					if (
+						(!handler || handler === listenerData.handler) &&
+						(typeof useCapture === 'undefined' || !!useCapture === listenerData.useCapture)
+					) {
 						listenersForType.splice(j - 1, 1);
 						// mark the listener as removed, because it might still be active in the current event loop
 						listenerData.isRemoved = true;
