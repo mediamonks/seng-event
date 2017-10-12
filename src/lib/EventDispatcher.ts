@@ -81,7 +81,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 */
 	public dispatchEvent(event: IEvent): boolean {
 		if (this.isDisposed()) {
-			// todo: _log.error("Can't dispatchEvent on a disposed EventDispatcher");
+			throw new Error('Can\'t dispatchEvent on a disposed EventDispatcher');
 		} else {
 			// todo: on debug builds, check willTrigger and log if false
 
@@ -113,7 +113,6 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 			event.currentTarget = null;
 			return !event.defaultPrevented;
 		}
-		return true;
 	}
 
 	/**
@@ -149,13 +148,6 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 		if (typeof(this._listeners[eventType]) === 'undefined') {
 			this._listeners[eventType] = [];
 		}
-
-		// todo: log in debug mode
-		const isDebugMode = false;
-		if (isDebugMode && this.hasEventListener(eventType, handler, useCapture)) {
-			// log.warn(trying to add double listener)
-		}
-		// end todo
 
 		const data: EventListenerData = new EventListenerData(this, eventType, handler, useCapture, priority);
 		this._listeners[eventType].push(data);
