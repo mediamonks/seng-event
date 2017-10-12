@@ -850,9 +850,8 @@ describe('EventDispatcher "A"', () => {
 		const event = new BasicEvent('T');
 
 		it('should not dispatch events after disposed', () => {
-			a.dispatchEvent(event);
+			expect(() => a.dispatchEvent(event)).to.throw();
 			expect(aHandler).to.not.have.been.called;
-			expect(event.target).to.be.null;
 		});
 	});
 });
