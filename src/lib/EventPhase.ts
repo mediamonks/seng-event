@@ -1,7 +1,7 @@
 /**
  * An enum for possible event phases that an event can be in
  */
-const enum EventPhase {
+enum EventPhase {
 	/**
 	 * Indicates that the event is currently not being dispatched
 	 */
