@@ -7,7 +7,6 @@
     "prefer-array-literal": [ true, { "allow-type-parameters": true } ],
     "variable-name": [ true, "allow-pascal-case" ],
     "import-name": true,
-    "no-increment-decrement": false,
     "indent": [true, "tabs"],
     "ter-indent": [
       true,

@@ -89,7 +89,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
 			event.target = this.target;
 			event.eventPhase = callTree.length === 1 ? EventPhase.AT_TARGET : EventPhase.CAPTURING_PHASE;
 
-			for (let i = 0; i < callTree.length; i++) {
+			for (let i = 0; i < callTree.length; i += 1) {
 				const currentTarget = callTree[i];
 				event.currentTarget = currentTarget;
 				if (currentTarget === this) {
@@ -172,7 +172,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
 		} else if (!this.listeners[eventType]) {
 			return false;
 		} else {
-			for (let i = 0; i < this.listeners[eventType].length; i++) {
+			for (let i = 0; i < this.listeners[eventType].length; i += 1) {
 				const listenerData: EventListenerData = this.listeners[eventType][i];
 				if (
 					listenerData.handler === handler &&
@@ -269,7 +269,7 @@ export const removeListenersFrom = (
 			if (matchesEventType && listeners.hasOwnProperty(i) && listeners[i] instanceof Array) {
 				const listenersForType = listeners[i];
 				// traverse the array in reverse. this will make sure removal does not affect the loop
-				for (let j = listenersForType.length; j; j--) {
+				for (let j = listenersForType.length; j; j -= 1) {
 					const listenerData: EventListenerData = listenersForType[j - 1];
 					if (
 						(!handler || handler === listenerData.handler) &&
@@ -318,7 +318,7 @@ export const getCallTree = (target: EventDispatcher, bubbles: boolean): Array<Ev
 	const callTree: Array<EventDispatcher> = [];
 	const parents: Array<EventDispatcher> = getParents(target);
 
-	for (let i = parents.length; i; i--) {
+	for (let i = parents.length; i; i -= 1) {
 		callTree.push(parents[i - 1]);
 	}
 	callTree.push(target);
@@ -343,7 +343,7 @@ export const callListeners = (listeners: EventListenerMap, event: IEvent): boole
 	const listenersOfType: Array<EventListenerData> = listeners[event.type] ? [...listeners[event.type]] : [];
 	let propagationIsStopped = false;
 
-	for (let i = 0; i < listenersOfType.length; i++) {
+	for (let i = 0; i < listenersOfType.length; i += 1) {
 		const disabledOnPhase = listenersOfType[i].useCapture ? EventPhase.BUBBLING_PHASE : EventPhase.CAPTURING_PHASE;
 		if (event.eventPhase !== disabledOnPhase && !listenersOfType[i].isRemoved) {
 			const callResult: number = event.callListener(listenersOfType[i].handler);
