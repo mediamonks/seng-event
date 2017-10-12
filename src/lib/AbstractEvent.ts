@@ -40,7 +40,7 @@ abstract class AbstractEvent implements IEvent {
 	/**
 	 *  _true_ if [[cancelable]] is true and [[preventDefault]] has been called on this event.
 	 */
-	private _defaultPrevented: boolean = false;
+	public defaultPrevented: boolean = false;
 
 	/**
 	 * Creates a new AbstractEvent instance.
@@ -61,13 +61,6 @@ abstract class AbstractEvent implements IEvent {
 				setTimeStamp: boolean = false,
 	) {
 		this.timeStamp = setTimeStamp ? Date.now() : 0;
-	}
-
-	/**
-	 * _true_ if [[cancelable]] is true and [[preventDefault]] has been called on this event.
-	 */
-	public get defaultPrevented(): boolean {
-		return this._defaultPrevented;
 	}
 
 	/**
@@ -96,7 +89,7 @@ abstract class AbstractEvent implements IEvent {
 	 */
 	public preventDefault(): void {
 		if (this.cancelable) {
-			this._defaultPrevented = true;
+			this.defaultPrevented = true;
 		} else {
 			throw new Error('Called preventDefault on a non-cancelable event');
 		}

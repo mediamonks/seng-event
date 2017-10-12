@@ -8,7 +8,6 @@
     "variable-name": [ true, "allow-pascal-case" ],
     "import-name": true,
     "no-increment-decrement": false,
-    "function-name": false,
     "indent": [true, "tabs"],
     "ter-indent": [
       true,

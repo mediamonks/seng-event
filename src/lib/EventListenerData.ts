@@ -1,4 +1,4 @@
-import Disposable from 'seng-disposable';
+import sengDisposable from 'seng-disposable';
 import EventDispatcher, { EventHandler } from './EventDispatcher';
 
 /**
@@ -6,7 +6,7 @@ import EventDispatcher, { EventHandler } from './EventDispatcher';
  * saved on the [[EventDispatcher.listeners]] object for internal use but is also returned by the
  * _addEventListener_ method as a way to remove the listener.
  */
-export default class EventListenerData extends Disposable {
+export default class EventListenerData extends sengDisposable {
 	/**
 	 * This property will be set to _true_ by the [[EventDispatcher]] this listener is bound to when
 	 * the listener is removed. This is to make sure the handler is not called, even if the listener

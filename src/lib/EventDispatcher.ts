@@ -1,4 +1,4 @@
-import Disposable from 'seng-disposable';
+import sengDisposable from 'seng-disposable';
 import IEventDispatcher from './IEventDispatcher';
 import IEvent from './IEvent';
 import EventListenerData from './EventListenerData';
@@ -13,7 +13,7 @@ import CallListenerResult from './CallListenerResult';
  * by existing event dispatching systems like the functionality described in the
  * [DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
  */
-export default class EventDispatcher extends Disposable implements IEventDispatcher {
+export default class EventDispatcher extends sengDisposable implements IEventDispatcher {
 	/**
 	 * The parent EventDispatcher instance. If this instance has no parent, this value will be
 	 * set to _null_. The parent is used in the bubbling and capturing phases of events.
@@ -151,7 +151,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 
 		const data: EventListenerData = new EventListenerData(this, eventType, handler, useCapture, priority);
 		this.listeners[eventType].push(data);
-		this.listeners[eventType].sort(this._listenerSorter);
+		this.listeners[eventType].sort(this.listenerSorter);
 
 		return data;
 	}
@@ -242,7 +242,7 @@ export default class EventDispatcher extends Disposable implements IEventDispatc
 	 * @param e2 The other event listener to compare to
 	 * @returns A number that indicates the sorting according to the JS sort() method.
 	 */
-	private _listenerSorter(e1: EventListenerData, e2: EventListenerData): number {
+	private listenerSorter(e1: EventListenerData, e2: EventListenerData): number {
 		return e2.priority - e1.priority;
 	}
 }
