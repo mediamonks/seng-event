@@ -47,9 +47,11 @@ class Foo extends EventDispatcher {
 
 // Create your own event class
 class FooEvent extends AbstractEvent {
-   ...
    public static COMPLETE:string = EVENT_TYPE_PLACEHOLDER;
-   ...
+   
+   public clone(): FooEvent {
+		return new FooEvent(this.type, this.bubbles, this.cancelable);
+	}
 }
 generateEventTypes({FooEvent});
 
@@ -64,7 +66,6 @@ foo.addEventListener(FooEvent.COMPLETE, exampleHandler);
 // dispatch an event (will execute exampleHandler and log 'Handler called!')
 foo.dispatchEvent(new FooEvent(FooEvent.COMPLETE));  
 ```
-
 
 ## Documentation
 
