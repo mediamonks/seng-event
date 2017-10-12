@@ -4,7 +4,7 @@ import IEventDispatcher from './IEventDispatcher';
 import { EventHandler } from './EventDispatcher';
 import CallListenerResult from './CallListenerResult';
 
-let _callListenerResult = CallListenerResult.NONE;
+let callListenerResult = CallListenerResult.NONE;
 
 /**
  * Abstract base class for all events that can be dispatched through [[EventDispatcher]]. This class
@@ -76,8 +76,8 @@ abstract class AbstractEvent implements IEvent {
 	 * @see [[EventDispatcher.dispatchEvent]]
 	 */
 	public stopPropagation(): void {
-		if (_callListenerResult < CallListenerResult.PROPAGATION_STOPPED) {
-			_callListenerResult = CallListenerResult.PROPAGATION_STOPPED;
+		if (callListenerResult < CallListenerResult.PROPAGATION_STOPPED) {
+			callListenerResult = CallListenerResult.PROPAGATION_STOPPED;
 		}
 	}
 
@@ -87,7 +87,7 @@ abstract class AbstractEvent implements IEvent {
 	 * @see [[EventDispatcher.dispatchEvent]]
 	 */
 	public stopImmediatePropagation(): void {
-		_callListenerResult = CallListenerResult.IMMEDIATE_PROPAGATION_STOPPED;
+		callListenerResult = CallListenerResult.IMMEDIATE_PROPAGATION_STOPPED;
 	}
 
 	/**
@@ -109,9 +109,9 @@ abstract class AbstractEvent implements IEvent {
 	 * @returns An enum value, see [[CallListenerResult]]
 	 */
 	public callListener(handler: EventHandler): CallListenerResult {
-		_callListenerResult = CallListenerResult.NONE;
+		callListenerResult = CallListenerResult.NONE;
 		handler.call(null, this);
-		return _callListenerResult;
+		return callListenerResult;
 	}
 
 	/**

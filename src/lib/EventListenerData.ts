@@ -3,7 +3,7 @@ import EventDispatcher, { EventHandler } from './EventDispatcher';
 
 /**
  * Data object that is created on every call to [[EventDispatcher.addEventListener]]. The object is
- * saved on the [[EventDispatcher._listeners]] object for internal use but is also returned by the
+ * saved on the [[EventDispatcher.listeners]] object for internal use but is also returned by the
  * _addEventListener_ method as a way to remove the listener.
  */
 export default class EventListenerData extends Disposable {
