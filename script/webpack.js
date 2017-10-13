@@ -1,4 +1,6 @@
-var webpack = require("webpack");
+const webpack = require("webpack");
+const WebpackSystemRegister = require('webpack-system-register');
+const Promise = require('es6-promise');
 
 var uglifyPluginSetting = new webpack.optimize.UglifyJsPlugin({
 	sourceMap: false,
@@ -6,7 +8,7 @@ var uglifyPluginSetting = new webpack.optimize.UglifyJsPlugin({
 });
 
 
-var baseConfig = require('../config/webpack.config');
+var baseConfig = require('../config/webpack.config.dist');
 
 var umd = baseConfig();
 umd.output.libraryTarget = "umd";
@@ -32,6 +34,19 @@ cjs2.output.libraryTarget = "commonjs2";
 cjs2.output.filename = "./dist/seng-event-commonjs.js";
 
 
+var system = baseConfig();
+delete system.output.library;
+system.plugins.push(
+	// adds a systemjs wrapper around the normal webpack export
+	new WebpackSystemRegister({
+		systemjsDeps: [
+		],
+		registerName: 'seng-event', // optional name that SystemJS will know this bundle as.
+	})
+);
+system.output.filename = "./dist/seng-event-systemjs.js";
+
+
 var browser = baseConfig();
 browser.output.libraryTarget = "var";
 browser.output.filename = "./dist/seng-event.js";
@@ -44,28 +59,32 @@ browserMin.plugins = browserMin.plugins.concat(
 	uglifyPluginSetting
 );
 
+[umd, umdMin, amd, cjs2, browser, browserMin, system].reduce(function (prev, config) {
+	return prev.then(function() {
+		return new Promise(function(resolve, reject) {
+			webpack(config, function (err, stats)
+			{
+				if (err)
+				{
+					console.error('err', err);
+					reject(err);
+					return;
+				}
 
-[umd, umdMin, amd, cjs2, browser, browserMin].forEach(function(config)
-{
-	// returns a Compiler instance
-	webpack(config, function (err, stats)
-	{
-		if (err)
-		{
-			console.error(err);
-			return;
-		}
-
-		var jsonStats = stats.toJson();
-		if (jsonStats.errors.length > 0)
-		{
-			console.error(jsonStats.errors);
-			return;
-		}
-		if (jsonStats.warnings.length > 0)
-		{
-			console.warn(jsonStats.warnings);
-		}
-		console.log(stats.toString());
+				var jsonStats = stats.toJson();
+				if (jsonStats.errors.length > 0)
+				{
+					console.error('stats error', jsonStats.errors);
+					reject(err);
+					return;
+				}
+				if (jsonStats.warnings.length > 0)
+				{
+					console.warn('warn', jsonStats.warnings);
+				}
+				console.log('log', stats.toString());
+				resolve();
+			});
+		});
 	});
-});
+}, Promise.resolve());

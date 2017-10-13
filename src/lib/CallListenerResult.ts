@@ -15,7 +15,7 @@ const enum CallListenerResult {
 	/**
 	 * Indicates that [[IEvent.stopImmediatePropagation|stopImmediatePropagation]] has been called
 	 */
-	IMMEDIATE_PROPAGATION_STOPPED = 2
+	IMMEDIATE_PROPAGATION_STOPPED = 2,
 }
 
 export default CallListenerResult;

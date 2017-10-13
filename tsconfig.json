@@ -10,10 +10,22 @@
     "removeComments": false,
     "sourceMap": false,
     "inlineSourceMap": false,
-    "outDir": "./"
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "strictNullChecks": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./npm",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "files": [
-    "./typings/index.d.ts",
-    "./src/index.ts"
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "./src/bundle.ts"
   ]
 }
