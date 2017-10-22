@@ -1,5 +1,3 @@
-import 'ts-helpers';
-
 import { default as _export } from './lib/EventDispatcher';
 
 export { default as IEventDispatcher } from './lib/IEventDispatcher';
