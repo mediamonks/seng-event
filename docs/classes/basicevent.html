@@ -101,16 +101,11 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#bubbles" class="tsd-kind-icon">bubbles</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#cancelable" class="tsd-kind-icon">cancelable</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#currenttarget" class="tsd-kind-icon">current<wbr>Target</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#defaultprevented" class="tsd-kind-icon">default<wbr>Prevented</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#eventphase" class="tsd-kind-icon">event<wbr>Phase</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#target" class="tsd-kind-icon">target</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#timestamp" class="tsd-kind-icon">time<wbr>Stamp</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#type" class="tsd-kind-icon">type</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-inherited">
-							<h3>Accessors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="basicevent.html#defaultprevented" class="tsd-kind-icon">default<wbr>Prevented</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -139,7 +134,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in lib/AbstractEvent.ts:43</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L47">lib/AbstractEvent.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -202,15 +197,9 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#bubbles">bubbles</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#bubbles">bubbles</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:59</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L16">lib/AbstractEvent.ts:16</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>If true, the event will also go through a bubbling phase. See <a href="eventdispatcher.html#dispatchevent">EventDispatcher.dispatchEvent</a>
-							for more information on the event phases.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="cancelable" class="tsd-anchor"></a>
@@ -220,17 +209,9 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#cancelable">cancelable</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#cancelable">cancelable</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:60</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L17">lib/AbstractEvent.ts:17</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Indicates if <a href="basicevent.html#preventdefault">preventDefault</a> can be called on this event. This will prevent the &#39;default
-								action&#39; of the event from being executed. It is up to the <a href="eventdispatcher.html">EventDispatcher</a> instance that dispatches the
-								event to stop the default action from executing when the <a href="eventdispatcher.html#dispatchevent">dispatchEvent</a>
-							method returns <em>false</em></p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="currenttarget" class="tsd-anchor"></a>
@@ -240,7 +221,7 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#currenttarget">currentTarget</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#currenttarget">currentTarget</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:20</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L24">lib/AbstractEvent.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -252,6 +233,23 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="defaultprevented" class="tsd-anchor"></a>
+					<h3>default<wbr>Prevented</h3>
+					<div class="tsd-signature tsd-kind-icon">default<wbr>Prevented<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#defaultprevented">defaultPrevented</a></p>
+						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#defaultprevented">defaultPrevented</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L47">lib/AbstractEvent.ts:47</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p> <em>true</em> if <a href="basicevent.html#cancelable">cancelable</a> is true and <a href="basicevent.html#preventdefault">preventDefault</a> has been called on this event.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="eventphase" class="tsd-anchor"></a>
 					<h3>event<wbr>Phase</h3>
 					<div class="tsd-signature tsd-kind-icon">event<wbr>Phase<span class="tsd-signature-symbol">:</span> <a href="../enums/eventphase.html" class="tsd-signature-type">EventPhase</a><span class="tsd-signature-symbol"> =&nbsp;EventPhase.NONE</span></div>
@@ -259,7 +257,7 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#eventphase">eventPhase</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#eventphase">eventPhase</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:33</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L37">lib/AbstractEvent.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -279,7 +277,7 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#target">target</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#target">target</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:26</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L30">lib/AbstractEvent.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -298,7 +296,7 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#timestamp">timeStamp</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#timestamp">timeStamp</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:39</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L43">lib/AbstractEvent.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -317,40 +315,9 @@
 						<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#type">type</a></p>
 						<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#type">type</a></p>
 						<ul>
-							<li>Defined in lib/AbstractEvent.ts:58</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L15">lib/AbstractEvent.ts:15</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The type of the event. Event listeners will only be called if their eventType match this type.</p>
-						</div>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
-				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-					<a name="defaultprevented" class="tsd-anchor"></a>
-					<h3>default<wbr>Prevented</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> defaultPrevented<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#defaultprevented">defaultPrevented</a></p>
-								<ul>
-									<li>Defined in lib/AbstractEvent.ts:69</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p><em>true</em> if <a href="basicevent.html#cancelable">cancelable</a> is true and <a href="basicevent.html#preventdefault">preventDefault</a> has been called on this event.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -367,7 +334,7 @@
 								<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#calllistener">callListener</a></p>
 								<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#calllistener">callListener</a></p>
 								<ul>
-									<li>Defined in lib/AbstractEvent.ts:111</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L111">lib/AbstractEvent.ts:111</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,7 +369,7 @@
 								<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#clone">clone</a></p>
 								<p>Overrides <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in lib/event/BasicEvent.ts:4</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/event/BasicEvent.ts#L4">lib/event/BasicEvent.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="basicevent.html" class="tsd-signature-type">BasicEvent</a></h4>
@@ -421,7 +388,7 @@
 								<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#preventdefault">preventDefault</a></p>
 								<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#preventdefault">preventDefault</a></p>
 								<ul>
-									<li>Defined in lib/AbstractEvent.ts:97</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L97">lib/AbstractEvent.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,7 +413,7 @@
 								<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#stopimmediatepropagation">stopImmediatePropagation</a></p>
 								<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#stopimmediatepropagation">stopImmediatePropagation</a></p>
 								<ul>
-									<li>Defined in lib/AbstractEvent.ts:89</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L89">lib/AbstractEvent.ts:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -476,7 +443,7 @@
 								<p>Implementation of <a href="../interfaces/ievent.html">IEvent</a>.<a href="../interfaces/ievent.html#stoppropagation">stopPropagation</a></p>
 								<p>Inherited from <a href="abstractevent.html">AbstractEvent</a>.<a href="abstractevent.html#stoppropagation">stopPropagation</a></p>
 								<ul>
-									<li>Defined in lib/AbstractEvent.ts:78</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/AbstractEvent.ts#L78">lib/AbstractEvent.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -533,6 +500,9 @@
 								<a href="basicevent.html#currenttarget" class="tsd-kind-icon">current<wbr>Target</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="basicevent.html#defaultprevented" class="tsd-kind-icon">default<wbr>Prevented</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="basicevent.html#eventphase" class="tsd-kind-icon">event<wbr>Phase</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -543,9 +513,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="basicevent.html#type" class="tsd-kind-icon">type</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="basicevent.html#defaultprevented" class="tsd-kind-icon">default<wbr>Prevented</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="basicevent.html#calllistener" class="tsd-kind-icon">call<wbr>Listener</a>
@@ -591,7 +558,7 @@
 						<a href="../globals.html#event_type_placeholder" class="tsd-kind-icon">EVENT_<wbr>TYPE_<wbr>PLACEHOLDER</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#_calllistenerresult" class="tsd-kind-icon">_call<wbr>Listener<wbr>Result</a>
+						<a href="../globals.html#calllistenerresult" class="tsd-kind-icon">call<wbr>Listener<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a>
