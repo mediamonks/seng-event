@@ -10,7 +10,7 @@ node_js:
 sudo: false
 
 before_install:
-  - yarn install -g codeclimate-test-reporter
+  - yarn global add codeclimate-test-reporter
 
 script:
   - yarn test
