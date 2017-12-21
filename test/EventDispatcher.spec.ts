@@ -1,3 +1,8 @@
+import 'mocha';
+import { expect, use } from 'chai';
+import { spy } from 'sinon';
+import sinonChai from 'sinon-chai';
+
 import EventDispatcher, {
 	getParents,
 	getCallTree,
@@ -5,12 +10,8 @@ import EventDispatcher, {
 	callListeners,
 } from '../src/lib/EventDispatcher';
 import BasicEvent from '../src/lib/event/BasicEvent';
-import { expect, use } from 'chai';
-import {} from 'mocha';
-import { spy } from 'sinon';
 import IEvent from '../src/lib/IEvent';
 import EventListenerData from '../src/lib/EventListenerData';
-import * as sinonChai from 'sinon-chai';
 
 use(sinonChai);
 
@@ -499,6 +500,14 @@ describe('EventDispatcher "A"', () => {
 				});
 			});
 		});
+
+    it('should throw when disposed"', () => {
+      const a = new EventDispatcher();
+      a.dispose();
+      const event = new BasicEvent('T', false);
+
+      expect(() => a.dispatchEvent(event)).to.throw('Can\'t dispatchEvent on a disposed EventDispatcher');
+    });
 	});
 
 	describe('#addEventListener()', () => {

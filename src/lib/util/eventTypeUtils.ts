@@ -72,12 +72,12 @@ export const EVENT_TYPE_PLACEHOLDER: string = '__eventTypeUtil::EVENT_TYPE_PLACE
  * names shorthand, we can simplify that to the following: `{ Class1, Class2 }`.
  */
 export const generateEventTypes = (targets: { [name: string]: Object }): void => {
-	Object.keys(targets).forEach((name) => {
-		const target = targets[name];
-		Object.keys(target).forEach((prop) => {
-			if (target[prop] === EVENT_TYPE_PLACEHOLDER) {
-				target[prop] = `${name}/${prop}`;
-			}
-		});
-	});
+  Object.keys(targets).forEach(name => {
+    const target = targets[name];
+    Object.keys(target).forEach(prop => {
+      if (target[prop] === EVENT_TYPE_PLACEHOLDER) {
+        target[prop] = `${name}/${prop}`;
+      }
+    });
+  });
 };
