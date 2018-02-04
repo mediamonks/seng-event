@@ -12,7 +12,7 @@
     "dev:ts": "tsc --noEmit --allowJs --watch",
     "build": "npm-run-all -s clean build:*",
     "build:babel": "babel ./src -x \".ts\" -x \".js\" --out-dir ./",
-    "build:ts": "tsc --declaration --outDir tmp --declarationDir ./",
+    "build:ts": "tsc -p ./tsconfig.build.json",
     "test": "cross-env NODE_ENV=test nyc mocha \"./test/**/*.spec.{ts,js}\"",
     "test:dev": "mocha -w --watch-extensions ts,js \"./test/**/*.spec.{ts,js}\"",
     "clean": "npm-run-all clean:*",
