@@ -70,7 +70,7 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>Data object that is created on every call to <a href="eventdispatcher.html#addeventlistener">EventDispatcher.addEventListener</a>. The object is
-							saved on the <a href="eventdispatcher.html#_listeners">EventDispatcher._listeners</a> object for internal use but is also returned by the
+							saved on the <a href="eventdispatcher.html#listeners">EventDispatcher.listeners</a> object for internal use but is also returned by the
 						<em>addEventListener</em> method as a way to remove the listener.</p>
 					</div>
 				</div>
@@ -137,7 +137,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/EventListenerData.ts:15</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L20">lib/EventListenerData.ts:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -181,7 +181,7 @@
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>Set to the <em>priority</em> argument passed to <a href="eventdispatcher.html#addeventlistener">addEventListener</a>.
-											Used to sort the listener within the <a href="eventdispatcher.html#_listeners">_listeners</a> object of the EventDispatcher</p>
+											Used to sort the listener within the [[EventDispatcher._listeners|_listeners]] object of the EventDispatcher</p>
 										</div>
 									</div>
 								</li>
@@ -199,14 +199,9 @@
 					<div class="tsd-signature tsd-kind-icon">dispatcher<span class="tsd-signature-symbol">:</span> <a href="eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/EventListenerData.ts:25</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L10">lib/EventListenerData.ts:10</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The EventDispatcher on which this listener listens for events</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="handler" class="tsd-anchor"></a>
@@ -214,14 +209,9 @@
 					<div class="tsd-signature tsd-kind-icon">handler<span class="tsd-signature-symbol">:</span> <a href="../globals.html#eventhandler" class="tsd-signature-type">EventHandler</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/EventListenerData.ts:27</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L12">lib/EventListenerData.ts:12</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The handler function that will be called when a matching event is dispatched</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="isremoved" class="tsd-anchor"></a>
@@ -229,7 +219,7 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Removed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/EventListenerData.ts:15</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L20">lib/EventListenerData.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -246,15 +236,9 @@
 					<div class="tsd-signature tsd-kind-icon">priority<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/EventListenerData.ts:29</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L14">lib/EventListenerData.ts:14</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Set to the <em>priority</em> argument passed to <a href="eventdispatcher.html#addeventlistener">addEventListener</a>.
-							Used to sort the listener within the <a href="eventdispatcher.html#_listeners">_listeners</a> object of the EventDispatcher</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="type" class="tsd-anchor"></a>
@@ -262,14 +246,9 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/EventListenerData.ts:26</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L11">lib/EventListenerData.ts:11</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The type of event this listener responds to</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="usecapture" class="tsd-anchor"></a>
@@ -277,14 +256,9 @@
 					<div class="tsd-signature tsd-kind-icon">use<wbr>Capture<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/EventListenerData.ts:28</li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L13">lib/EventListenerData.ts:13</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Set to the <em>useCapture</em> argument passed to <a href="eventdispatcher.html#addeventlistener">addEventListener</a></p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -300,7 +274,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Disposable.dispose</p>
 								<ul>
-									<li>Defined in lib/EventListenerData.ts:37</li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/8ae2293/src/lib/EventListenerData.ts#L49">lib/EventListenerData.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -324,7 +298,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Disposable.isDisposed</p>
 								<ul>
-									<li>Defined in /Users/lars/Projects/_sandbox/temp-seng-event/node_modules/seng-disposable/lib/Disposable.d.ts:8</li>
+									<li>Defined in /Volumes/Projects/Repos/seng/seng-event/node_modules/seng-disposable/lib/Disposable.d.ts:8</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -419,7 +393,7 @@
 						<a href="../globals.html#event_type_placeholder" class="tsd-kind-icon">EVENT_<wbr>TYPE_<wbr>PLACEHOLDER</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#_calllistenerresult" class="tsd-kind-icon">_call<wbr>Listener<wbr>Result</a>
+						<a href="../globals.html#calllistenerresult" class="tsd-kind-icon">call<wbr>Listener<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a>

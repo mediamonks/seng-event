@@ -3,19 +3,24 @@ import EventListenerData from './EventListenerData';
 import { EventHandler } from './EventDispatcher';
 
 interface IEventDispatcher {
-	dispatchEvent(event: IEvent): boolean;
+  dispatchEvent(event: IEvent): boolean;
 
-	addEventListener(type: string, handler: EventHandler, useCapture?: boolean, priority?: number): EventListenerData;
+  addEventListener(
+    type: string,
+    handler: EventHandler,
+    useCapture?: boolean,
+    priority?: number,
+  ): EventListenerData;
 
-	hasEventListener(type: string, handler?: EventHandler, useCapture?: boolean): boolean;
+  hasEventListener(type: string, handler?: EventHandler, useCapture?: boolean): boolean;
 
-	willTrigger(type: string): boolean;
+  willTrigger(type: string): boolean;
 
-	removeEventListener(type: string, handler: EventHandler, useCapture?: boolean): void;
+  removeEventListener(type: string, handler: EventHandler, useCapture?: boolean): void;
 
-	removeAllEventListeners(type?: string): void;
+  removeAllEventListeners(type?: string): void;
 
-	dispose(): void;
+  dispose(): void;
 }
 
 export default IEventDispatcher;
