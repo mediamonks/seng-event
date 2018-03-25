@@ -99,7 +99,7 @@ describe('AbstractEvent', () => {
 
 			const event = new TestEvent('test', false, false);
 
-			it('should throw an error', () => {
+			it('should throw an erro', () => {
 				expect(() => event.preventDefault()).to.throw(Error);
 			});
 		});

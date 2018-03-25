@@ -49,7 +49,6 @@ export default class EventListenerData extends sengDisposable {
   public dispose(): void {
     if (this.dispatcher) {
       this.dispatcher.removeEventListener(this.type, this.handler, this.useCapture);
-      this.dispatcher = null;
     }
     super.dispose();
   }

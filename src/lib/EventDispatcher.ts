@@ -19,7 +19,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * set to _null_. The parent is used in the bubbling and capturing phases of events.
    * @see [[dispatchEvent]] for more information on the bubbling and capturing chain
    */
-  public parent: EventDispatcher;
+  public parent: EventDispatcher | null;
   /**
    * An object containing all event listeners by [[IEvent.type|event type]]. Each value
    * on this object is an Array of [[EventListenerData]] objects for each event listener
@@ -42,7 +42,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * dispatched by this EventDispatcher to the given object. If not set, will use this instance
    * as a target for dispatched events.
    */
-  constructor(parent: EventDispatcher = null, target?: IEventDispatcher) {
+  constructor(parent: EventDispatcher | null = null, target?: IEventDispatcher) {
     super();
 
     this.target = target || this;
@@ -274,8 +274,8 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
  */
 export const removeListenersFrom = (
   listeners: EventListenerMap,
-  eventType?: string,
-  handler?: EventHandler,
+  eventType?: string | null,
+  handler?: EventHandler | null,
   useCapture?: boolean,
 ) => {
   for (const i in listeners) {

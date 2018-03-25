@@ -9,9 +9,15 @@ import EventDispatcher, {
 	removeListenersFrom,
 	callListeners,
 } from '../src/lib/EventDispatcher';
-import BasicEvent from '../src/lib/event/BasicEvent';
 import IEvent from '../src/lib/IEvent';
 import EventListenerData from '../src/lib/EventListenerData';
+import AbstractEvent from "../src/lib/AbstractEvent";
+
+class BasicEvent extends AbstractEvent {
+  public clone(): BasicEvent {
+    return new BasicEvent(this.type, this.bubbles, this.cancelable, this.timeStamp !== 0);
+  }
+}
 
 use(sinonChai);
 

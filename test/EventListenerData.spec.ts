@@ -5,7 +5,13 @@ import sinonChai from 'sinon-chai';
 
 import EventDispatcher from '../src/lib/EventDispatcher';
 import EventListenerData from '../src/lib/EventListenerData';
-import BasicEvent from '../src/lib/event/BasicEvent';
+import AbstractEvent from "../src/lib/AbstractEvent";
+
+class BasicEvent extends AbstractEvent {
+  public clone(): BasicEvent {
+    return new BasicEvent(this.type, this.bubbles, this.cancelable, this.timeStamp !== 0);
+  }
+}
 
 use(sinonChai);
 

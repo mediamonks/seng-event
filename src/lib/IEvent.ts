@@ -10,8 +10,8 @@ interface IEvent {
   cancelable: boolean;
   defaultPrevented: boolean;
 
-  target: IEventDispatcher;
-  currentTarget: IEventDispatcher;
+  target: IEventDispatcher | null;
+  currentTarget: IEventDispatcher | null;
   timeStamp: number;
 
   eventPhase: EventPhase;

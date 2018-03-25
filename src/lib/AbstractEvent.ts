@@ -21,13 +21,13 @@ abstract class AbstractEvent implements IEvent {
    * listeners are currently being called on. After completion of an event dispatch this value
    * will be reset to _null_.
    */
-  public currentTarget: IEventDispatcher = null;
+  public currentTarget: IEventDispatcher | null = null;
   /**
    * Will be updated by [[EventDispatcher]] when [[EventDispatcher.dispatchEvent|dispatchEvent]] is
    * called with this event. The value will be set to the EventDispatcher instance that dispatched
    * the event.
    */
-  public target: IEventDispatcher = null;
+  public target: IEventDispatcher | null = null;
   /**
    * The current event phase of this event. During event dispatch, this value will be either
    * [[EventPhase.CAPTURING_PHASE|CAPTURING_PHASE]], [[EventPhase.AT_TARGET|AT_TARGET]] or
