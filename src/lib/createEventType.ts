@@ -180,7 +180,7 @@ function createEventType<TData>(bubbles?: boolean, cancelable?: boolean, setTime
     T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9 | T10 | T11 | T12 | T13 | T14 | T15
   >;
   function createEventTypeHelper(types: Array<string>) {
-    return class EventType extends BaseEvent<any, string> {
+    class EventType extends BaseEvent<any, string> {
       public static types = types.reduce<TypeMap<string>>((result, t) => ({ ...result, t }), {});
 
       constructor(type: string, data: TData) {
@@ -190,10 +190,24 @@ function createEventType<TData>(bubbles?: boolean, cancelable?: boolean, setTime
       public clone(): EventType {
         return new EventType(this.type, this.data);
       }
-    };
+    }
+
+    return EventType;
   }
 
   return createEventTypeHelper;
 }
 
 export default createEventType;
+
+interface IData {
+  foo: number;
+}
+
+const TestEvent = createEventType<IData>(true)(['CREATE', 'DESTROY']);
+
+function processEvent(event: InstanceType<typeof TestEvent>) {
+  console.log(event.data.foo);
+}
+
+processEvent(new TestEvent('CREATE', { foo: 5 }));
