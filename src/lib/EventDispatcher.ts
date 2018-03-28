@@ -1,5 +1,4 @@
 import SengDisposable from 'seng-disposable';
-import IEventDispatcher from './IEventDispatcher';
 import EventListenerData from './EventListenerData';
 import EventPhase from './EventPhase';
 import CallListenerResult from './CallListenerResult';
@@ -38,7 +37,7 @@ export default class EventDispatcher<
    * The value that will be set as [[IEvent.target|target]] on events that are dispatched
    * by this EventDispatcher instance.
    */
-  private target: IEventDispatcher;
+  private target: EventDispatcher;
 
   /**
    * Creates an EventDispatcher instance.
@@ -50,7 +49,7 @@ export default class EventDispatcher<
    * dispatched by this EventDispatcher to the given object. If not set, will use this instance
    * as a target for dispatched events.
    */
-  constructor(parent: EventDispatcher | null = null, target?: IEventDispatcher) {
+  constructor(parent: EventDispatcher | null = null, target?: EventDispatcher) {
     super();
 
     this.target = target || this;
