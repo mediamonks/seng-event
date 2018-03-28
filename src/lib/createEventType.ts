@@ -199,15 +199,3 @@ function createEventType<TData>(bubbles?: boolean, cancelable?: boolean, setTime
 }
 
 export default createEventType;
-
-interface IData {
-  foo: number;
-}
-
-const TestEvent = createEventType<IData>(true)(['CREATE', 'DESTROY']);
-
-function processEvent(event: InstanceType<typeof TestEvent>) {
-  console.log(event.data.foo);
-}
-
-processEvent(new TestEvent('CREATE', { foo: 5 }));

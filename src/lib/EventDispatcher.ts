@@ -1,9 +1,15 @@
-import sengDisposable from 'seng-disposable';
+import SengDisposable from 'seng-disposable';
 import IEventDispatcher from './IEventDispatcher';
-import IEvent from './IEvent';
 import EventListenerData from './EventListenerData';
 import EventPhase from './EventPhase';
 import CallListenerResult from './CallListenerResult';
+import AbstractEvent from './AbstractEvent';
+import {
+  EventHandlerForEvent,
+  EventListenerMap,
+  ExtractEventsOfType,
+  TypesForEvent,
+} from './EventTypings';
 
 /**
  * Base class that adds the ability to dispatch events and attach handlers that should be
@@ -13,7 +19,9 @@ import CallListenerResult from './CallListenerResult';
  * by existing event dispatching systems like the functionality described in the
  * [DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
  */
-export default class EventDispatcher extends sengDisposable implements IEventDispatcher {
+export default class EventDispatcher<
+  TEvent extends AbstractEvent = AbstractEvent
+> extends SengDisposable {
   /**
    * The parent EventDispatcher instance. If this instance has no parent, this value will be
    * set to _null_. The parent is used in the bubbling and capturing phases of events.
@@ -25,7 +33,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * on this object is an Array of [[EventListenerData]] objects for each event listener
    * added with that type.
    */
-  private listeners: EventListenerMap = {};
+  private listeners: EventListenerMap<AbstractEvent> = {};
   /**
    * The value that will be set as [[IEvent.target|target]] on events that are dispatched
    * by this EventDispatcher instance.
@@ -79,7 +87,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * _Please note: [[IEvent.preventDefault|preventDefault()]] can only be called on
    * events that have their [[IEvent.cancelable|cancelable]] property set to true_
    */
-  public dispatchEvent(event: IEvent): boolean {
+  public dispatchEvent(event: TEvent): boolean {
     if (this.isDisposed()) {
       throw new Error("Can't dispatchEvent on a disposed EventDispatcher");
     } else {
@@ -137,17 +145,17 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * @returns An object describing the listener that has a [[EventListenerData.dispose|dispose()]]
    * method to remove the listener.
    */
-  public addEventListener(
-    eventType: string,
-    handler: EventHandler,
+  public addEventListener<TType extends TypesForEvent<TEvent>>(
+    eventType: TType,
+    handler: EventHandlerForEvent<ExtractEventsOfType<TEvent, TType>>,
     useCapture: boolean = false,
     priority: number = 0,
-  ): EventListenerData {
+  ) {
     if (typeof this.listeners[eventType] === 'undefined') {
       this.listeners[eventType] = [];
     }
 
-    const data: EventListenerData = new EventListenerData(
+    const data = new EventListenerData<AbstractEvent>(
       this,
       eventType,
       handler,
@@ -171,8 +179,8 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * @returns {boolean} True if one or more event listeners exist
    */
   public hasEventListener(
-    eventType: string,
-    handler?: EventHandler,
+    eventType: TypesForEvent<TEvent>,
+    handler?: EventHandlerForEvent<TEvent>,
     useCapture?: boolean,
   ): boolean {
     if (typeof handler === 'undefined') {
@@ -199,7 +207,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * @param eventType The event type to check for
    * @returns _true_ if a matching listener is found
    */
-  public willTrigger(eventType: string): boolean {
+  public willTrigger(eventType: TypesForEvent<TEvent>): boolean {
     return (
       this.hasEventListener(eventType) || (!!this.parent && this.parent.willTrigger(eventType))
     );
@@ -218,8 +226,8 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * event listeners that have useCapture set to false will be removed._
    */
   public removeEventListener(
-    eventType: string,
-    handler: EventHandler,
+    eventType: TypesForEvent<TEvent>,
+    handler: EventHandlerForEvent<TEvent>,
     useCapture: boolean = false,
   ): void {
     removeListenersFrom(this.listeners, eventType, handler, useCapture);
@@ -235,7 +243,7 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
    * @param eventType The [[IEvent.type|type]] of event to remove. If not provided, all event listeners
    * will be removed regardless of their type.
    */
-  public removeAllEventListeners(eventType?: string): void {
+  public removeAllEventListeners(eventType?: TypesForEvent<TEvent>): void {
     removeListenersFrom(this.listeners, eventType);
   }
 
@@ -272,10 +280,10 @@ export default class EventDispatcher extends sengDisposable implements IEventDis
  * @param handler If set, will only remove listeners with this _handler_
  * @param useCapture If set, will only remove listeners with the same value for _useCapture_
  */
-export const removeListenersFrom = (
-  listeners: EventListenerMap,
-  eventType?: string | null,
-  handler?: EventHandler | null,
+export const removeListenersFrom = <TEvent extends AbstractEvent>(
+  listeners: EventListenerMap<TEvent>,
+  eventType?: TypesForEvent<TEvent> | null,
+  handler?: EventHandlerForEvent<TEvent> | null,
   useCapture?: boolean,
 ) => {
   for (const i in listeners) {
@@ -355,8 +363,11 @@ export const getCallTree = (target: EventDispatcher, bubbles: boolean): Array<Ev
  * of them call [[IEvent.stopPropagation|stopPropagation()]] or
  * [[IEvent.stopImmediatePropagation|stopImmediatePropagation]]
  */
-export const callListeners = (listeners: EventListenerMap, event: IEvent): boolean => {
-  const listenersOfType: Array<EventListenerData> = listeners[event.type]
+export const callListeners = <TEvent extends AbstractEvent>(
+  listeners: EventListenerMap<TEvent>,
+  event: TEvent,
+): boolean => {
+  const listenersOfType: Array<EventListenerData<TEvent>> = listeners[event.type]
     ? [...listeners[event.type]]
     : [];
   let propagationIsStopped = false;
@@ -379,14 +390,3 @@ export const callListeners = (listeners: EventListenerMap, event: IEvent): boole
 
   return propagationIsStopped;
 };
-
-/**
- * Type alias for the [[EventDispatcher.listeners]] property that contains all listeners for
- * an EventDispatcher instance
- */
-type EventListenerMap = { [type: string]: Array<EventListenerData> };
-
-/**
- * Type alias for event handler functions that can be passed to [[EventDispatcher.addEventListener]]
- */
-export type EventHandler = (event?: IEvent) => any;

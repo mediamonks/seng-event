@@ -1,8 +1,7 @@
-import IEvent from './IEvent';
 import EventPhase from './EventPhase';
 import IEventDispatcher from './IEventDispatcher';
-import { EventHandler } from './EventDispatcher';
 import CallListenerResult from './CallListenerResult';
+import { EventHandlerForEvent } from './EventTypings';
 
 let callListenerResult = CallListenerResult.NONE;
 
@@ -11,7 +10,7 @@ let callListenerResult = CallListenerResult.NONE;
  * should not be instantiated but extended by a specific event class. For an event class with basic
  * functionality that can be instantiated see [[BasicEvent]]
  */
-abstract class AbstractEvent implements IEvent {
+abstract class AbstractEvent {
   public type: string;
   public bubbles: boolean;
   public cancelable: boolean;
@@ -108,7 +107,7 @@ abstract class AbstractEvent implements IEvent {
    * @param handler The event handler to execute
    * @returns An enum value, see [[CallListenerResult]]
    */
-  public callListener(handler: EventHandler): CallListenerResult {
+  public callListener(handler: EventHandlerForEvent<this>): CallListenerResult {
     callListenerResult = CallListenerResult.NONE;
     handler.call(null, this);
     return callListenerResult;

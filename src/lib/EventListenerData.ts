@@ -1,15 +1,19 @@
 import sengDisposable from 'seng-disposable';
-import EventDispatcher, { EventHandler } from './EventDispatcher';
+import EventDispatcher from './EventDispatcher';
+import AbstractEvent from './AbstractEvent';
+import { EventHandlerForEvent, TypesForEvent } from './EventTypings';
 
 /**
  * Data object that is created on every call to [[EventDispatcher.addEventListener]]. The object is
  * saved on the [[EventDispatcher.listeners]] object for internal use but is also returned by the
  * _addEventListener_ method as a way to remove the listener.
  */
-export default class EventListenerData extends sengDisposable {
-  public dispatcher: EventDispatcher;
-  public type: string;
-  public handler: EventHandler;
+export default class EventListenerData<
+  TEvent extends AbstractEvent = AbstractEvent
+> extends sengDisposable {
+  public dispatcher: EventDispatcher<TEvent>;
+  public type: TypesForEvent<TEvent>;
+  public handler: EventHandlerForEvent<TEvent>;
   public useCapture: boolean;
   public priority: number;
   /**
@@ -28,9 +32,9 @@ export default class EventListenerData extends sengDisposable {
    * Used to sort the listener within the [[EventDispatcher._listeners|_listeners]] object of the EventDispatcher
    */
   constructor(
-    dispatcher: EventDispatcher,
-    type: string,
-    handler: EventHandler,
+    dispatcher: EventDispatcher<TEvent>,
+    type: TypesForEvent<TEvent>,
+    handler: EventHandlerForEvent<TEvent>,
     useCapture: boolean,
     priority: number,
   ) {
