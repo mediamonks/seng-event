@@ -1,6 +1,6 @@
 import sengDisposable from 'seng-disposable';
-import IEventDispatcher from './IEventDispatcher';
-import IEvent from './IEvent';
+import { IEventDispatcher } from './IEventDispatcher';
+import { IEvent } from './IEvent';
 import EventListenerData from './EventListenerData';
 import EventPhase from './EventPhase';
 import CallListenerResult from './CallListenerResult';

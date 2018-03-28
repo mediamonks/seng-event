@@ -1,6 +1,6 @@
-import IEvent from './IEvent';
+import { IEvent } from './IEvent';
 import EventPhase from './EventPhase';
-import IEventDispatcher from './IEventDispatcher';
+import { IEventDispatcher } from './IEventDispatcher';
 import { EventHandler } from './EventDispatcher';
 import CallListenerResult from './CallListenerResult';
 

@@ -1,8 +1,8 @@
-import IEvent from './IEvent';
+import { IEvent } from './IEvent';
 import EventListenerData from './EventListenerData';
 import { EventHandler } from './EventDispatcher';
 
-interface IEventDispatcher {
+export interface IEventDispatcher {
   dispatchEvent(event: IEvent): boolean;
 
   addEventListener(
@@ -22,5 +22,3 @@ interface IEventDispatcher {
 
   dispose(): void;
 }
-
-export default IEventDispatcher;

@@ -1,9 +1,9 @@
-import IEventDispatcher from './IEventDispatcher';
+import { IEventDispatcher } from './IEventDispatcher';
 import EventPhase from './EventPhase';
 import { EventHandler } from './EventDispatcher';
 import CallListenerResult from './CallListenerResult';
 
-interface IEvent {
+export interface IEvent {
   type: string;
 
   bubbles: boolean;
@@ -26,5 +26,3 @@ interface IEvent {
 
   preventDefault(): void;
 }
-
-export default IEvent;
