@@ -389,4 +389,4 @@ type EventListenerMap = { [type: string]: Array<EventListenerData> };
 /**
  * Type alias for event handler functions that can be passed to [[EventDispatcher.addEventListener]]
  */
-export type EventHandler = (event?: IEvent) => any;
+export type EventHandler = (event: IEvent) => any;
