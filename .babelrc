@@ -8,16 +8,15 @@
       "loose": true,
       "useBuiltIns": false
     }],
-    "@babel/preset-stage-3",
     "@babel/typescript"
   ],
   "plugins": [
     ["@babel/plugin-transform-runtime", {
       "helpers": true,
-      "polyfill": false,
-      "regenerator": false,
-      "moduleName": "@babel/runtime"
-    }]
+      "regenerator": false
+    }],
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread"
   ],
   "env": {
     "test": {
