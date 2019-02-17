@@ -1,6 +1,5 @@
 import AbstractEvent from '../src/lib/AbstractEvent';
 import { expect } from 'chai';
-import IEvent from '../src/lib/IEvent';
 import CallListenerResult from '../src/lib/CallListenerResult';
 
 describe('AbstractEvent', () => {
@@ -13,7 +12,7 @@ describe('AbstractEvent', () => {
 			}
 
 			const event = new TestEvent('test');
-			const handler = (event: IEvent) => {
+			const handler = (event: TestEvent) => {
 				event.stopPropagation();
 			};
 			const result = event.callListener(handler);
@@ -30,7 +29,7 @@ describe('AbstractEvent', () => {
 			}
 
 			const event = new TestEvent('test');
-			const handler = (event: IEvent) => {
+			const handler = (event: TestEvent) => {
 				event.stopImmediatePropagation();
 			};
 			const result = event.callListener(handler);
@@ -47,7 +46,7 @@ describe('AbstractEvent', () => {
 			}
 
 			const event = new TestEvent('test');
-			const handler = (event: IEvent) => {
+			const handler = (event: TestEvent) => {
 				event.stopImmediatePropagation();
 				event.stopPropagation();
 			};
@@ -99,7 +98,7 @@ describe('AbstractEvent', () => {
 
 			const event = new TestEvent('test', false, false);
 
-			it('should throw an erro', () => {
+			it('should throw an error', () => {
 				expect(() => event.preventDefault()).to.throw(Error);
 			});
 		});

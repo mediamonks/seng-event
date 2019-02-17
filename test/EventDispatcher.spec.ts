@@ -9,7 +9,6 @@ import EventDispatcher, {
 	removeListenersFrom,
 	callListeners,
 } from '../src/lib/EventDispatcher';
-import IEvent from '../src/lib/IEvent';
 import EventListenerData from '../src/lib/EventListenerData';
 import AbstractEvent from "../src/lib/AbstractEvent";
 
@@ -99,7 +98,7 @@ describe('EventDispatcher "A"', () => {
 
 							describe('where "p1Handler()" calls event.stopImmediatePropagation()', () => {
 								const p1 = new EventDispatcher();
-								const p1Handler = spy((event: IEvent) => event.stopImmediatePropagation());
+								const p1Handler = spy((event: BasicEvent) => event.stopImmediatePropagation());
 								p1.addEventListener('T', p1Handler, true);
 
 								const a = new EventDispatcher(p1);
@@ -115,7 +114,7 @@ describe('EventDispatcher "A"', () => {
 
 							describe('where "p1Handler()" calls event.stopPropagation()', () => {
 								const p1 = new EventDispatcher();
-								const p1Handler = spy((event: IEvent) => event.stopPropagation());
+								const p1Handler = spy((event: BasicEvent) => event.stopPropagation());
 								p1.addEventListener('T', p1Handler, true);
 
 								const a = new EventDispatcher(p1);
@@ -135,7 +134,7 @@ describe('EventDispatcher "A"', () => {
 									describe('where "p1Handler2()" calls event.stopPropagation() but "p1Handler()" does not', () => {
 										const p1 = new EventDispatcher();
 										const p1Handler = spy();
-										const p1Handler2 = spy((event: IEvent) => event.stopPropagation());
+										const p1Handler2 = spy((event: BasicEvent) => event.stopPropagation());
 										p1.addEventListener('T', p1Handler, true);
 										p1.addEventListener('T', p1Handler2, true, 2);
 
@@ -176,7 +175,7 @@ describe('EventDispatcher "A"', () => {
 				describe('and another event listener for eventType "T" with handler "aHandler2()" and priority==2', () => {
 					describe('where aHandler() calls event.stopImmediatePropagation()', () => {
 						const a = new EventDispatcher();
-						const aHandler = spy((event: IEvent) => event.stopImmediatePropagation());
+						const aHandler = spy((event: BasicEvent) => event.stopImmediatePropagation());
 						const aHandler2 = spy();
 						a.addEventListener('T', aHandler);
 						a.addEventListener('T', aHandler2, false, 2);
@@ -197,7 +196,7 @@ describe('EventDispatcher "A"', () => {
 					describe('where aHandler2() calls event.stopImmediatePropagation()', () => {
 						const a = new EventDispatcher();
 						const aHandler = spy();
-						const aHandler2 = spy((event: IEvent) => event.stopImmediatePropagation());
+						const aHandler2 = spy((event: BasicEvent) => event.stopImmediatePropagation());
 						a.addEventListener('T', aHandler);
 						a.addEventListener('T', aHandler2, false, 2);
 
@@ -211,7 +210,7 @@ describe('EventDispatcher "A"', () => {
 					describe('where aHandler2() calls event.stopPropagation()', () => {
 						const a = new EventDispatcher();
 						const aHandler = spy();
-						const aHandler2 = spy((event: IEvent) => event.stopPropagation());
+						const aHandler2 = spy((event: BasicEvent) => event.stopPropagation());
 						a.addEventListener('T', aHandler);
 						a.addEventListener('T', aHandler2, false, 2);
 
@@ -329,7 +328,7 @@ describe('EventDispatcher "A"', () => {
 							const p1 = new EventDispatcher();
 							const p1Handler = spy();
 							p1.addEventListener('T', p1Handler, false);
-							const p1Handler2 = spy((event: IEvent) => event.preventDefault());
+							const p1Handler2 = spy((event: BasicEvent) => event.preventDefault());
 							p1.addEventListener('T', p1Handler2, true);
 
 							const a = new EventDispatcher(p1);
@@ -374,7 +373,7 @@ describe('EventDispatcher "A"', () => {
 									p2.addEventListener('T', p2Handler, false);
 
 									const p1 = new EventDispatcher(p2);
-									const p1Handler = spy((event: IEvent) => event.stopPropagation());
+									const p1Handler = spy((event: BasicEvent) => event.stopPropagation());
 									p1.addEventListener('T', p1Handler, false);
 
 									const a = new EventDispatcher(p1);
@@ -448,7 +447,7 @@ describe('EventDispatcher "A"', () => {
 										const p3Handler1 = () => {
 										};
 										p3.addEventListener('T', p3Handler1, true);
-										const p3Handler2 = (event: IEvent) => event.preventDefault();
+										const p3Handler2 = (event: BasicEvent) => event.preventDefault();
 										p3.addEventListener('T', p3Handler2, false);
 										const p2 = new EventDispatcher(p3);
 
@@ -1181,7 +1180,7 @@ describe('callListeners()', () => {
 		describe('one of which calls event.stopPropagation()', () => {
 			const a = new EventDispatcher();
 			const pHandler1 = spy();
-			const pHandler2 = spy((event: IEvent) => event.stopPropagation());
+			const pHandler2 = spy((event: BasicEvent) => event.stopPropagation());
 			const pHandler3 = spy();
 
 			const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
@@ -1209,7 +1208,7 @@ describe('callListeners()', () => {
 		describe('one of which calls event.stopImmediatePropagation()', () => {
 			const a = new EventDispatcher();
 			const pHandler1 = spy();
-			const pHandler2 = spy((event: IEvent) => event.stopImmediatePropagation());
+			const pHandler2 = spy((event: BasicEvent) => event.stopImmediatePropagation());
 			const pHandler3 = spy();
 
 			const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
