@@ -14,6 +14,7 @@
     "build:babel": "babel ./src -x \".ts\" -x \".js\" --out-dir ./",
     "build:ts": "tsc -p ./tsconfig.build.json",
     "test": "cross-env NODE_ENV=test nyc mocha \"./test/**/*.spec.{ts,js}\"",
+    "test:types": "typings-checker --allow-expect-error --project tsconfig.json test/types/tests.ts",
     "test:dev": "mocha -w --watch-extensions ts,js \"./test/**/*.spec.{ts,js}\"",
     "clean": "npm-run-all clean:*",
     "clean:test": "shx rm -rf coverage .nyc_output",
@@ -100,7 +101,8 @@
     "tslint-config-airbnb": "^5.4.2",
     "tslint-config-prettier": "^1.6.0",
     "typedoc": "^0.9.0",
-    "typescript": "^2.8.1"
+    "typescript": "^3.3.3",
+    "typings-checker": "^2.0.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
