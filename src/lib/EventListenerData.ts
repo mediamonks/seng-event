@@ -13,7 +13,7 @@ export default class EventListenerData<
 > extends sengDisposable {
   public dispatcher: EventDispatcher<TEvent>;
   public type: TypesForEvent<TEvent>;
-  public handler: EventHandlerForEvent<TEvent>;
+  public handler: EventHandlerForEvent<any>;
   public useCapture: boolean;
   public priority: number;
   /**
@@ -34,7 +34,7 @@ export default class EventListenerData<
   constructor(
     dispatcher: EventDispatcher<TEvent>,
     type: TypesForEvent<TEvent>,
-    handler: EventHandlerForEvent<TEvent>,
+    handler: EventHandlerForEvent<any>,
     useCapture: boolean,
     priority: number,
   ) {

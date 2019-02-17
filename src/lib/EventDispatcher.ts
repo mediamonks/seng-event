@@ -32,7 +32,7 @@ export default class EventDispatcher<
    * on this object is an Array of [[EventListenerData]] objects for each event listener
    * added with that type.
    */
-  private listeners: EventListenerMap<AbstractEvent> = {};
+  private listeners: EventListenerMap<TEvent> = {};
   /**
    * The value that will be set as [[IEvent.target|target]] on events that are dispatched
    * by this EventDispatcher instance.
@@ -154,13 +154,7 @@ export default class EventDispatcher<
       this.listeners[eventType] = [];
     }
 
-    const data = new EventListenerData<AbstractEvent>(
-      this,
-      eventType,
-      handler,
-      useCapture,
-      priority,
-    );
+    const data = new EventListenerData<TEvent>(this, eventType, handler, useCapture, priority);
     this.listeners[eventType].push(data);
     this.listeners[eventType].sort(this.listenerSorter);
 
