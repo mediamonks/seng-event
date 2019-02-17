@@ -1,48 +1,39 @@
-import {
-  IEventOptionsMap,
-  default as IsomorphicBaseEvent,
-  TypeMap,
-  DataForIsomorphicEvent,
-} from './IsomorphicBaseEvent';
+import { DataForIsomorphicEvent } from './EventTypings';
+import IsomorphicBaseEvent, { EventOptions, EventOptionsMap } from './IsomorphicBaseEvent';
 
-function objectKeys<T>(o: T): Array<keyof T> {
-  return <any>Object.keys(o);
-}
+type TypeMap<TType extends string> = { [P in TType]: P };
 
-function createIsomorphicEventType<
-  T1 extends string = never,
-  TData1 = never,
-  T2 extends string = never,
-  TData2 = never,
-  T3 extends string = never,
-  TData3 = never,
-  T4 extends string = never,
-  TData4 = never,
-  T5 extends string = never,
-  TData5 = never,
-  T6 extends string = never,
-  TData6 = never
->(typeOptions: IEventOptionsMap<T1 | T2 | T3 | T4 | T5 | T6>) {
-  type TTypesTuple = [T1, T2, T3, T4, T5, T6];
-  type EventTypes = T1 | T2 | T3 | T4 | T5 | T6;
-  type TDataTuple = [TData1, TData2, TData3, TData4, TData5, TData6];
+function createIsomorphicEventType<TDataTuple extends Array<any>>() {
+  return function isomorphicStringHelper<
+    TTypesTuple extends Array<string> & { length: TDataTuple['length'] }
+  >(...types: TTypesTuple) {
+    return function isomorphicOptionsHelper(...typeOptionsArray: Array<EventOptions>) {
+      const typeOptions = types.reduce(
+        (typeOptionsMap, type, index) => {
+          typeOptionsMap[type] = {
+            cancelable: false,
+            bubbles: false,
+            setTimestamp: false,
+            ...(typeOptionsArray[index] || {}),
+          };
+          return typeOptionsMap;
+        },
+        {} as any,
+      ) as EventOptionsMap<TTypesTuple[number]>;
 
-  class IsomorphicEventType<TType extends EventTypes> extends IsomorphicBaseEvent<
-    TTypesTuple,
-    TDataTuple,
-    TType
-  > {
-    public static types: TypeMap<EventTypes> = objectKeys(typeOptions).reduce<TypeMap<EventTypes>>(
-      (result: any, t) => ({ ...result, t }),
-      {} as any,
-    );
+      return class IsomorphicEventType<
+        TType extends TTypesTuple[number] = TTypesTuple[number]
+      > extends IsomorphicBaseEvent<TTypesTuple, TDataTuple, TType> {
+        public static types: TypeMap<TTypesTuple[number]> = types.reduce<
+          TypeMap<TTypesTuple[number]>
+        >((result: any, t) => ({ ...result, t }), {} as any);
 
-    constructor(type: TType, data: DataForIsomorphicEvent<TType, TTypesTuple, TDataTuple>) {
-      super(type, data, typeOptions);
-    }
-  }
-
-  return IsomorphicEventType;
+        constructor(type: TType, data: DataForIsomorphicEvent<TType, TTypesTuple, TDataTuple>) {
+          super(type, data, typeOptions);
+        }
+      };
+    };
+  };
 }
 
 export default createIsomorphicEventType;

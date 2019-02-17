@@ -6,8 +6,8 @@ import AbstractEvent from './AbstractEvent';
 import {
   EventHandlerForEvent,
   EventListenerMap,
-  ExtractEventsOfType,
   TypesForEvent,
+  ExtractEventOfType,
 } from './EventTypings';
 
 /**
@@ -146,7 +146,7 @@ export default class EventDispatcher<
    */
   public addEventListener<TType extends TypesForEvent<TEvent>>(
     eventType: TType,
-    handler: EventHandlerForEvent<ExtractEventsOfType<TEvent, TType>>,
+    handler: EventHandlerForEvent<ExtractEventOfType<TEvent, TType>>,
     useCapture: boolean = false,
     priority: number = 0,
   ) {
@@ -171,9 +171,9 @@ export default class EventDispatcher<
    * is set to false by default_
    * @returns {boolean} True if one or more event listeners exist
    */
-  public hasEventListener(
-    eventType: TypesForEvent<TEvent>,
-    handler?: EventHandlerForEvent<TEvent>,
+  public hasEventListener<TType extends TypesForEvent<TEvent>>(
+    eventType: TType,
+    handler?: EventHandlerForEvent<ExtractEventOfType<TEvent, TType>>,
     useCapture?: boolean,
   ): boolean {
     if (typeof handler === 'undefined') {
@@ -218,8 +218,8 @@ export default class EventDispatcher<
    * parameter will be removed. _Please note: if no useCapture argument is provided, only
    * event listeners that have useCapture set to false will be removed._
    */
-  public removeEventListener(
-    eventType: TypesForEvent<TEvent>,
+  public removeEventListener<TType extends TypesForEvent<TEvent>>(
+    eventType: TType,
     handler: EventHandlerForEvent<TEvent>,
     useCapture: boolean = false,
   ): void {
