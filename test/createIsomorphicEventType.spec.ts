@@ -12,7 +12,7 @@ describe('createIsomorphicEventType', () => {
 
     class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventType<
       [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
-      >()('PLAY', 'STOP', 'UPDATE')({ cancelable: true })<T> {}
+      >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
 
     const playEvent = new IsoPlayerEvent('PLAY', { playerId: 1 });
     expect(playEvent.cancelable).toBe(true);
@@ -28,7 +28,7 @@ describe('createIsomorphicEventType', () => {
 
     class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventType<
       [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
-      >()('PLAY', 'STOP', 'UPDATE')({ cancelable: true })<T> {}
+    >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
 
     const updateEvent = new IsoPlayerEvent('UPDATE', { playerId: 1, currentTime: 10 });
     expect(updateEvent.cancelable).toBe(false);

@@ -21,9 +21,9 @@ new PlayerEvent('someMadeUpString', { playerId: 5 });
 // $ExpectType PlayerEvent
 new PlayerEvent('PLAY', { playerId: 5 });
 
-class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventType<
+class IsoPlayerEvent extends createIsomorphicEventType<
   [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
->()('PLAY', 'STOP', 'UPDATE')({ cancelable: true })<T> {}
+>({ cancelable: true })('PLAY', 'STOP', 'UPDATE') {}
 
 // $ExpectType "UPDATE"
 IsoPlayerEvent.types.UPDATE;
