@@ -17,17 +17,5 @@
     }],
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread"
-  ],
-  "env": {
-    "test": {
-      "plugins": [
-        "./test/_setup/arrow-function-coverage-fix.js",
-        "istanbul"
-      ]
-    }
-  },
-  "ignore": [
-    "src/lib/vendor/**/*.*",
-    "./test/_setup/arrow-function-coverage-fix.js"
   ]
 }

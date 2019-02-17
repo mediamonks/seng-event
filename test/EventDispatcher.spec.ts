@@ -1,8 +1,3 @@
-import 'mocha';
-import { expect, use } from 'chai';
-import { spy } from 'sinon';
-import sinonChai from 'sinon-chai';
-
 import EventDispatcher, {
 	getParents,
 	getCallTree,
@@ -18,39 +13,37 @@ class BasicEvent extends AbstractEvent {
   }
 }
 
-use(sinonChai);
-
 describe('EventDispatcher "A"', () => {
 	describe('#dispatchEvent(event)', () => {
 		describe('with an event that has eventType=="T" and bubbles==false', () => {
 			describe('and an event listener with handler "aHandler()" for eventType "T"', () => {
 				it('should call "aHandler() once"', () => {
 					const a = new EventDispatcher();
-					const aHandler = spy();
+					const aHandler = jest.fn();
 					a.addEventListener('T', aHandler);
 
 					const event = new BasicEvent('T', false);
 					a.dispatchEvent(event);
-					expect(aHandler).to.have.been.calledOnce;
+					expect(aHandler).toHaveBeenCalledTimes(1);
 				});
 				describe('that has useCapture==true', () => {
 					const a = new EventDispatcher();
-					const aHandler = spy();
+					const aHandler = jest.fn();
 					a.addEventListener('T', aHandler, true);
 
 					const event = new BasicEvent('T', false);
 					a.dispatchEvent(event);
 					it('should call "aHandler() once"', () => {
-						expect(aHandler).to.have.been.calledOnce;
+						expect(aHandler).toHaveBeenCalledTimes(1);
 					});
 				});
 				describe(
 					'and an event listener "aHandler2() for eventType "T" with priority==2 that removes the "aHandler()" listener',
 					() => {
 						const a = new EventDispatcher();
-						const aHandler = spy();
+						const aHandler = jest.fn();
 						a.addEventListener('T', aHandler);
-						const aHandler2 = spy(() => {
+						const aHandler2 = jest.fn(() => {
 							a.removeEventListener('T', aHandler);
 						});
 						a.addEventListener('T', aHandler2, false, 2);
@@ -58,16 +51,16 @@ describe('EventDispatcher "A"', () => {
 						const event = new BasicEvent('T', false);
 						a.dispatchEvent(event);
 						it('should not call "aHandler()"', () => {
-							expect(aHandler).not.to.have.been.called;
+							expect(aHandler).not.toHaveBeenCalled();
 						});
 					});
 				describe(
 					'and an event listener "aHandler2() for eventType "T" with priority==2 that calls a.removeAllEventListeners()',
 					() => {
 						const a = new EventDispatcher();
-						const aHandler = spy();
+						const aHandler = jest.fn();
 						a.addEventListener('T', aHandler);
-						const aHandler2 = spy(() => {
+						const aHandler2 = jest.fn(() => {
 							a.removeAllEventListeners();
 						});
 						a.addEventListener('T', aHandler2, false, 2);
@@ -75,56 +68,57 @@ describe('EventDispatcher "A"', () => {
 						const event = new BasicEvent('T', false);
 						a.dispatchEvent(event);
 						it('should not call "aHandler()"', () => {
-							expect(aHandler).not.to.have.been.called;
+							expect(aHandler).not.toHaveBeenCalled();
 						});
 					});
 				describe('and a parent EventDispatcher "p1"', () => {
 					describe('with an event listener with handler "p1Handler()" for eventType "T"', () => {
 						describe('that has useCapture==true', () => {
 							it('should call "p1Handler()" before "aHandler()"', () => {
+							  const callOrder: Array<string> = [];
 								const p1 = new EventDispatcher();
-								const p1Handler = spy();
+								const p1Handler = jest.fn(() => callOrder.push('p1Handler'));
 								p1.addEventListener('T', p1Handler, true);
 
 								const a = new EventDispatcher(p1);
-								const aHandler = spy();
+								const aHandler = jest.fn(() => callOrder.push('aHandler'));
 								a.addEventListener('T', aHandler);
 
 								const event = new BasicEvent('T', false);
 								a.dispatchEvent(event);
 
-								expect(p1Handler).to.have.been.calledBefore(aHandler);
+								expect(callOrder).toEqual(['p1Handler', 'aHandler']);
 							});
 
 							describe('where "p1Handler()" calls event.stopImmediatePropagation()', () => {
 								const p1 = new EventDispatcher();
-								const p1Handler = spy((event: BasicEvent) => event.stopImmediatePropagation());
+								const p1Handler = jest.fn((event: BasicEvent) => event.stopImmediatePropagation());
 								p1.addEventListener('T', p1Handler, true);
 
 								const a = new EventDispatcher(p1);
-								const aHandler = spy();
+								const aHandler = jest.fn();
 								a.addEventListener('T', aHandler);
 
 								const event = new BasicEvent('T', false);
 								a.dispatchEvent(event);
 								it('should not call aHandler()', () => {
-									expect(aHandler).not.to.have.been.called;
+									expect(aHandler).not.toHaveBeenCalled();
 								});
 							});
 
 							describe('where "p1Handler()" calls event.stopPropagation()', () => {
 								const p1 = new EventDispatcher();
-								const p1Handler = spy((event: BasicEvent) => event.stopPropagation());
+								const p1Handler = jest.fn((event: BasicEvent) => event.stopPropagation());
 								p1.addEventListener('T', p1Handler, true);
 
 								const a = new EventDispatcher(p1);
-								const aHandler = spy();
+								const aHandler = jest.fn();
 								a.addEventListener('T', aHandler);
 
 								const event = new BasicEvent('T', false);
 								a.dispatchEvent(event);
 								it('should not call "aHandler()"', () => {
-									expect(aHandler).not.to.have.been.called;
+									expect(aHandler).not.toHaveBeenCalled();
 								});
 							});
 
@@ -133,39 +127,39 @@ describe('EventDispatcher "A"', () => {
 								() => {
 									describe('where "p1Handler2()" calls event.stopPropagation() but "p1Handler()" does not', () => {
 										const p1 = new EventDispatcher();
-										const p1Handler = spy();
-										const p1Handler2 = spy((event: BasicEvent) => event.stopPropagation());
+										const p1Handler = jest.fn();
+										const p1Handler2 = jest.fn((event: BasicEvent) => event.stopPropagation());
 										p1.addEventListener('T', p1Handler, true);
 										p1.addEventListener('T', p1Handler2, true, 2);
 
 										const a = new EventDispatcher(p1);
-										const aHandler = spy();
+										const aHandler = jest.fn();
 										a.addEventListener('T', aHandler);
 
 										const event = new BasicEvent('T', false);
 										a.dispatchEvent(event);
 										it('should call "p1Handler() once"', () => {
-											expect(p1Handler).to.have.been.calledOnce;
+											expect(p1Handler).toHaveBeenCalledTimes(1);
 										});
 										it('should not call "aHandler()"', () => {
-											expect(aHandler).not.to.have.been.called;
+											expect(aHandler).not.toHaveBeenCalled();
 										});
 									});
 								});
 						});
 						describe('that has useCapture==false', () => {
 							const p1 = new EventDispatcher();
-							const p1Handler = spy();
+							const p1Handler = jest.fn();
 							p1.addEventListener('T', p1Handler, false);
 
 							const a = new EventDispatcher(p1);
-							const aHandler = spy();
+							const aHandler = jest.fn();
 							a.addEventListener('T', aHandler);
 
 							const event = new BasicEvent('T', false);
 							a.dispatchEvent(event);
 							it('should not call "p1Handler()"', () => {
-								expect(p1Handler).not.to.have.been.called;
+								expect(p1Handler).not.toHaveBeenCalled();
 							});
 						});
 					});
@@ -174,50 +168,56 @@ describe('EventDispatcher "A"', () => {
 
 				describe('and another event listener for eventType "T" with handler "aHandler2()" and priority==2', () => {
 					describe('where aHandler() calls event.stopImmediatePropagation()', () => {
+            const callOrder: Array<string> = [];
 						const a = new EventDispatcher();
-						const aHandler = spy((event: BasicEvent) => event.stopImmediatePropagation());
-						const aHandler2 = spy();
+						const aHandler = jest.fn((event: BasicEvent) => {
+						  callOrder.push('aHandler');
+						  event.stopImmediatePropagation();
+            });
+						const aHandler2 = jest.fn(() => {
+              callOrder.push('aHandler2');
+            });
 						a.addEventListener('T', aHandler);
 						a.addEventListener('T', aHandler2, false, 2);
 
 						const event = new BasicEvent('T', false);
 						a.dispatchEvent(event);
 						it('should call "aHandler()" once', () => {
-							expect(aHandler).to.have.been.calledOnce;
+							expect(aHandler).toHaveBeenCalledTimes(1);
 						});
 						it('should call "aHandler2() once"', () => {
-							expect(aHandler2).to.have.been.calledOnce;
+							expect(aHandler2).toHaveBeenCalledTimes(1);
 						});
 						it('should call "aHandler2()" before "aHandler()"', () => {
-							expect(aHandler2).to.have.been.calledBefore(aHandler);
+							expect(callOrder).toEqual(['aHandler2', 'aHandler']);
 						});
 					});
 
 					describe('where aHandler2() calls event.stopImmediatePropagation()', () => {
 						const a = new EventDispatcher();
-						const aHandler = spy();
-						const aHandler2 = spy((event: BasicEvent) => event.stopImmediatePropagation());
+						const aHandler = jest.fn();
+						const aHandler2 = jest.fn((event: BasicEvent) => event.stopImmediatePropagation());
 						a.addEventListener('T', aHandler);
 						a.addEventListener('T', aHandler2, false, 2);
 
 						const event = new BasicEvent('T', false);
 						a.dispatchEvent(event);
 						it('should not "aHandler()"', () => {
-							expect(aHandler).not.to.have.been.called;
+							expect(aHandler).not.toHaveBeenCalled();
 						});
 					});
 
 					describe('where aHandler2() calls event.stopPropagation()', () => {
 						const a = new EventDispatcher();
-						const aHandler = spy();
-						const aHandler2 = spy((event: BasicEvent) => event.stopPropagation());
+						const aHandler = jest.fn();
+						const aHandler2 = jest.fn((event: BasicEvent) => event.stopPropagation());
 						a.addEventListener('T', aHandler);
 						a.addEventListener('T', aHandler2, false, 2);
 
 						const event = new BasicEvent('T', false);
 						a.dispatchEvent(event);
 						it('should still call "aHandler()"', () => {
-							expect(aHandler).to.have.been.called;
+							expect(aHandler).toHaveBeenCalled();
 						});
 					});
 				});
@@ -232,23 +232,23 @@ describe('EventDispatcher "A"', () => {
 					a.dispatchEvent(event);
 
 					it('should have set the currentTarget of the event to null', () => {
-						expect(event.currentTarget).to.be.null;
+						expect(event.currentTarget).toBeNull();
 					});
 					it('should have set the target of the event to EventDispatcher "A"', () => {
-						expect(event.target).to.equal(a);
+						expect(event.target).toEqual(a);
 					});
 				});
 			});
 
 			describe('and an event listener for eventType "Q"', () => {
 				const a = new EventDispatcher();
-				const handler = spy();
+				const handler = jest.fn();
 				a.addEventListener('Q', handler);
 
 				const event = new BasicEvent('T', false);
 				a.dispatchEvent(event);
 				it('should not call the listener', () => {
-					expect(handler).not.to.have.been.called;
+					expect(handler).not.toHaveBeenCalled();
 				});
 			});
 
@@ -257,11 +257,15 @@ describe('EventDispatcher "A"', () => {
 				'and event listeners for eventType "T" with handlers "aHandler()", "bHandler()", "cHandler()" and "dHandler()"' +
 				'where "bHandler()" removes the listener with "aHandler()"',
 				() => {
+				  const callOrder: Array<string> = [];
 					const a = new EventDispatcher();
-					const aHandler = spy();
-					const bHandler = spy(() => a.removeEventListener('T', aHandler));
-					const cHandler = spy();
-					const dHandler = spy();
+					const aHandler = jest.fn(() => callOrder.push('aHandler'));
+					const bHandler = jest.fn(() => {
+					  callOrder.push('bHandler');
+            a.removeEventListener('T', aHandler);
+          });
+					const cHandler = jest.fn(() => callOrder.push('cHandler'));
+					const dHandler = jest.fn(() => callOrder.push('dHandler'));
 					a.addEventListener('T', aHandler);
 					a.addEventListener('T', bHandler);
 					a.addEventListener('T', cHandler);
@@ -270,19 +274,17 @@ describe('EventDispatcher "A"', () => {
 					const event = new BasicEvent('T', false);
 					a.dispatchEvent(event);
 					it('should call "aHandler()"', () => {
-						expect(aHandler).to.have.been.calledOnce;
+						expect(aHandler).toHaveBeenCalledTimes(1);
 					});
 					it('should call "cHandler()"', () => {
-						expect(cHandler).to.have.been.calledOnce;
+						expect(cHandler).toHaveBeenCalledTimes(1);
 					});
 					it('should call "dHandler()"', () => {
-						expect(dHandler).to.have.been.calledOnce;
+						expect(dHandler).toHaveBeenCalledTimes(1);
 					});
 
 					it('should call the handlers in the order ABCD', () => {
-						expect(aHandler).to.have.been.calledBefore(bHandler);
-						expect(bHandler).to.have.been.calledBefore(cHandler);
-						expect(cHandler).to.have.been.calledBefore(dHandler);
+						expect(callOrder).toEqual(['aHandler', 'bHandler', 'cHandler', 'dHandler']);
 					});
 				});
 		});
@@ -291,7 +293,7 @@ describe('EventDispatcher "A"', () => {
 				describe('that has an event listener with handler "p1Handler()" for eventType "T" with useCapture==false', () => {
 					it('should call "p1Handler() once"', () => {
 						const p1 = new EventDispatcher();
-						const p1Handler = spy();
+						const p1Handler = jest.fn();
 						p1.addEventListener('T', p1Handler, false);
 
 						const a = new EventDispatcher(p1);
@@ -299,15 +301,16 @@ describe('EventDispatcher "A"', () => {
 						const event = new BasicEvent('T', true);
 						a.dispatchEvent(event);
 
-						expect(p1Handler).to.have.been.calledOnce;
+						expect(p1Handler).toHaveBeenCalledTimes(1);
 					});
 
 					describe('and an event listener with handler "p1Handler2()" for eventType "T" with useCapture==true', () => {
 						describe('where no handler calls event.preventDefault()', () => {
+              const callOrder: Array<string> = [];
 							const p1 = new EventDispatcher();
-							const p1Handler = spy();
+							const p1Handler = jest.fn(() => callOrder.push('p1Handler'));
 							p1.addEventListener('T', p1Handler, false);
-							const p1Handler2 = spy();
+							const p1Handler2 = jest.fn(() => callOrder.push('p1Handler2'));
 							p1.addEventListener('T', p1Handler2, true);
 
 							const a = new EventDispatcher(p1);
@@ -315,20 +318,24 @@ describe('EventDispatcher "A"', () => {
 							const event = new BasicEvent('T', true, true);
 							const result = a.dispatchEvent(event);
 							it('should call "p1Handler2()" once', () => {
-								expect(p1Handler2).to.have.been.calledOnce;
+								expect(p1Handler2).toHaveBeenCalledTimes(1);
 							});
 							it('should call "p1Handler2()" before "p1Handler()"', () => {
-								expect(p1Handler2).to.have.been.calledBefore(p1Handler);
+								expect(callOrder).toEqual(['p1Handler2', 'p1Handler']);
 							});
 							it('should return true', () => {
-								expect(result).to.be.true;
+								expect(result).toBe(true);
 							});
 						});
 						describe('where "p1Handler2()" calls event.preventDefault()', () => {
+              const callOrder: Array<string> = [];
 							const p1 = new EventDispatcher();
-							const p1Handler = spy();
+							const p1Handler = jest.fn(() => callOrder.push('p1Handler'));
 							p1.addEventListener('T', p1Handler, false);
-							const p1Handler2 = spy((event: BasicEvent) => event.preventDefault());
+							const p1Handler2 = jest.fn((event: BasicEvent) => {
+                callOrder.push('p1Handler2');
+                event.preventDefault();
+              });
 							p1.addEventListener('T', p1Handler2, true);
 
 							const a = new EventDispatcher(p1);
@@ -336,13 +343,13 @@ describe('EventDispatcher "A"', () => {
 							const event = new BasicEvent('T', true, true);
 							const result = a.dispatchEvent(event);
 							it('should call "p1Handler2()" once', () => {
-								expect(p1Handler2).to.have.been.calledOnce;
+								expect(p1Handler2).toHaveBeenCalledTimes(1);
 							});
 							it('should call "p1Handler2()" before "p1Handler()"', () => {
-								expect(p1Handler2).to.have.been.calledBefore(p1Handler);
+                expect(callOrder).toEqual(['p1Handler2', 'p1Handler']);
 							});
 							it('should return false', () => {
-								expect(result).to.be.false;
+								expect(result).toBe(false);
 							});
 						});
 					});
@@ -351,12 +358,13 @@ describe('EventDispatcher "A"', () => {
 						describe('that has an event listener with handler "p2Handler()" for eventType "T"', () => {
 							describe('with useCapture==false', () => {
 								it('should call "p1Handler()" before "p2Handler()"', () => {
+                  const callOrder: Array<string> = [];
 									const p2 = new EventDispatcher();
-									const p2Handler = spy();
+									const p2Handler = jest.fn(() => callOrder.push('p2Handler'));
 									p2.addEventListener('T', p2Handler, false);
 
 									const p1 = new EventDispatcher(p2);
-									const p1Handler = spy();
+									const p1Handler = jest.fn(() => callOrder.push('p1Handler'));
 									p1.addEventListener('T', p1Handler, false);
 
 									const a = new EventDispatcher(p1);
@@ -364,16 +372,16 @@ describe('EventDispatcher "A"', () => {
 									const event = new BasicEvent('T', true);
 									a.dispatchEvent(event);
 
-									expect(p1Handler).to.have.been.calledBefore(p2Handler);
+									expect(callOrder).toEqual(['p1Handler', 'p2Handler']);
 								});
 
 								describe('where p1Handler() calls stopPropagation()', () => {
 									const p2 = new EventDispatcher();
-									const p2Handler = spy();
+									const p2Handler = jest.fn();
 									p2.addEventListener('T', p2Handler, false);
 
 									const p1 = new EventDispatcher(p2);
-									const p1Handler = spy((event: BasicEvent) => event.stopPropagation());
+									const p1Handler = jest.fn((event: BasicEvent) => event.stopPropagation());
 									p1.addEventListener('T', p1Handler, false);
 
 									const a = new EventDispatcher(p1);
@@ -381,17 +389,18 @@ describe('EventDispatcher "A"', () => {
 									const event = new BasicEvent('T', true);
 									a.dispatchEvent(event);
 									it('should not call "p2Handler()"', () => {
-										expect(p2Handler).not.to.have.been.called;
+										expect(p2Handler).not.toHaveBeenCalled();
 									});
 								});
 							});
 							describe('with useCapture==true', () => {
+                const callOrder: Array<string> = [];
 								const p2 = new EventDispatcher();
-								const p2Handler = spy();
+                const p2Handler = jest.fn(() => callOrder.push('p2Handler'));
 								p2.addEventListener('T', p2Handler, true);
 
 								const p1 = new EventDispatcher(p2);
-								const p1Handler = spy();
+                const p1Handler = jest.fn(() => callOrder.push('p1Handler'));
 								p1.addEventListener('T', p1Handler, false);
 
 								const a = new EventDispatcher(p1);
@@ -399,7 +408,7 @@ describe('EventDispatcher "A"', () => {
 								const event = new BasicEvent('T', true);
 								a.dispatchEvent(event);
 								it('should call "p2Handler()" before "p1Handler()"', () => {
-									expect(p2Handler).to.have.been.calledBefore(p1Handler);
+                  expect(callOrder).toEqual(['p2Handler', 'p1Handler']);
 								});
 							});
 						});
@@ -410,15 +419,16 @@ describe('EventDispatcher "A"', () => {
 								'"p3Handler2()" with useCapture==true and useCapture==false',
 								() => {
 									describe('where no handler calls event.preventDefault()', () => {
+                    const callOrder: Array<string> = [];
 										const p3 = new EventDispatcher();
-										const p3Handler1 = spy();
+                    const p3Handler1 = jest.fn(() => callOrder.push('p3Handler1'));
 										p3.addEventListener('T', p3Handler1, true);
-										const p3Handler2 = spy();
+                    const p3Handler2 = jest.fn(() => callOrder.push('p3Handler2'));
 										p3.addEventListener('T', p3Handler2, false);
 										const p2 = new EventDispatcher(p3);
 
 										const p1 = new EventDispatcher(p2);
-										const p1Handler = spy();
+										const p1Handler = jest.fn();
 										p1.addEventListener('T', p1Handler, false);
 
 										const a = new EventDispatcher(p1);
@@ -427,19 +437,19 @@ describe('EventDispatcher "A"', () => {
 										const result = a.dispatchEvent(event);
 
 										it('should return true', () => {
-											expect(result).to.be.true;
+											expect(result).toBe(true);
 										});
 
 										it('should call "p3Handler1()" once', () => {
-											expect(p3Handler1).to.have.been.calledOnce;
+											expect(p3Handler1).toHaveBeenCalledTimes(1);
 										});
 
 										it('should call "p3Handler2()" once', () => {
-											expect(p3Handler2).to.have.been.calledOnce;
+											expect(p3Handler2).toHaveBeenCalledTimes(1);
 										});
 
 										it('should call "p3Handler1()" before "p3Handler2()"', () => {
-											expect(p3Handler1).to.have.been.calledBefore(p3Handler2);
+                      expect(callOrder).toEqual(['p3Handler1', 'p3Handler2']);
 										});
 									});
 									describe('where "p3Handler2()" calls event.preventDefault()', () => {
@@ -462,7 +472,7 @@ describe('EventDispatcher "A"', () => {
 										const result = a.dispatchEvent(event);
 
 										it('should return false', () => {
-											expect(result).to.be.false;
+											expect(result).toBe(false);
 										});
 									});
 								});
@@ -476,20 +486,20 @@ describe('EventDispatcher "A"', () => {
 				() => {
 					const a = new EventDispatcher();
 					const C = new EventDispatcher(a);
-					const cHandler = spy();
+					const cHandler = jest.fn();
 					C.addEventListener('T', cHandler);
 
 					const event = new BasicEvent('T', true);
 					a.dispatchEvent(event);
 
 					it('should not call "cHandler()"', () => {
-						expect(cHandler).not.to.have.been.called;
+						expect(cHandler).not.toHaveBeenCalled();
 					});
 				});
 
 			describe('and the same event listener with handler "aHandler()" for eventType "T" added 6 times', () => {
 				const a = new EventDispatcher();
-				const aHandler = spy();
+				const aHandler = jest.fn();
 				a.addEventListener('T', aHandler);
 				a.addEventListener('T', aHandler);
 				a.addEventListener('T', aHandler);
@@ -501,7 +511,7 @@ describe('EventDispatcher "A"', () => {
 				a.dispatchEvent(event);
 
 				it('should call "aHandler()" exactly 6 times', () => {
-					expect(aHandler.callCount).to.equal(6);
+					expect(aHandler.mock.calls).toHaveLength(6);
 				});
 			});
 		});
@@ -511,7 +521,7 @@ describe('EventDispatcher "A"', () => {
       a.dispose();
       const event = new BasicEvent('T', false);
 
-      expect(() => a.dispatchEvent(event)).to.throw('Can\'t dispatchEvent on a disposed EventDispatcher');
+      expect(() => a.dispatchEvent(event)).toThrow('Can\'t dispatchEvent on a disposed EventDispatcher');
     });
 	});
 
@@ -522,17 +532,17 @@ describe('EventDispatcher "A"', () => {
 			};
 			const listenerData = a.addEventListener('T', aHandler);
 			it('should return EventListenerData with useCapture==false', () => {
-				expect(listenerData.useCapture).to.be.false;
+				expect(listenerData.useCapture).toBe(false);
 			});
 			it('should return EventListenerData with priority==0', () => {
-				expect(listenerData.priority).to.equal(0);
+				expect(listenerData.priority).toEqual(0);
 			});
 		});
 
 		describe('called on "A" while handling an event with the same eventType', () => {
 			describe('during the target phase of the event', () => {
 				const a = new EventDispatcher();
-				const aHandler2 = spy();
+				const aHandler2 = jest.fn();
 				const aHandler1 = () => {
 					a.addEventListener('T', aHandler2, false, 2);
 				};
@@ -541,7 +551,7 @@ describe('EventDispatcher "A"', () => {
 				const event = new BasicEvent('T', true);
 				a.dispatchEvent(event);
 				it('should not call the handler', () => {
-					expect(aHandler2).not.to.have.been.called;
+					expect(aHandler2).not.toHaveBeenCalled();
 				});
 			});
 
@@ -555,13 +565,13 @@ describe('EventDispatcher "A"', () => {
 				const p1 = new EventDispatcher(p2);
 
 				const a = new EventDispatcher(p1);
-				const aHandler = spy();
+				const aHandler = jest.fn();
 
 				const event = new BasicEvent('T', true);
 				a.dispatchEvent(event);
 
 				it('should call the handler', () => {
-					expect(aHandler).to.have.been.called;
+					expect(aHandler).toHaveBeenCalled();
 				});
 			});
 		});
@@ -572,7 +582,7 @@ describe('EventDispatcher "A"', () => {
 				describe('with useCapture==false', () => {
 					const p1 = new EventDispatcher();
 					const a = new EventDispatcher(p1);
-					const p1Handler = spy();
+					const p1Handler = jest.fn();
 					const aHandler = () => {
 						p1.addEventListener('T', p1Handler, false);
 					};
@@ -581,13 +591,13 @@ describe('EventDispatcher "A"', () => {
 					const event = new BasicEvent('T', true);
 					a.dispatchEvent(event);
 					it('should call the handler', () => {
-						expect(p1Handler).to.have.been.called;
+						expect(p1Handler).toHaveBeenCalled();
 					});
 				});
 				describe('with useCapture==true', () => {
 					const p1 = new EventDispatcher();
 					const a = new EventDispatcher(p1);
-					const p1Handler = spy();
+					const p1Handler = jest.fn();
 					const aHandler = () => {
 						p1.addEventListener('T', p1Handler, true);
 					};
@@ -596,7 +606,7 @@ describe('EventDispatcher "A"', () => {
 					const event = new BasicEvent('T', true);
 					a.dispatchEvent(event);
 					it('should not call the handler', () => {
-						expect(p1Handler).not.to.have.been.called;
+						expect(p1Handler).not.toHaveBeenCalled();
 					});
 				});
 			});
@@ -610,7 +620,7 @@ describe('EventDispatcher "A"', () => {
 			a.addEventListener('T', aHandler, false, 2);
 
 			it('should return true', () => {
-				expect(a.hasEventListener('T', aHandler, false)).to.be.true;
+				expect(a.hasEventListener('T', aHandler, false)).toBe(true);
 			});
 		});
 		describe('when there is a listener that has the same type and useCapture but a different handler', () => {
@@ -622,7 +632,7 @@ describe('EventDispatcher "A"', () => {
 			a.addEventListener('T', aHandler, false, 2);
 
 			it('should return false', () => {
-				expect(a.hasEventListener('T', aHandler2, false)).to.be.false;
+				expect(a.hasEventListener('T', aHandler2, false)).toBe(false);
 			});
 		});
 		describe('when there is a listener that has the same type and handler but a different useCapture', () => {
@@ -632,7 +642,7 @@ describe('EventDispatcher "A"', () => {
 			a.addEventListener('T', aHandler, true, 2);
 
 			it('should return false', () => {
-				expect(a.hasEventListener('T', aHandler, false)).to.be.false;
+				expect(a.hasEventListener('T', aHandler, false)).toBe(false);
 			});
 		});
 		describe('when there is a listener that has the same handler and useCapture but a different type', () => {
@@ -642,7 +652,7 @@ describe('EventDispatcher "A"', () => {
 			a.addEventListener('T', aHandler, false, 2);
 
 			it('should return false', () => {
-				expect(a.hasEventListener('Q', aHandler, false)).to.be.false;
+				expect(a.hasEventListener('Q', aHandler, false)).toBe(false);
 			});
 		});
 		describe(
@@ -655,7 +665,7 @@ describe('EventDispatcher "A"', () => {
 				a.addEventListener('T', aHandler, true, 2);
 
 				it('should return true', () => {
-					expect(a.hasEventListener('T', aHandler)).to.be.true;
+					expect(a.hasEventListener('T', aHandler)).toBe(true);
 				});
 			});
 		describe(
@@ -667,7 +677,7 @@ describe('EventDispatcher "A"', () => {
 				a.addEventListener('T', aHandler, true, 2);
 
 				it('should return true', () => {
-					expect(a.hasEventListener('T')).to.be.true;
+					expect(a.hasEventListener('T')).toBe(true);
 				});
 			});
 	});
@@ -680,7 +690,7 @@ describe('EventDispatcher "A"', () => {
 			a.addEventListener('T', aHandler, false, 2);
 
 			it('should return true', () => {
-				expect(a.willTrigger('T')).to.be.true;
+				expect(a.willTrigger('T')).toBe(true);
 			});
 		});
 		describe('when there is an event listener of the same type on a parent of "A"', () => {
@@ -691,7 +701,7 @@ describe('EventDispatcher "A"', () => {
 			p1.addEventListener('T', p1Handler);
 
 			it('should return true', () => {
-				expect(a.willTrigger('T')).to.be.true;
+				expect(a.willTrigger('T')).toBe(true);
 			});
 		});
 		describe('when there is an event listener of a different type on a parent of "A"', () => {
@@ -702,7 +712,7 @@ describe('EventDispatcher "A"', () => {
 			p1.addEventListener('T', p1Handler);
 
 			it('should return false', () => {
-				expect(a.willTrigger('Q')).to.be.false;
+				expect(a.willTrigger('Q')).toBe(false);
 			});
 		});
 	});
@@ -710,7 +720,7 @@ describe('EventDispatcher "A"', () => {
 	describe('#removeEventListener()', () => {
 		describe('with arguments that match multiple event listeners', () => {
 			const a = new EventDispatcher();
-			const aHandler = spy();
+			const aHandler = jest.fn();
 			a.addEventListener('T', aHandler);
 			a.addEventListener('T', aHandler, false);
 			a.addEventListener('T', aHandler, false, 2);
@@ -719,65 +729,65 @@ describe('EventDispatcher "A"', () => {
 			const event = new BasicEvent('T', true);
 			a.dispatchEvent(event);
 			it('should prevent the event handler from being called on dispatch', () => {
-				expect(aHandler).to.not.have.been.called;
+				expect(aHandler).not.toHaveBeenCalled();
 			});
 		});
 
 		describe('with arguments that match an event listener and useCapture truthy but not strictly true', () => {
 			const a = new EventDispatcher();
-			const aHandler = spy();
+			const aHandler = jest.fn();
 			a.addEventListener('T', aHandler, true);
 
 			a.removeEventListener('T', aHandler, <any> 5);
 			const event = new BasicEvent('T', true);
 			a.dispatchEvent(event);
 			it('should prevent the event handler from being called on dispatch', () => {
-				expect(aHandler).to.not.have.been.called;
+				expect(aHandler).not.toHaveBeenCalled();
 			});
 		});
 
 		describe('with arguments that match and event listener and useCapture falsy but not strictly false', () => {
 			const a = new EventDispatcher();
-			const aHandler = spy();
+			const aHandler = jest.fn();
 			a.addEventListener('T', aHandler, false);
 
-			a.removeEventListener('T', aHandler, null);
+			a.removeEventListener('T', aHandler, null as any);
 			const event = new BasicEvent('T', true);
 			a.dispatchEvent(event);
 			it('should prevent the event handler from being called on dispatch', () => {
-				expect(aHandler).to.not.have.been.called;
+				expect(aHandler).not.toHaveBeenCalled();
 			});
 		});
 
 		describe('when there is a listener with matching type and handler but a different useCapture', () => {
 			const a = new EventDispatcher();
-			const aHandler = spy();
+			const aHandler = jest.fn();
 			a.addEventListener('T', aHandler);
 
 			a.removeEventListener('T', aHandler, true);
 			const event = new BasicEvent('T', true);
 			a.dispatchEvent(event);
 			it('should still call the handler on dispatch', () => {
-				expect(aHandler).to.have.been.called;
+				expect(aHandler).toHaveBeenCalled();
 			});
 		});
 
 		describe('when there is a listener with matching handler and useCapture but a different type', () => {
 			const a = new EventDispatcher();
-			const aHandler = spy();
+			const aHandler = jest.fn();
 			a.addEventListener('T', aHandler);
 
 			a.removeEventListener('Q', aHandler, false);
 			const event = new BasicEvent('T', true);
 			a.dispatchEvent(event);
 			it('should still call the handler on dispatch', () => {
-				expect(aHandler).to.have.been.called;
+				expect(aHandler).toHaveBeenCalled();
 			});
 		});
 
 		describe('when there is a listener with matching type and useCapture but a different handler', () => {
 			const a = new EventDispatcher();
-			const aHandler1 = spy();
+			const aHandler1 = jest.fn();
 			const aHandler2 = () => {
 			};
 			a.addEventListener('T', aHandler1, true);
@@ -786,7 +796,7 @@ describe('EventDispatcher "A"', () => {
 			const event = new BasicEvent('T', true);
 			a.dispatchEvent(event);
 			it('should still call the handler on dispatch', () => {
-				expect(aHandler1).to.have.been.called;
+				expect(aHandler1).toHaveBeenCalled();
 			});
 		});
 	});
@@ -794,13 +804,13 @@ describe('EventDispatcher "A"', () => {
 	describe('#removeAllEventListeners()', () => {
 		describe('when no type is passed', () => {
 			const p1 = new EventDispatcher();
-			const p1Handler = spy();
+			const p1Handler = jest.fn();
 			p1.addEventListener('T1', p1Handler, true);
 
 			const a = new EventDispatcher(p1);
-			const aHandler1 = spy();
-			const aHandler2 = spy();
-			const aHandler3 = spy();
+			const aHandler1 = jest.fn();
+			const aHandler2 = jest.fn();
+			const aHandler3 = jest.fn();
 			a.addEventListener('T1', aHandler1, true);
 			a.addEventListener('T1', aHandler1, false);
 			a.addEventListener('T2', aHandler1, false);
@@ -818,21 +828,21 @@ describe('EventDispatcher "A"', () => {
 			a.dispatchEvent(eventT3);
 
 			it('should remove all event handlers on the same target', () => {
-				expect(aHandler1).not.to.have.been.called;
-				expect(aHandler2).not.to.have.been.called;
-				expect(aHandler3).not.to.have.been.called;
+				expect(aHandler1).not.toHaveBeenCalled();
+				expect(aHandler2).not.toHaveBeenCalled();
+				expect(aHandler3).not.toHaveBeenCalled();
 			});
 
 			it('should not prevent event handlers on a parent target from being called', () => {
-				expect(p1Handler).to.have.been.called;
+				expect(p1Handler).toHaveBeenCalled();
 			});
 		});
 		describe('when there are event handlers that match the given eventType and other handlers that don\'t', () => {
 			const a = new EventDispatcher();
-			const aHandler1 = spy();
-			const aHandler2 = spy();
-			const aHandler3 = spy();
-			const aHandlerQ = spy();
+			const aHandler1 = jest.fn();
+			const aHandler2 = jest.fn();
+			const aHandler3 = jest.fn();
+			const aHandlerQ = jest.fn();
 			a.addEventListener('T', aHandler1, true);
 			a.addEventListener('T', aHandler2, false);
 			a.addEventListener('T', aHandler3);
@@ -845,27 +855,27 @@ describe('EventDispatcher "A"', () => {
 			a.dispatchEvent(eventQ);
 
 			it('should prevent the matching event handlers from being called', () => {
-				expect(aHandler1).not.to.have.been.called;
-				expect(aHandler2).not.to.have.been.called;
-				expect(aHandler3).not.to.have.been.called;
+				expect(aHandler1).not.toHaveBeenCalled();
+				expect(aHandler2).not.toHaveBeenCalled();
+				expect(aHandler3).not.toHaveBeenCalled();
 			});
 
 			it('should not remove the event handlers for different eventTypes', () => {
-				expect(aHandlerQ).to.have.been.called;
+				expect(aHandlerQ).toHaveBeenCalled();
 			});
 		});
 	});
 
 	describe('#dispose()', () => {
 		const a = new EventDispatcher();
-		const aHandler = spy();
+		const aHandler = jest.fn();
 		a.addEventListener('T', aHandler);
 		a.dispose();
 		const event = new BasicEvent('T');
 
 		it('should not dispatch events after disposed', () => {
-			expect(() => a.dispatchEvent(event)).to.throw();
-			expect(aHandler).to.not.have.been.called;
+			expect(() => a.dispatchEvent(event)).toThrow();
+			expect(aHandler).not.toHaveBeenCalled();
 		});
 	});
 });
@@ -876,8 +886,8 @@ describe('getParents()', () => {
 		const parents = getParents(a);
 
 		it('should return an empty array', () => {
-			expect(parents).to.be.instanceOf(Array);
-			expect(parents).to.have.lengthOf(0);
+			expect(parents).toBeInstanceOf(Array);
+			expect(parents).toHaveLength(0);
 		});
 	});
 	describe('on an EventDispatcher with 3 parents', () => {
@@ -888,13 +898,13 @@ describe('getParents()', () => {
 		const parents = getParents(a);
 
 		it('should return an array of length 3', () => {
-			expect(parents).to.be.instanceOf(Array);
-			expect(parents).to.have.lengthOf(3);
+			expect(parents).toBeInstanceOf(Array);
+			expect(parents).toHaveLength(3);
 		});
 		it('should return all the parent instances in root-last order', () => {
-			expect(parents[2]).to.equal(p3);
-			expect(parents[1]).to.equal(p2);
-			expect(parents[0]).to.equal(p1);
+			expect(parents[2]).toEqual(p3);
+			expect(parents[1]).toEqual(p2);
+			expect(parents[0]).toEqual(p1);
 		});
 	});
 });
@@ -906,9 +916,9 @@ describe('getCallTree()', () => {
 			const callTree = getCallTree(a, false);
 
 			it('should return an array with just the EventDispatcher instance', () => {
-				expect(callTree).to.be.instanceOf(Array);
-				expect(callTree).to.have.lengthOf(1);
-				expect(callTree[0]).to.equal(a);
+				expect(callTree).toBeInstanceOf(Array);
+				expect(callTree).toHaveLength(1);
+				expect(callTree[0]).toEqual(a);
 			});
 		});
 		describe('with bubbles==true', () => {
@@ -916,9 +926,9 @@ describe('getCallTree()', () => {
 			const callTree = getCallTree(a, true);
 
 			it('should return an array with just the EventDispatcher instance', () => {
-				expect(callTree).to.be.instanceOf(Array);
-				expect(callTree).to.have.lengthOf(1);
-				expect(callTree[0]).to.equal(a);
+				expect(callTree).toBeInstanceOf(Array);
+				expect(callTree).toHaveLength(1);
+				expect(callTree[0]).toEqual(a);
 			});
 		});
 	});
@@ -931,16 +941,16 @@ describe('getCallTree()', () => {
 			const callTree = getCallTree(a, false);
 
 			it('should return an array of length 4', () => {
-				expect(callTree).to.be.instanceOf(Array);
-				expect(callTree).to.have.lengthOf(4);
+				expect(callTree).toBeInstanceOf(Array);
+				expect(callTree).toHaveLength(4);
 			});
 			it('should return an array that starts with the parent instances in root-first order', () => {
-				expect(callTree[0]).to.equal(p3);
-				expect(callTree[1]).to.equal(p2);
-				expect(callTree[2]).to.equal(p1);
+				expect(callTree[0]).toEqual(p3);
+				expect(callTree[1]).toEqual(p2);
+				expect(callTree[2]).toEqual(p1);
 			});
 			it('should return an array that ends with the EventDispatcher target instance', () => {
-				expect(callTree[callTree.length - 1]).to.equal(a);
+				expect(callTree[callTree.length - 1]).toEqual(a);
 			});
 		});
 		describe('with bubbles==true', () => {
@@ -951,21 +961,21 @@ describe('getCallTree()', () => {
 			const callTree = getCallTree(a, true);
 
 			it('should return an array of length 7', () => {
-				expect(callTree).to.be.instanceOf(Array);
-				expect(callTree).to.have.lengthOf(7);
+				expect(callTree).toBeInstanceOf(Array);
+				expect(callTree).toHaveLength(7);
 			});
 			it('should return an array that starts with the parent instances in root-first order', () => {
-				expect(callTree[0]).to.equal(p3);
-				expect(callTree[1]).to.equal(p2);
-				expect(callTree[2]).to.equal(p1);
+				expect(callTree[0]).toEqual(p3);
+				expect(callTree[1]).toEqual(p2);
+				expect(callTree[2]).toEqual(p1);
 			});
 			it('should return an array that has the target instance on index 3', () => {
-				expect(callTree[3]).to.equal(a);
+				expect(callTree[3]).toEqual(a);
 			});
 			it('should return an array that ends with the parent instances in root-last order', () => {
-				expect(callTree[callTree.length - 1]).to.equal(p3);
-				expect(callTree[callTree.length - 2]).to.equal(p2);
-				expect(callTree[callTree.length - 3]).to.equal(p1);
+				expect(callTree[callTree.length - 1]).toEqual(p3);
+				expect(callTree[callTree.length - 2]).toEqual(p2);
+				expect(callTree[callTree.length - 3]).toEqual(p1);
 			});
 		});
 	});
@@ -974,9 +984,9 @@ describe('getCallTree()', () => {
 describe('removeListenersFrom()', () => {
 	describe('with no arguments other than listeners', () => {
 		const a = new EventDispatcher();
-		const aHandler1 = spy();
-		const aHandler2 = spy();
-		const aHandler3 = spy();
+		const aHandler1 = jest.fn();
+		const aHandler2 = jest.fn();
+		const aHandler3 = jest.fn();
 
 		const PListener = new EventListenerData(a, 'P', aHandler1, false, 5);
 		const RListener = new EventListenerData(a, 'R', aHandler2, false, 0);
@@ -1001,22 +1011,22 @@ describe('removeListenersFrom()', () => {
 		};
 		removeListenersFrom(eventListeners);
 		it('should remove all event listeners', () => {
-			expect(eventListeners['P']).to.have.lengthOf(0);
-			expect(eventListeners['Q']).to.have.lengthOf(0);
-			expect(eventListeners['R']).to.have.lengthOf(0);
+			expect(eventListeners['P']).toHaveLength(0);
+			expect(eventListeners['Q']).toHaveLength(0);
+			expect(eventListeners['R']).toHaveLength(0);
 		});
 		it('should set isRemoved==true on all event listener data', () => {
-			expect(PListener.isRemoved).to.be.true;
-			expect(QListener.isRemoved).to.be.true;
-			expect(RListener.isRemoved).to.be.true;
+			expect(PListener.isRemoved).toBe(true);
+			expect(QListener.isRemoved).toBe(true);
+			expect(RListener.isRemoved).toBe(true);
 		});
 	});
 	describe('with a given eventType', () => {
 		describe('and no other arguments', () => {
 			const a = new EventDispatcher();
-			const aHandler1 = spy();
-			const aHandler2 = spy();
-			const aHandler3 = spy();
+			const aHandler1 = jest.fn();
+			const aHandler2 = jest.fn();
+			const aHandler3 = jest.fn();
 
 			const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 				P: [
@@ -1038,20 +1048,20 @@ describe('removeListenersFrom()', () => {
 			};
 			removeListenersFrom(eventListeners, 'Q');
 			it('should remove all event listeners of that eventType', () => {
-				expect(eventListeners['Q']).to.have.lengthOf(0);
+				expect(eventListeners['Q']).toHaveLength(0);
 			});
 			it('should not remove event listeners of other eventType', () => {
-				expect(eventListeners['R']).to.have.lengthOf(2);
-				expect(eventListeners['P']).to.have.lengthOf(5);
+				expect(eventListeners['R']).toHaveLength(2);
+				expect(eventListeners['P']).toHaveLength(5);
 			});
 		});
 
 		describe('and a given handler', () => {
 			describe('but no useCapture argument provided', () => {
 				const a = new EventDispatcher();
-				const aHandler1 = spy();
-				const aHandler2 = spy();
-				const aHandler3 = spy();
+				const aHandler1 = jest.fn();
+				const aHandler2 = jest.fn();
+				const aHandler3 = jest.fn();
 
 				const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 					P: [
@@ -1068,14 +1078,14 @@ describe('removeListenersFrom()', () => {
 				};
 				removeListenersFrom(eventListeners, 'P', aHandler1);
 				it('should only remove event listeners that match the eventType and handler', () => {
-					expect(eventListeners['P']).to.have.lengthOf(2);
+					expect(eventListeners['P']).toHaveLength(2);
 				});
 			});
 			describe('and useCapture set to false', () => {
 				const a = new EventDispatcher();
-				const aHandler1 = spy();
-				const aHandler2 = spy();
-				const aHandler3 = spy();
+				const aHandler1 = jest.fn();
+				const aHandler2 = jest.fn();
+				const aHandler3 = jest.fn();
 
 				const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 					P: [
@@ -1092,16 +1102,16 @@ describe('removeListenersFrom()', () => {
 				};
 				removeListenersFrom(eventListeners, 'P', aHandler1, false);
 				it('should only remove event listeners that match the eventType and handler and useCapture==false', () => {
-					expect(eventListeners['P']).to.have.lengthOf(3);
+					expect(eventListeners['P']).toHaveLength(3);
 				});
 			});
 		});
 	});
 	describe('with useCapture==false but handler==null and eventType==null', () => {
 		const a = new EventDispatcher();
-		const aHandler1 = spy();
-		const aHandler2 = spy();
-		const aHandler3 = spy();
+		const aHandler1 = jest.fn();
+		const aHandler2 = jest.fn();
+		const aHandler3 = jest.fn();
 
 		const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 			P: [
@@ -1124,9 +1134,9 @@ describe('removeListenersFrom()', () => {
 		removeListenersFrom(eventListeners, null, null, false);
 
 		it('should remove all event listeners that have useCapture==false', () => {
-			expect(eventListeners['P']).to.have.lengthOf(1);
-			expect(eventListeners['Q']).to.have.lengthOf(2);
-			expect(eventListeners['R']).to.have.lengthOf(0);
+			expect(eventListeners['P']).toHaveLength(1);
+			expect(eventListeners['Q']).toHaveLength(2);
+			expect(eventListeners['R']).toHaveLength(0);
 		});
 	});
 });
@@ -1136,11 +1146,11 @@ describe('callListeners()', () => {
 
 		describe('none of which call event.stopPropagation() or event.stopImmediatePropagation()', () => {
 			const a = new EventDispatcher();
-			const pHandler1 = spy();
-			const pHandler2 = spy();
-			const pHandler3 = spy();
-			const qHandler = spy();
-			const rHandler = spy();
+			const pHandler1 = jest.fn();
+			const pHandler2 = jest.fn();
+			const pHandler3 = jest.fn();
+			const qHandler = jest.fn();
+			const rHandler = jest.fn();
 
 			const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 				P: [
@@ -1164,24 +1174,24 @@ describe('callListeners()', () => {
 			const event = new BasicEvent('P');
 			const result = callListeners(eventListeners, event);
 			it('should call all the handlers of matching listeners', () => {
-				expect(pHandler1).to.be.calledTwice;
-				expect(pHandler2).to.be.calledTwice;
-				expect(pHandler3).to.be.called;
+				expect(pHandler1).toHaveBeenCalledTimes(2);
+				expect(pHandler2).toHaveBeenCalledTimes(2);
+				expect(pHandler3).toHaveBeenCalled();
 			});
 			it('should not call handlers of listeners for other eventTypes', () => {
-				expect(qHandler).not.to.be.called;
-				expect(rHandler).not.to.be.called;
+				expect(qHandler).not.toHaveBeenCalled();
+				expect(rHandler).not.toHaveBeenCalled();
 			});
 			it('should return false', () => {
-				expect(result).to.be.false;
+				expect(result).toBe(false);
 			});
 		});
 
 		describe('one of which calls event.stopPropagation()', () => {
 			const a = new EventDispatcher();
-			const pHandler1 = spy();
-			const pHandler2 = spy((event: BasicEvent) => event.stopPropagation());
-			const pHandler3 = spy();
+			const pHandler1 = jest.fn();
+			const pHandler2 = jest.fn((event: BasicEvent) => event.stopPropagation());
+			const pHandler3 = jest.fn();
 
 			const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 				P: [
@@ -1196,20 +1206,20 @@ describe('callListeners()', () => {
 			const event = new BasicEvent('P');
 			const result = callListeners(eventListeners, event);
 			it('should return true', () => {
-				expect(result).to.be.true;
+				expect(result).toBe(true);
 			});
 			it('should call all the handlers for listeners of that eventType', () => {
-				expect(pHandler1).to.be.calledTwice;
-				expect(pHandler2).to.be.calledTwice;
-				expect(pHandler3).to.be.called;
+				expect(pHandler1).toHaveBeenCalledTimes(2);
+				expect(pHandler2).toHaveBeenCalledTimes(2);
+				expect(pHandler3).toHaveBeenCalled();
 			});
 		});
 
 		describe('one of which calls event.stopImmediatePropagation()', () => {
 			const a = new EventDispatcher();
-			const pHandler1 = spy();
-			const pHandler2 = spy((event: BasicEvent) => event.stopImmediatePropagation());
-			const pHandler3 = spy();
+			const pHandler1 = jest.fn();
+			const pHandler2 = jest.fn((event: BasicEvent) => event.stopImmediatePropagation());
+			const pHandler3 = jest.fn();
 
 			const eventListeners = <{ [name: string]: Array<EventListenerData> }> {
 				P: [
@@ -1224,14 +1234,14 @@ describe('callListeners()', () => {
 			const event = new BasicEvent('P');
 			const result = callListeners(eventListeners, event);
 			it('should return true', () => {
-				expect(result).to.be.true;
+				expect(result).toBe(true);
 			});
 			it('should call all the handlers of listeners before that listener in the array of that eventType ', () => {
-				expect(pHandler1).to.be.calledTwice;
+				expect(pHandler1).toHaveBeenCalledTimes(2);
 			});
 			it('should not call the handlers of listeners after that listener in the array of that eventType ', () => {
-				expect(pHandler2).to.be.calledOnce;
-				expect(pHandler3).not.to.be.called;
+				expect(pHandler2).toHaveBeenCalledTimes(1);
+				expect(pHandler3).not.toHaveBeenCalled();
 			});
 		});
 	});
@@ -1255,7 +1265,7 @@ describe('callListeners()', () => {
 		const result = callListeners(eventListeners, event);
 
 		it('should return false', () => {
-			expect(result).to.be.false;
+			expect(result).toBe(false);
 		});
 	});
 });
