@@ -218,7 +218,7 @@ export default class EventDispatcher<TEvent extends AbstractEvent = any> extends
    */
   public removeEventListener<TType extends TypesForEvent<TEvent>>(
     eventType: TType,
-    handler: EventHandlerForEvent<TEvent>,
+    handler: EventHandlerForEvent<any>,
     useCapture: boolean = false,
   ): void {
     removeListenersFrom(this.listeners, eventType, handler, useCapture);
