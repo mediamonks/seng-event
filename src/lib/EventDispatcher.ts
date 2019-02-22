@@ -18,9 +18,7 @@ import {
  * by existing event dispatching systems like the functionality described in the
  * [DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
  */
-export default class EventDispatcher<
-  TEvent extends AbstractEvent = AbstractEvent
-> extends SengDisposable {
+export default class EventDispatcher<TEvent extends AbstractEvent = any> extends SengDisposable {
   /**
    * The parent EventDispatcher instance. If this instance has no parent, this value will be
    * set to _null_. The parent is used in the bubbling and capturing phases of events.
