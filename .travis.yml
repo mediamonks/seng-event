@@ -25,6 +25,7 @@ deploy:
     api_key: $NPM_TOKEN
     on:
       tags: true
+      all_branches: true
       node: '8'
     skip_cleanup: true
 
