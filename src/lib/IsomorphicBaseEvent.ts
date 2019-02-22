@@ -17,7 +17,7 @@ class IsomorphicBaseEvent<
   public type: TType;
   public data: DataForIsomorphicEvent<TType, TTypes, TDataTypes>;
 
-  private typeOptions: EventOptionsMap<TTypes[number]>;
+  public typeOptions: EventOptionsMap<TTypes[number]>;
 
   constructor(
     type: TType,

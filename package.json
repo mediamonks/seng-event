@@ -1,6 +1,6 @@
 {
   "name": "seng-event",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-alpha.5",
   "description": "Provides Classes and utilities for dispatching and listening to events.",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -12,7 +12,7 @@
     "dev:ts": "tsc --noEmit --allowJs --watch",
     "build": "npm-run-all -s clean build:*",
     "build:babel": "babel ./src -x \".ts\" -x \".js\" --out-dir ./",
-    "build:ts": "tsc -p ./tsconfig.build.json",
+    "build:ts": "tsc -p ./tsconfig.build.json && shx cp -Rf decl/* .",
     "test": "jest",
     "test:types": "typings-checker --allow-expect-error --project tsconfig.json test/types/tests.ts",
     "test:dev": "jest --watch",
