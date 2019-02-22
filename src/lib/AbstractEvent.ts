@@ -1,8 +1,14 @@
+/**
+ * @module seng-event
+ */
 import EventPhase from './EventPhase';
 import CallListenerResult from './CallListenerResult';
 import { EventHandlerForEvent } from './EventTypings';
 import EventDispatcher from './EventDispatcher';
 
+/**
+ * @ignore
+ */
 let callListenerResult = CallListenerResult.NONE;
 
 /**

@@ -1,3 +1,7 @@
+/**
+ * @module seng-event/lib/EventTypings
+ */
+
 import AbstractEvent from './AbstractEvent';
 import EventListenerData from './EventListenerData';
 import IsomorphicBaseEvent from './IsomorphicBaseEvent';

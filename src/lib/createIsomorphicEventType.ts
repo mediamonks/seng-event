@@ -1,6 +1,12 @@
+/**
+ * @module seng-event
+ */
 import { DataForIsomorphicEvent } from './EventTypings';
 import IsomorphicBaseEvent, { EventOptions, EventOptionsMap } from './IsomorphicBaseEvent';
 
+/**
+ * @ignore
+ */
 type TypeMap<TType extends string> = { [P in TType]: P };
 
 function createIsomorphicEventType<TDataTuple extends Array<any>>(

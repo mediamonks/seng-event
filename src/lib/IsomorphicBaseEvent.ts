@@ -1,3 +1,7 @@
+/**
+ * @module seng-event/lib/IsomorphicBaseEvent
+ */
+
 import BaseEvent from './BaseEvent';
 import { DataForIsomorphicEvent } from './EventTypings';
 

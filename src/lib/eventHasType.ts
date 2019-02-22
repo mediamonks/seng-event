@@ -1,3 +1,6 @@
+/**
+ * @module seng-event/lib/eventHasType
+ */
 import BaseEvent from './BaseEvent';
 
 function eventHasType<TType extends string>(

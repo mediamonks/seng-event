@@ -79,16 +79,10 @@
 					dispatching systems like the functionality described in the
 				<a href="https://www.w3.org/TR/DOM-Level-2-Events/events.html">DOM Event W3 spec</a></p>
 				<h2 id="installation">Installation</h2>
-				<h3 id="yarn-npm">yarn / npm</h3>
-				<pre><code class="lang-sh">yarn add seng-event
-</code></pre>
-				<pre><code class="lang-sh">npm i -S seng-event
-</code></pre>
-				<h3 id="other">other</h3>
-				<p>We also have browser, amd, commonjs, umd, systemjs and es6 versions of
-				this module available attached to the <a href="https://github.com/mediamonks/seng-event/releases">Github Releases</a>.</p>
+				<pre><code class="language-sh">yarn add seng-event</code></pre>
+				<pre><code class="language-sh">npm i -S seng-event</code></pre>
 				<h2 id="basic-usage">Basic usage</h2>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> EventDispatcher, {AbstractEvent} <span class="hljs-keyword">from</span> <span class="hljs-string">'seng-event'</span>;
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> EventDispatcher, {AbstractEvent} <span class="hljs-keyword">from</span> <span class="hljs-string">'seng-event'</span>;
 <span class="hljs-keyword">import</span> {generateEventTypes, EVENT_TYPE_PLACEHOLDER} <span class="hljs-keyword">from</span> <span class="hljs-string">'seng-event/lib/util/eventTypeUtils'</span>;
 
 <span class="hljs-comment">// extend EventDispatcher</span>
@@ -113,34 +107,27 @@ generateEventTypes({FooEvent});
 foo.addEventListener(FooEvent.COMPLETE, exampleHandler);
 
 <span class="hljs-comment">// dispatch an event (will execute exampleHandler and log 'Handler called!')</span>
-foo.dispatchEvent(<span class="hljs-keyword">new</span> FooEvent(FooEvent.COMPLETE));
-</code></pre>
+foo.dispatchEvent(<span class="hljs-keyword">new</span> FooEvent(FooEvent.COMPLETE));  </code></pre>
 				<h2 id="documentation">Documentation</h2>
 				<p>View the <a href="http://mediamonks.github.io/seng-event/">generated documentation</a>.</p>
 				<h2 id="building">Building</h2>
 				<p>In order to build seng-event, ensure that you have <a href="http://git-scm.com/downloads">Git</a>
 				and <a href="http://nodejs.org/">Node.js</a> installed.</p>
 				<p>Clone a copy of the repo:</p>
-				<pre><code class="lang-sh">git <span class="hljs-built_in">clone</span> https://github.com/mediamonks/seng-event.git
-</code></pre>
+				<pre><code class="language-sh">git <span class="hljs-built_in">clone</span> https://github.com/mediamonks/seng-event.git</code></pre>
 				<p>Change to the seng-event directory:</p>
-				<pre><code class="lang-sh"><span class="hljs-built_in">cd</span> seng-event
-</code></pre>
+				<pre><code class="language-sh"><span class="hljs-built_in">cd</span> seng-event</code></pre>
 				<p>Install dev dependencies:</p>
-				<pre><code class="lang-sh">yarn
-</code></pre>
+				<pre><code class="language-sh">yarn</code></pre>
 				<p>Use one of the following main scripts:</p>
-				<pre><code class="lang-sh">yarn build           <span class="hljs-comment"># build this project</span>
-yarn dev             <span class="hljs-comment"># run dev-watch mode, serving example/index.html in the browser</span>
-yarn generate        <span class="hljs-comment"># generate all artifacts (compiles ts, webpack, docs and coverage)</span>
-yarn typings         <span class="hljs-comment"># install .d.ts dependencies (done on install)</span>
-yarn <span class="hljs-built_in">test</span>:unit       <span class="hljs-comment"># run the unit tests</span>
-yarn validate        <span class="hljs-comment"># runs validation scripts, including test, lint and coverage check</span>
-yarn lint            <span class="hljs-comment"># run tslint on this project</span>
-yarn doc             <span class="hljs-comment"># generate typedoc documentation</span>
-</code></pre>
-				<p>When installing this module, it adds a pre-push hook, that runs the <code>validate</code>
-				script before committing, so you can be sure that everything checks out.</p>
+				<pre><code class="language-sh">yarn build            <span class="hljs-comment"># build this project</span>
+yarn dev              <span class="hljs-comment"># run compilers in watch mode, both for babel and typescript</span>
+yarn <span class="hljs-built_in">test</span>             <span class="hljs-comment"># run the unit tests incl coverage</span>
+yarn <span class="hljs-built_in">test</span>:dev         <span class="hljs-comment"># run the unit tests in watch mode</span>
+yarn lint             <span class="hljs-comment"># run eslint and tslint on this project</span>
+yarn doc              <span class="hljs-comment"># generate typedoc documentation</span></code></pre>
+				<p>When installing this module, it adds a pre-commit hook, that runs lint and prettier commands
+				before committing, so you can be sure that everything checks out.</p>
 				<h2 id="contribute">Contribute</h2>
 				<p>View <a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></p>
 				<h2 id="changelog">Changelog</h2>
@@ -157,64 +144,22 @@ yarn doc             <span class="hljs-comment"># generate typedoc documentation
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/seng_event.html">seng-<wbr>event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/seng_event_lib_eventtypings.html">seng-<wbr>event/lib/<wbr>Event<wbr>Typings</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/seng_event_lib_isomorphicbaseevent.html">seng-<wbr>event/lib/<wbr>Isomorphic<wbr>Base<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/seng_event_lib_eventhastype.html">seng-<wbr>event/lib/event<wbr>Has<wbr>Type</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="enums/calllistenerresult.html" class="tsd-kind-icon">Call<wbr>Listener<wbr>Result</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="enums/eventphase.html" class="tsd-kind-icon">Event<wbr>Phase</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstractevent.html" class="tsd-kind-icon">Abstract<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/basicevent.html" class="tsd-kind-icon">Basic<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/commonevent.html" class="tsd-kind-icon">Common<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/eventdispatcher.html" class="tsd-kind-icon">Event<wbr>Dispatcher</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/eventlistenerdata.html" class="tsd-kind-icon">Event<wbr>Listener<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/ievent.html" class="tsd-kind-icon">IEvent</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/ieventdispatcher.html" class="tsd-kind-icon">IEvent<wbr>Dispatcher</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#eventhandler" class="tsd-kind-icon">Event<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-is-not-exported">
-						<a href="globals.html#eventlistenermap" class="tsd-kind-icon">Event<wbr>Listener<wbr>Map</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#event_type_placeholder" class="tsd-kind-icon">EVENT_<wbr>TYPE_<wbr>PLACEHOLDER</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#calllistenerresult" class="tsd-kind-icon">call<wbr>Listener<wbr>Result</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#generateeventtypes" class="tsd-kind-icon">generate<wbr>Event<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getcalltree" class="tsd-kind-icon">get<wbr>Call<wbr>Tree</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getparents" class="tsd-kind-icon">get<wbr>Parents</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#removelistenersfrom" class="tsd-kind-icon">remove<wbr>Listeners<wbr>From</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

@@ -1,4 +1,8 @@
 /**
+ * @module seng-event
+ */
+
+/**
  * Enum that is returned by the [[AbstractEvent.callListener]] method
  */
 enum CallListenerResult {

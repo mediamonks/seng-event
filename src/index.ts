@@ -1,3 +1,9 @@
+/**
+ * @module seng-event
+ * @preferred
+ *
+ * The main seng-event module
+ */
 import { default as _export } from './lib/EventDispatcher';
 
 export { default as BaseEvent } from './lib/BaseEvent';

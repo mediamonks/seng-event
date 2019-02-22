@@ -5,6 +5,7 @@
     "outDir": "tmp",
     "declaration": true,
     "declarationDir": "./decl",
+    "baseUrl": ".",
     "emitDeclarationOnly": true
   }
 }

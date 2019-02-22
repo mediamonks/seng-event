@@ -1,8 +1,17 @@
+/**
+ * @module seng-event
+ */
 import BaseEvent from './BaseEvent';
 
+/**
+ * @ignore
+ */
 type TypeMap<TType extends string> = { [P in TType]: P };
 
-interface IEventTypeClass<TData, TType extends string> {
+/**
+ * @ignore
+ */
+interface EventTypeClass<TData, TType extends string> {
   types: TypeMap<TType>;
   new (type: TType, data: TData): BaseEvent<TData, TType>;
 }
@@ -10,7 +19,7 @@ interface IEventTypeClass<TData, TType extends string> {
 function createEventType<TData>(bubbles?: boolean, cancelable?: boolean, setTimeStamp?: boolean) {
   function createEventTypeHelper<TEventTypes extends Array<string>>(
     ...types: TEventTypes
-  ): IEventTypeClass<TData, TEventTypes[number]> {
+  ): EventTypeClass<TData, TEventTypes[number]> {
     class EventType extends BaseEvent<any, string> {
       public static types = types.reduce<TypeMap<string>>((result, t) => ({ ...result, t }), {});
 

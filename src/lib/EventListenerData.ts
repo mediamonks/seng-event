@@ -1,3 +1,6 @@
+/**
+ * @module seng-event
+ */
 import sengDisposable from 'seng-disposable';
 import EventDispatcher from './EventDispatcher';
 import AbstractEvent from './AbstractEvent';

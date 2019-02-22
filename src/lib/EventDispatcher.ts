@@ -1,3 +1,6 @@
+/**
+ * @module seng-event
+ */
 import SengDisposable from 'seng-disposable';
 import EventListenerData from './EventListenerData';
 import EventPhase from './EventPhase';

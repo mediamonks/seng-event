@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "src/"
+  },
+  "files": [
+    "index.ts",
+    "lib/AbstractEvent.ts",
+    "lib/BaseEvent.ts",
+    "lib/CallListenerResult.ts",
+    "lib/createEventType.ts",
+    "lib/createIsomorphicEventType.ts",
+    "lib/EventDispatcher.ts",
+    "lib/eventHasType.ts",
+    "lib/EventListenerData.ts",
+    "lib/EventPhase.ts",
+    "lib/EventTypings.ts",
+    "lib/IsomorphicBaseEvent.ts"
+  ]
+}

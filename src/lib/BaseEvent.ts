@@ -1,3 +1,6 @@
+/**
+ * @module seng-event
+ */
 import AbstractEvent from './AbstractEvent';
 
 class BaseEvent<TDataType = void, TEventType extends string = string> extends AbstractEvent {
