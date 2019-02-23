@@ -57,10 +57,10 @@ import { AbstractEvent } from 'seng-event';
 
 class DogEvent extends AbstractEvent {
    public static types = {
-      BARK: 'DogEvent.BARK',
-      JUMP: 'DogEvent.JUMP',
-      RUN: 'DogEvent.RUN',
-      WALK: 'DogEvent.WALK'
+      BARK: 'BARK',
+      JUMP: 'JUMP',
+      RUN: 'RUN',
+      WALK: 'WALK'
    };
    
    public clone():DogEvent {

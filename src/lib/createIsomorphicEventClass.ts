@@ -33,7 +33,7 @@ function createIsomorphicEventClass<TDataTuple extends Array<any>>(
     > extends IsomorphicBaseEvent<TTypesTuple, TDataTuple, TType> {
       public static types: TypeMap<TTypesTuple[number]> = types.reduce<
         TypeMap<TTypesTuple[number]>
-      >((result: any, t) => ({ ...result, t }), {} as any);
+      >((result: any, t) => ({ ...result, [t]: t }), {} as any);
 
       constructor(type: TType, data: DataForIsomorphicEvent<TType, TTypesTuple, TDataTuple>) {
         super(type, data, typeOptionsMap);

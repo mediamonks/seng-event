@@ -25,7 +25,10 @@ function createEventClass<TData = void>(
     ...types: TEventTypes
   ): EventTypeClass<TData, TEventTypes[number]> {
     class EventType extends BaseEvent<any, string> {
-      public static types = types.reduce<TypeMap<string>>((result, t) => ({ ...result, t }), {});
+      public static types = types.reduce<TypeMap<string>>(
+        (result, t) => ({ ...result, [t]: t }),
+        {},
+      );
 
       constructor(type: string, data: TData) {
         super(type, data, bubbles, cancelable, setTimeStamp);
