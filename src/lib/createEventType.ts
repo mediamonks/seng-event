@@ -16,7 +16,11 @@ interface EventTypeClass<TData, TType extends string> {
   new (type: TType, data: TData): BaseEvent<TData, TType>;
 }
 
-function createEventType<TData>(bubbles?: boolean, cancelable?: boolean, setTimeStamp?: boolean) {
+function createEventType<TData = void>(
+  bubbles?: boolean,
+  cancelable?: boolean,
+  setTimeStamp?: boolean,
+) {
   function createEventTypeHelper<TEventTypes extends Array<string>>(
     ...types: TEventTypes
   ): EventTypeClass<TData, TEventTypes[number]> {

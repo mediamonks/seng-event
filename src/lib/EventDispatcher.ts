@@ -20,6 +20,7 @@ import {
  * This EventDispatcher also supports event capturing and bubbling phases, heavily inspired
  * by existing event dispatching systems like the functionality described in the
  * [DOM Event W3 spec](https://www.w3.org/TR/DOM-Level-2-Events/events.html)
+ *
  */
 export default class EventDispatcher<TEvent extends AbstractEvent = any> extends SengDisposable {
   /**

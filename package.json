@@ -20,7 +20,7 @@
     "clean:test": "shx rm -rf coverage",
     "clean:npm": "shx rm -rf lib tmp index.js",
     "docs": "npm-run-all -p docs:*",
-    "docs:typedoc": "typedoc --tsconfig tsconfig-docs.json --mode modules --out docs/ src/",
+    "docs:typedoc": "typedoc --tsconfig tsconfig-docs.json --readme api-readme.md --mode modules --out docs/ src/",
     "lint": "npm-run-all lint:*",
     "lint:js": "eslint src --ext .js --cache",
     "lint:ts": "tslint src/**/*.ts -c tslint.json -p tsconfig.json -t verbose",

@@ -64,78 +64,12 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<p><a href="https://travis-ci.org/mediamonks/seng-event"><img src="https://img.shields.io/travis/mediamonks/seng-event.svg?maxAge=2592000" alt="Travis"></a>
-					<a href="https://codeclimate.com/github/mediamonks/seng-event"><img src="https://img.shields.io/codeclimate/github/mediamonks/seng-event.svg?maxAge=2592000" alt="Code Climate"></a>
-					<a href="https://coveralls.io/github/mediamonks/seng-event?branch=master"><img src="https://img.shields.io/coveralls/mediamonks/seng-event.svg?maxAge=2592000" alt="Coveralls"></a>
-					<a href="https://www.npmjs.com/package/seng-event"><img src="https://img.shields.io/npm/v/seng-event.svg?maxAge=2592000" alt="npm"></a>
-				<a href="https://www.npmjs.com/package/seng-event"><img src="https://img.shields.io/npm/dm/seng-event.svg?maxAge=2592000" alt="npm"></a></p>
-				<h1 id="seng-event">seng-event</h1>
-				<p>Provides Classes and utilities for dispatching and listening to events.</p>
-				<p>Provides an <em>EventDispatcher</em> base class that adds the ability to dispatch events and attach handlers that
-					should be called when such events are triggered. New event classes can be created by extending the <em>AbstractEvent</em>
-					class provided in this module. This module also provides basic event classes <em>BasicEvent</em> and <em>CommonEvent</em> that
-				are ready to be used with <em>EventDispatcher</em>.</p>
-				<p><em>seng-event</em> also supports event capturing and bubbling phases, heavily inspired by existing event
-					dispatching systems like the functionality described in the
-				<a href="https://www.w3.org/TR/DOM-Level-2-Events/events.html">DOM Event W3 spec</a></p>
-				<h2 id="installation">Installation</h2>
-				<pre><code class="language-sh">yarn add seng-event</code></pre>
-				<pre><code class="language-sh">npm i -S seng-event</code></pre>
-				<h2 id="basic-usage">Basic usage</h2>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> EventDispatcher, {AbstractEvent} <span class="hljs-keyword">from</span> <span class="hljs-string">'seng-event'</span>;
-<span class="hljs-keyword">import</span> {generateEventTypes, EVENT_TYPE_PLACEHOLDER} <span class="hljs-keyword">from</span> <span class="hljs-string">'seng-event/lib/util/eventTypeUtils'</span>;
-
-<span class="hljs-comment">// extend EventDispatcher</span>
-<span class="hljs-keyword">class</span> Foo <span class="hljs-keyword">extends</span> EventDispatcher {
-  ...
-}
-
-<span class="hljs-comment">// Create your own event class</span>
-<span class="hljs-keyword">class</span> FooEvent <span class="hljs-keyword">extends</span> AbstractEvent {
-   ...
-   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> COMPLETE:<span class="hljs-built_in">string</span> = EVENT_TYPE_PLACEHOLDER;
-   ...
-}
-generateEventTypes({FooEvent});
-
-<span class="hljs-comment">// listener for events</span>
-<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
-<span class="hljs-keyword">const</span> exampleHandler = <span class="hljs-function">(<span class="hljs-params">event:FooEvent</span>) =&gt;</span> 
-{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Handler called!'</span>, event.type, event.target);
-}
-foo.addEventListener(FooEvent.COMPLETE, exampleHandler);
-
-<span class="hljs-comment">// dispatch an event (will execute exampleHandler and log 'Handler called!')</span>
-foo.dispatchEvent(<span class="hljs-keyword">new</span> FooEvent(FooEvent.COMPLETE));  </code></pre>
-				<h2 id="documentation">Documentation</h2>
-				<p>View the <a href="http://mediamonks.github.io/seng-event/">generated documentation</a>.</p>
-				<h2 id="building">Building</h2>
-				<p>In order to build seng-event, ensure that you have <a href="http://git-scm.com/downloads">Git</a>
-				and <a href="http://nodejs.org/">Node.js</a> installed.</p>
-				<p>Clone a copy of the repo:</p>
-				<pre><code class="language-sh">git <span class="hljs-built_in">clone</span> https://github.com/mediamonks/seng-event.git</code></pre>
-				<p>Change to the seng-event directory:</p>
-				<pre><code class="language-sh"><span class="hljs-built_in">cd</span> seng-event</code></pre>
-				<p>Install dev dependencies:</p>
-				<pre><code class="language-sh">yarn</code></pre>
-				<p>Use one of the following main scripts:</p>
-				<pre><code class="language-sh">yarn build            <span class="hljs-comment"># build this project</span>
-yarn dev              <span class="hljs-comment"># run compilers in watch mode, both for babel and typescript</span>
-yarn <span class="hljs-built_in">test</span>             <span class="hljs-comment"># run the unit tests incl coverage</span>
-yarn <span class="hljs-built_in">test</span>:dev         <span class="hljs-comment"># run the unit tests in watch mode</span>
-yarn lint             <span class="hljs-comment"># run eslint and tslint on this project</span>
-yarn doc              <span class="hljs-comment"># generate typedoc documentation</span></code></pre>
-				<p>When installing this module, it adds a pre-commit hook, that runs lint and prettier commands
-				before committing, so you can be sure that everything checks out.</p>
-				<h2 id="contribute">Contribute</h2>
-				<p>View <a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></p>
-				<h2 id="changelog">Changelog</h2>
-				<p>View <a href="./CHANGELOG.md">CHANGELOG.md</a></p>
-				<h2 id="authors">Authors</h2>
-				<p>View <a href="./AUTHORS.md">AUTHORS.md</a></p>
-				<h2 id="license">LICENSE</h2>
-				<p><a href="./LICENSE">MIT</a> © MediaMonks</p>
+				<h2 id="api-documentation">API Documentation</h2>
+				<p>Select the <a href="modules/seng_event.html">seng-event</a> module in the navigation to see which methods this module exports.
+				The default export of this module is <a href="classes/seng_event.eventdispatcher.html">EventDispatcher</a></p>
+				<p>The <code>seng-event/lib/*</code> modules contain various methods that may be useful for advanced usage. </p>
+				<h2 id="usage-guide">Usage guide</h2>
+				<p>For general usage information, consult the readme on our <a href="https://github.com/mediamonks/seng-event">GitHub page</a>.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
