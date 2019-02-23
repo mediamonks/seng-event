@@ -1,6 +1,6 @@
-import createIsomorphicEventType from '../src/lib/createIsomorphicEventType';
+import createIsomorphicEventClass from '../src/lib/createIsomorphicEventClass';
 
-describe('createIsomorphicEventType', () => {
+describe('createIsomorphicEventClass', () => {
   it('should use passed event config', () => {
     interface PlayerEventData {
       playerId: number;
@@ -10,7 +10,7 @@ describe('createIsomorphicEventType', () => {
       currentTime: number;
     }
 
-    class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventType<
+    class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventClass<
       [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
       >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
 
@@ -26,7 +26,7 @@ describe('createIsomorphicEventType', () => {
       currentTime: number;
     }
 
-    class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventType<
+    class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventClass<
       [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
     >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
 

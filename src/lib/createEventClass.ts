@@ -16,12 +16,12 @@ interface EventTypeClass<TData, TType extends string> {
   new (type: TType, data: TData): BaseEvent<TData, TType>;
 }
 
-function createEventType<TData = void>(
+function createEventClass<TData = void>(
   bubbles?: boolean,
   cancelable?: boolean,
   setTimeStamp?: boolean,
 ) {
-  function createEventTypeHelper<TEventTypes extends Array<string>>(
+  function createEventClassHelper<TEventTypes extends Array<string>>(
     ...types: TEventTypes
   ): EventTypeClass<TData, TEventTypes[number]> {
     class EventType extends BaseEvent<any, string> {
@@ -39,7 +39,7 @@ function createEventType<TData = void>(
     return EventType;
   }
 
-  return createEventTypeHelper;
+  return createEventClassHelper;
 }
 
-export default createEventType;
+export default createEventClass;

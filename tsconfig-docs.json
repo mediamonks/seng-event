@@ -8,7 +8,7 @@
     "lib/AbstractEvent.ts",
     "lib/BaseEvent.ts",
     "lib/CallListenerResult.ts",
-    "lib/createEventType.ts",
+    "lib/createEventClass.ts",
     "lib/createIsomorphicEventType.ts",
     "lib/EventDispatcher.ts",
     "lib/eventHasType.ts",

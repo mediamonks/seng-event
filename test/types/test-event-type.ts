@@ -1,10 +1,10 @@
-import EventDispatcher, { createEventType, createIsomorphicEventType } from 'seng-event';
+import EventDispatcher, { createEventClass } from 'seng-event';
 
 interface PlayerEventData {
   playerId: number;
 }
 
-class PlayerEvent extends createEventType<PlayerEventData>()('PLAY', 'STOP') {}
+class PlayerEvent extends createEventClass<PlayerEventData>()('PLAY', 'STOP') {}
 
 // $ExpectType "PLAY"
 PlayerEvent.types.PLAY;

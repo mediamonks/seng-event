@@ -9,7 +9,7 @@ import IsomorphicBaseEvent, { EventOptions, EventOptionsMap } from './Isomorphic
  */
 type TypeMap<TType extends string> = { [P in TType]: P };
 
-function createIsomorphicEventType<TDataTuple extends Array<any>>(
+function createIsomorphicEventClass<TDataTuple extends Array<any>>(
   ...eventOptions: Array<EventOptions>
 ) {
   return function isomorphicStringHelper<
@@ -42,4 +42,4 @@ function createIsomorphicEventType<TDataTuple extends Array<any>>(
   };
 }
 
-export default createIsomorphicEventType;
+export default createIsomorphicEventClass;

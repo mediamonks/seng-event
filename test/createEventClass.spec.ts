@@ -1,12 +1,12 @@
-import createEventType from '../src/lib/createEventType';
+import createEventClass from '../src/lib/createEventClass';
 
-describe('createEventType', () => {
+describe('createEventClass', () => {
   it('should use passed event config', () => {
     interface PlayerEventData {
       playerId: number;
     }
 
-    class PlayerEvent extends createEventType<PlayerEventData>(false, true)('PLAY', 'STOP') {}
+    class PlayerEvent extends createEventClass<PlayerEventData>(false, true)('PLAY', 'STOP') {}
 
     const playEvent = new PlayerEvent('PLAY', { playerId: 1 });
     expect(playEvent.cancelable).toBe(true);
@@ -16,7 +16,7 @@ describe('createEventType', () => {
       playerId: number;
     }
 
-    class PlayerEvent extends createEventType<PlayerEventData>()('PLAY', 'STOP') {}
+    class PlayerEvent extends createEventClass<PlayerEventData>()('PLAY', 'STOP') {}
 
     const playEvent = new PlayerEvent('PLAY', { playerId: 1 });
     expect(playEvent.cancelable).toBe(false);
@@ -24,7 +24,7 @@ describe('createEventType', () => {
     expect(playEvent.timeStamp).toBe(0);
   });
   it('should allow event creation without data if TData=void', () => {
-    class PlayerEvent extends createEventType()('PLAY', 'STOP') {}
+    class PlayerEvent extends createEventClass()('PLAY', 'STOP') {}
 
     const playEvent = new PlayerEvent('PLAY');
     expect(playEvent.data).toBeUndefined();

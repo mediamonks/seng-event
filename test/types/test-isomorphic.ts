@@ -1,4 +1,4 @@
-import EventDispatcher, { createIsomorphicEventType } from 'seng-event';
+import EventDispatcher, { createIsomorphicEventClass } from 'seng-event';
 
 interface PlayerEventData {
   playerId: number;
@@ -8,7 +8,7 @@ interface PlayerUpdateEventData extends PlayerEventData {
   currentTime: number;
 }
 
-class IsoPlayerEvent extends createIsomorphicEventType<
+class IsoPlayerEvent extends createIsomorphicEventClass<
   [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
   >({ cancelable: true })('PLAY', 'STOP', 'UPDATE') {}
 
