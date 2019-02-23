@@ -28,9 +28,10 @@ class IsomorphicBaseEvent<
     data: DataForIsomorphicEvent<TType, TTypes, TDataTypes>,
     typeOptions: EventOptionsMap<TTypes[number]>,
   ) {
-    const { bubbles, cancelable, setTimeStamp } = typeOptions[type];
+    const { bubbles, cancelable, setTimeStamp } = typeOptions[type] || ({} as any);
     super(type, data, bubbles, cancelable, setTimeStamp);
     this.typeOptions = typeOptions;
+    this.type = type;
   }
 
   public clone(): IsomorphicBaseEvent<TTypes, TDataTypes, TType> {

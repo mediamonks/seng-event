@@ -24,7 +24,7 @@ function createEventClass<TData = void>(
   function createEventClassHelper<TEventTypes extends Array<string>>(
     ...types: TEventTypes
   ): EventTypeClass<TData, TEventTypes[number]> {
-    class EventType extends BaseEvent<any, string> {
+    class GenerateEventClass extends BaseEvent<any, string> {
       public static types = types.reduce<TypeMap<string>>(
         (result, t) => ({ ...result, [t]: t }),
         {},
@@ -33,13 +33,9 @@ function createEventClass<TData = void>(
       constructor(type: string, data: TData) {
         super(type, data, bubbles, cancelable, setTimeStamp);
       }
-
-      public clone(): EventType {
-        return new EventType(this.type, this.data);
-      }
     }
 
-    return EventType;
+    return GenerateEventClass;
   }
 
   return createEventClassHelper;

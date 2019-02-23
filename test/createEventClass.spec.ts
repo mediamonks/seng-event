@@ -29,4 +29,11 @@ describe('createEventClass', () => {
     const playEvent = new PlayerEvent('PLAY');
     expect(playEvent.data).toBeUndefined();
   });
+  it('should return a new event when calling clone()', () => {
+    class PlayerEvent extends createEventClass()('PLAY', 'STOP') {}
+
+    const playEvent = new PlayerEvent('PLAY');
+    const playEvent2 = playEvent.clone();
+    expect(playEvent).not.toBe(playEvent2);
+  });
 });

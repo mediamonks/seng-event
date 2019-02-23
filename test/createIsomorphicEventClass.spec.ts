@@ -35,4 +35,21 @@ describe('createIsomorphicEventClass', () => {
     expect(updateEvent.bubbles).toBe(false);
     expect(updateEvent.timeStamp).toBe(0);
   });
+  it('should return a new event when calling clone()', () => {
+    interface PlayerEventData {
+      playerId: number;
+    }
+
+    interface PlayerUpdateEventData extends PlayerEventData {
+      currentTime: number;
+    }
+
+    class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventClass<
+      [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
+      >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
+
+    const playEvent = new IsoPlayerEvent('PLAY', { playerId: 1 });
+    const playEvent2 = playEvent.clone();
+    expect(playEvent).not.toBe(playEvent2);
+  });
 });

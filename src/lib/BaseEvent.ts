@@ -15,6 +15,7 @@ class BaseEvent<TDataType = void, TEventType extends string = string> extends Ab
     setTimeStamp: boolean = false,
   ) {
     super(type, bubbles, cancelable, setTimeStamp);
+    this.type = type;
     this.data = data;
   }
 
