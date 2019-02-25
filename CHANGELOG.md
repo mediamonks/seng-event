@@ -22,7 +22,7 @@ the [readme](README.md) for more info.
 
 ### Event classes can have isomorphic data or options
 Previously an event class was either fixed to a set of options and a certain
-type of `data`, or it was type too loosely. It is now possible to have the
+type of `data`, or it was typed too loosely. It is now possible to have the
 options and the `data` depend on the event `type`. 
 
 ## Changes
