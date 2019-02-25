@@ -20,7 +20,7 @@ export default class EventListenerData<
   public useCapture: boolean;
   public priority: number;
   /**
-   * This property will be set to _true_ by the [[EventDispatcher]] this listener is bound to when
+   * This property will be set to `true` by the [[EventDispatcher]] this listener is bound to when
    * the listener is removed. This is to make sure the handler is not called, even if the listener
    * is removed while dispatching the event.
    */
@@ -30,9 +30,9 @@ export default class EventListenerData<
    * @param dispatcher The EventDispatcher on which this listener listens for events
    * @param type The type of event this listener responds to
    * @param handler The handler function that will be called when a matching event is dispatched
-   * @param useCapture Set to the _useCapture_ argument passed to [[EventDispatcher.addEventListener|addEventListener]]
-   * @param priority Set to the _priority_ argument passed to [[EventDispatcher.addEventListener|addEventListener]].
-   * Used to sort the listener within the [[EventDispatcher._listeners|_listeners]] object of the EventDispatcher
+   * @param useCapture Set to the `useCapture` argument passed to [[EventDispatcher.addEventListener|addEventListener]]
+   * @param priority Set to the `priority` argument passed to [[EventDispatcher.addEventListener|addEventListener]].
+   * Used to sort the listener within the [[EventDispatcher.listeners|listeners]] object of the EventDispatcher
    */
   constructor(
     dispatcher: EventDispatcher<TEvent>,

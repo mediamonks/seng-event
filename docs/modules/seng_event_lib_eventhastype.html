@@ -85,15 +85,22 @@
 					<a name="eventhastype" class="tsd-anchor"></a>
 					<h3>event<wbr>Has<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">event<wbr>Has<wbr>Type&lt;TType&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../classes/seng_event.baseevent.html" class="tsd-signature-type">BaseEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TType</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">event<wbr>Has<wbr>Type&lt;TType&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../classes/seng_event_lib_baseevent.baseevent.html" class="tsd-signature-type">BaseEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TType</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/eventHasType.ts#L6">lib/eventHasType.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/eventHasType.ts#L13">lib/eventHasType.ts:13</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks if the given <a href="../classes/seng_event_lib_baseevent.baseevent.html">BaseEvent</a> has a the given type and if so,
+										asserts to the compiler that it is a <a href="../classes/seng_event_lib_baseevent.baseevent.html">BaseEvent</a> with that specific type
+									as the <code>type</code> property.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -103,10 +110,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>event: <a href="../classes/seng_event.baseevent.html" class="tsd-signature-type">BaseEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>event: <a href="../classes/seng_event_lib_baseevent.baseevent.html" class="tsd-signature-type">BaseEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The event to check</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <span class="tsd-signature-type">TType</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string literal <code>type</code></p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -123,6 +136,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="seng_event.html">seng-<wbr>event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="seng_event_lib_baseevent.html">seng-<wbr>event/lib/<wbr>Base<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="seng_event_lib_eventtypings.html">seng-<wbr>event/lib/<wbr>Event<wbr>Typings</a>

@@ -85,6 +85,14 @@
 				<ul class="tsd-type-parameters">
 					<li>
 						<h4>TEvent<span class="tsd-signature-symbol">: </span><a href="seng_event.abstractevent.html" class="tsd-signature-type">AbstractEvent</a></h4>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>The type of the events that this EventDispatcher is expected to dispatch. To
+									allow for multiple event classes, use a union type here. If you don&#39;t specify an event type,
+									any event that <code>extends</code> <a href="seng_event.abstractevent.html">AbstractEvent</a> can be dispatched, but you won&#39;t get automatic typing
+								for event handlers.</p>
+							</div>
+						</div>
 					</li>
 				</ul>
 			</section>
@@ -120,9 +128,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="seng_event.eventdispatcher.html#listeners" class="tsd-kind-icon">listeners</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="seng_event.eventdispatcher.html#listeners" class="tsd-kind-icon">listeners</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="seng_event.eventdispatcher.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="seng_event.eventdispatcher.html#target" class="tsd-kind-icon">target</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="seng_event.eventdispatcher.html#target" class="tsd-kind-icon">target</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -133,7 +141,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="seng_event.eventdispatcher.html#dispose" class="tsd-kind-icon">dispose</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="seng_event.eventdispatcher.html#haseventlistener" class="tsd-kind-icon">has<wbr>Event<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="seng_event.eventdispatcher.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="seng_event.eventdispatcher.html#listenersorter" class="tsd-kind-icon">listener<wbr>Sorter</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="seng_event.eventdispatcher.html#listenersorter" class="tsd-kind-icon">listener<wbr>Sorter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="seng_event.eventdispatcher.html#removealleventlisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Event<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="seng_event.eventdispatcher.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="seng_event.eventdispatcher.html#willtrigger" class="tsd-kind-icon">will<wbr>Trigger</a></li>
@@ -154,13 +162,28 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L42">lib/EventDispatcher.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L46">lib/EventDispatcher.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates an EventDispatcher instance.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>You can use the <code>target</code> parameter to proxy the EventDispatcher instead of extending
+										it directly.</p>
+										<pre><code class="language-ts"><span class="hljs-keyword">class</span> Foo {
+  <span class="hljs-keyword">public</span> dispatcher:EventDispatcher&lt;FooEvent&gt;;
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">this</span>.dispatcher = <span class="hljs-keyword">new</span> EventDispatcher&lt;FooEvent&gt;(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>);
+  }
+
+  ...
+};</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -179,7 +202,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> target: <a href="seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>If set, will set the [[IEvent.target|target]] attribute of all events
+											<p>If set, will set the <a href="seng_event.abstractevent.html#target">target</a> attribute of all events
 												dispatched by this EventDispatcher to the given object. If not set, will use this instance
 											as a target for dispatched events.</p>
 										</div>
@@ -193,18 +216,18 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="listeners" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> listeners</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> listeners</h3>
 					<div class="tsd-signature tsd-kind-icon">listeners<span class="tsd-signature-symbol">:</span> <a href="../modules/seng_event_lib_eventtypings.html#eventlistenermap" class="tsd-signature-type">EventListenerMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L37">lib/EventDispatcher.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L41">lib/EventDispatcher.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An object containing all event listeners by [[IEvent.type|event type]]. Each value
+							<p>An object containing all event listeners by <a href="seng_event.abstractevent.html#type">event type</a>. Each value
 								on this object is an Array of <a href="seng_event.eventlistenerdata.html">EventListenerData</a> objects for each event listener
 							added with that type.</p>
 						</div>
@@ -216,13 +239,13 @@
 					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <a href="seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L31">lib/EventDispatcher.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L35">lib/EventDispatcher.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The parent EventDispatcher instance. If this instance has no parent, this value will be
-							set to <em>null</em>. The parent is used in the bubbling and capturing phases of events.</p>
+							set to <code>null</code>. The parent is used in the bubbling and capturing phases of events.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>see</dt>
@@ -231,19 +254,19 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="target" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> target</h3>
 					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <a href="seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L42">lib/EventDispatcher.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L46">lib/EventDispatcher.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The value that will be set as [[IEvent.target|target]] on events that are dispatched
-							by this EventDispatcher instance.</p>
+							<p>The value that will be set as <a href="seng_event.abstractevent.html#target">target</a> on events that are dispatched
+							by this EventDispatcher instance. Set to the value passed to the constructor</p>
 						</div>
 					</div>
 				</section>
@@ -260,20 +283,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L149">lib/EventDispatcher.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L166">lib/EventDispatcher.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Adds a new event listener. The given handler function will be called in the following cases:</p>
 									<ul>
-										<li>An event with a [[IEvent.type|type]] that is equal to the given <em>eventType</em> is dispatched
+										<li>An event with a <a href="seng_event.abstractevent.html#type">type</a> that is equal to the given <code>eventType</code> is dispatched
 										on this EventDispatcher instance.</li>
-										<li>An event with a [[IEvent.type|type]] that is equal to the given <em>eventType</em> is dispatched
-										on a child EventDispatcher, and the <em>useCapture</em> parameter is set to <em>true</em></li>
-										<li>An event with [[IEvent.bubbles|bubbles]] set to <em>true</em> and a [[IEvent.type|type]] that
-											is equal to the given <em>eventType</em> is dispatched on a child EventDispatcher, and the
-										<em>useCapture</em> parameter is set to <em>false</em></li>
+										<li>An event with a <a href="seng_event.abstractevent.html#type">type</a> that is equal to the given <code>eventType</code> is dispatched
+										on a child EventDispatcher, and the <code>useCapture</code> parameter is set to <code>true</code></li>
+										<li>An event with <a href="seng_event.abstractevent.html#bubbles">bubbles</a> set to <code>true</code> and a <a href="seng_event.abstractevent.html#type">type</a> that
+											is equal to the given <code>eventType</code> is dispatched on a child EventDispatcher, and the
+										<code>useCapture</code> parameter is set to <code>false</code></li>
 									</ul>
 								</div>
 								<dl class="tsd-comment-tags">
@@ -301,14 +324,14 @@
 									<h5>handler: <a href="../modules/seng_event_lib_eventtypings.html#eventhandlerforevent" class="tsd-signature-type">EventHandlerForEvent</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/seng_event_lib_eventtypings.html#extracteventoftype" class="tsd-signature-type">ExtractEventOfType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The handler function that will be called when a matching event is dispatched.
-										This function will retrieve the dispatched [[IEvent|event]] as a parameter</p>
+										This function will retrieve the dispatched <a href="seng_event.abstractevent.html">event</a> as a parameter</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> useCapture: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Indicates if this handler should be called during the capturing phase
-											of an event chain. If and only if this is set to <em>false</em> will this handler be called
+											of an event chain. If and only if this is set to <code>false</code> will this handler be called
 										during the bubbling phase of an event chain.</p>
 									</div>
 								</li>
@@ -337,7 +360,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L91">lib/EventDispatcher.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L108">lib/EventDispatcher.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -346,23 +369,23 @@
 									<ol>
 										<li>The capture phase. We walk through all ancestors of this EventDispatcher, with the
 											top-most instance first and the direct parent of this EventDispatcher last. On each
-											ancestor, we call all event handlers that are added with the <em>useCapture</em> argument
-											set to <em>true</em> and the <em>eventType</em> set to the same [[IEvent.type|type]] as
+											ancestor, we call all event handlers that are added with the <code>useCapture</code> argument
+											set to <code>true</code> and the <code>eventType</code> set to the same <a href="seng_event.abstractevent.html#type">type</a> as
 											the given event.
 										If this EventDispatcher has no parent, this phase will be skipped.</li>
 										<li>The target phase. In this phase we call all event handlers on this EventDispatcher
-										instance that listen for the same [[IEvent.type|type]] as the given event.</li>
+										instance that listen for the same <a href="seng_event.abstractevent.html#type">type</a> as the given event.</li>
 										<li>The bubbling phase. This phase will only be executed if the given event has the
-											[[IEvent.bubbles|bubbles]] property set to <em>true</em>. If so, we will again walk through
+											<a href="seng_event.abstractevent.html#bubbles">bubbles</a> property set to <code>true</code>. If so, we will again walk through
 											all ancestors of this EventDispatcher, but in the reverse order: the direct parent
 											of this instance first and the top-most parent last. On every ancestor, we will call
-											all event handlers that are added with the <em>useCapture</em> argument set to <em>false</em> and the
-										<em>eventType</em> set to the same [[IEvent.type|type]] as the given event.</li>
+											all event handlers that are added with the <code>useCapture</code> argument set to <code>false</code> and the
+										<code>eventType</code> set to the same <a href="seng_event.abstractevent.html#type">type</a> as the given event.</li>
 									</ol>
 								</div>
-								<p>If any of the event handlers call [[IEvent.stopPropagation|stopPropagation()]], we will
+								<p>If any of the event handlers call <a href="seng_event.abstractevent.html#stoppropagation">stopPropagation()</a>, we will
 									skip all event handlers that occur on a target later in the event chain. If an event handler
-									calls [[IEvent.stopImmediatePropagation|stopImmediatePropagation()]], we will also skip
+									calls <a href="seng_event.abstractevent.html#stopimmediatepropagation">stopImmediatePropagation()</a>, we will also skip
 								any event handlers on the same target in the event chain.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -376,11 +399,13 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p>If one of the handlers that have been called during this dispatch
-								called [[IEvent.preventDefault|event.preventDefault()]], this method will return <em>false</em>.
+								called <a href="seng_event.abstractevent.html#preventdefault">event.preventDefault()</a>, this method will return <code>false</code>.
 								If no handlers have been called or none of the handlers have called
-							[[IEvent.preventDefault|event.preventDefault()]], this method will return <em>true</em>.</p>
-							<p><em>Please note: [[IEvent.preventDefault|preventDefault()]] can only be called on
-							events that have their [[IEvent.cancelable|cancelable]] property set to true</em></p>
+							<a href="seng_event.abstractevent.html#preventdefault">event.preventDefault()</a>, this method will return <code>true</code>.</p>
+							<blockquote>
+								<p>Please note: <a href="seng_event.abstractevent.html#preventdefault">preventDefault()</a> can only be called on
+								events that have their <a href="seng_event.abstractevent.html#cancelable">cancelable</a> property set to <code>true</code></p>
+							</blockquote>
 						</li>
 					</ul>
 				</section>
@@ -395,13 +420,13 @@
 							<aside class="tsd-sources">
 								<p>Overrides Disposable.dispose</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L249">lib/EventDispatcher.ts:249</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L267">lib/EventDispatcher.ts:267</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Cleans up this EventListener instance. No event handlers on this EventDispatcher will be called
-									and future calls to dispatchEvent() will be ignored.</p>
+									and future calls to <a href="seng_event.eventdispatcher.html#dispatchevent">dispatchEvent()</a> will be ignored.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -418,7 +443,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L176">lib/EventDispatcher.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L194">lib/EventDispatcher.ts:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -438,7 +463,7 @@
 								<li>
 									<h5>eventType: <span class="tsd-signature-type">TType</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Will only look for event listeners with this <em>eventType</em></p>
+										<p>Will only look for event listeners with this <code>eventType</code></p>
 									</div>
 								</li>
 								<li>
@@ -450,9 +475,12 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> useCapture: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>If set, will only match event listeners that have the same <em>useCapture</em>
-											argument. <em>Please note: if no useCapture argument was provided to &lt;a href=&quot;seng</em>event.eventdispatcher.html#addeventlistener&quot;&gt;addEventListener</a>, it
-										is set to false by default_</p>
+										<p>If set, will only match event listeners that have the same <code>useCapture</code>
+										argument.</p>
+										<blockquote>
+											<p>Please note: if no <code>useCapture</code> argument was provided to <a href="seng_event.eventdispatcher.html#addeventlistener">addEventListener</a>, it
+											is set to <code>false</code> by default</p>
+										</blockquote>
 									</div>
 								</li>
 							</ul>
@@ -485,17 +513,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="listenersorter" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> listener<wbr>Sorter</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> listener<wbr>Sorter</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">listener<wbr>Sorter<span class="tsd-signature-symbol">(</span>e1<span class="tsd-signature-symbol">: </span><a href="seng_event.eventlistenerdata.html" class="tsd-signature-type">EventListenerData</a>, e2<span class="tsd-signature-symbol">: </span><a href="seng_event.eventlistenerdata.html" class="tsd-signature-type">EventListenerData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L262">lib/EventDispatcher.ts:262</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L280">lib/EventDispatcher.ts:280</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -534,12 +562,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L241">lib/EventDispatcher.ts:241</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L259">lib/EventDispatcher.ts:259</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Removes all event listeners that have a [[IEvent.type|type]] of the given <em>eventType</em>
+									<p>Removes all event listeners that have a <a href="seng_event.abstractevent.html#type">type</a> of the given <code>eventType</code>
 										from this EventDispatcher instance, regardless of their <a href="seng_event.eventlistenerdata.html#handler">handler</a> or
 									<a href="seng_event.eventlistenerdata.html#usecapture">useCapture</a> property.</p>
 								</div>
@@ -551,7 +579,7 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> eventType: <a href="../modules/seng_event_lib_eventtypings.html#typesforevent" class="tsd-signature-type">TypesForEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The [[IEvent.type|type]] of event to remove. If not provided, all event listeners
+										<p>The <a href="seng_event.abstractevent.html#type">type</a> of event to remove. If not provided, all event listeners
 										will be removed regardless of their type.</p>
 									</div>
 								</li>
@@ -570,7 +598,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L223">lib/EventDispatcher.ts:223</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L241">lib/EventDispatcher.ts:241</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -592,7 +620,7 @@
 								<li>
 									<h5>eventType: <span class="tsd-signature-type">TType</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Only event listeners of that have this <em>eventType</em> are removed</p>
+										<p>Only event listeners of that have this <code>eventType</code> are removed</p>
 									</div>
 								</li>
 								<li>
@@ -604,7 +632,7 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> useCapture: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Only event listeners that have been added with the same <em>useCapture</em>
+										<p>Only event listeners that have been added with the same <code>useCapture</code>
 											parameter will be removed. <em>Please note: if no useCapture argument is provided, only
 										event listeners that have useCapture set to false will be removed.</em></p>
 									</div>
@@ -624,12 +652,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L205">lib/EventDispatcher.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventDispatcher.ts#L223">lib/EventDispatcher.ts:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Checks if an event listener with a <a href="seng_event.eventlistenerdata.html#type">type</a> of the given <em>eventType</em> exists
+									<p>Checks if an event listener with a <a href="seng_event.eventlistenerdata.html#type">type</a> of the given <code>eventType</code> exists
 									on this EventDispatcher or any ancestor EventDispatcher instance.</p>
 								</div>
 							</div>
@@ -643,7 +671,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p><em>true</em> if a matching listener is found</p>
+							<p><code>true</code> if a matching listener is found</p>
 						</li>
 					</ul>
 				</section>
@@ -657,6 +685,9 @@
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/seng_event.html">seng-<wbr>event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/seng_event_lib_baseevent.html">seng-<wbr>event/lib/<wbr>Base<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/seng_event_lib_eventtypings.html">seng-<wbr>event/lib/<wbr>Event<wbr>Typings</a>
@@ -680,9 +711,6 @@
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="seng_event.abstractevent.html" class="tsd-kind-icon">Abstract<wbr>Event</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="seng_event.baseevent.html" class="tsd-kind-icon">Base<wbr>Event</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
@@ -691,13 +719,13 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="seng_event.eventdispatcher.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="seng_event.eventdispatcher.html#listeners" class="tsd-kind-icon">listeners</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="seng_event.eventdispatcher.html#parent" class="tsd-kind-icon">parent</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="seng_event.eventdispatcher.html#target" class="tsd-kind-icon">target</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -715,7 +743,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="seng_event.eventdispatcher.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="seng_event.eventdispatcher.html#listenersorter" class="tsd-kind-icon">listener<wbr>Sorter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -735,22 +763,10 @@
 						<a href="seng_event.eventlistenerdata.html" class="tsd-kind-icon">Event<wbr>Listener<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a>
+						<a href="../modules/seng_event.html#createeventclass" class="tsd-kind-icon">create<wbr>Event<wbr>Class</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#createeventtype" class="tsd-kind-icon">create<wbr>Event<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#createisomorphiceventtype" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/seng_event.html#getcalltree" class="tsd-kind-icon">get<wbr>Call<wbr>Tree</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/seng_event.html#getparents" class="tsd-kind-icon">get<wbr>Parents</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#removelistenersfrom" class="tsd-kind-icon">remove<wbr>Listeners<wbr>From</a>
+						<a href="../modules/seng_event.html#createisomorphiceventclass" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Class</a>
 					</li>
 				</ul>
 			</nav>

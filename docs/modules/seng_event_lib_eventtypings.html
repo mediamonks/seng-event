@@ -94,9 +94,15 @@
 					<div class="tsd-signature tsd-kind-icon">Data<wbr>For<wbr>Isomorphic<wbr>Event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DataForIsomorphicEvent&lt;T, TTypes, TDataTypes&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L40">lib/EventTypings.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L76">lib/EventTypings.ts:76</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Looks up the string literal type <code>T</code> in the tuple type <code>TTypes</code>, and returns the data
+							type that can be found at the same index on <code>TDataTypes</code></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 					<a name="eventhandlerforevent" class="tsd-anchor"></a>
@@ -104,9 +110,14 @@
 					<div class="tsd-signature tsd-kind-icon">Event<wbr>Handler<wbr>For<wbr>Event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L11">lib/EventTypings.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L17">lib/EventTypings.ts:17</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Event handler for an event with the given type</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -135,9 +146,14 @@
 					<div class="tsd-signature tsd-kind-icon">Event<wbr>Listener<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L13">lib/EventTypings.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L22">lib/EventTypings.ts:22</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map of <a href="../classes/seng_event.eventlistenerdata.html">EventListenerData</a> which is stored on each <a href="../classes/seng_event.eventdispatcher.html">EventDispatcher</a></p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -153,9 +169,15 @@
 					<div class="tsd-signature tsd-kind-icon">Extract<wbr>Event<wbr>IfType<wbr>Contains<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ExtractEventIfTypeContains&lt;TEvent, TType&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L22">lib/EventTypings.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L45">lib/EventTypings.ts:45</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Takes a union of possible events <code>TEvent</code>, and extract only the events that contain a <code>type</code>
+							property that can possibly be <code>TType</code></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 					<a name="extracteventoftype" class="tsd-anchor"></a>
@@ -163,9 +185,16 @@
 					<div class="tsd-signature tsd-kind-icon">Extract<wbr>Event<wbr>OfType<span class="tsd-signature-symbol">:</span> <a href="seng_event_lib_eventtypings.html#unpackisomorphic" class="tsd-signature-type">UnpackIsomorphic</a><span class="tsd-signature-symbol">&lt;</span><a href="seng_event_lib_eventtypings.html#extracteventiftypecontains" class="tsd-signature-type">ExtractEventIfTypeContains</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">TType</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L34">lib/EventTypings.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L66">lib/EventTypings.ts:66</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Takes a union of event types, possible created with <a href="seng_event.html#createeventclass">createEventClass</a> or
+								<a href="seng_event.html#createisomorphiceventclass">createIsomorphicEventClass</a>, and extracts the correct typings based on the
+							given type <code>TType</code></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 					<a name="extracteventtypeifcontains" class="tsd-anchor"></a>
@@ -173,9 +202,25 @@
 					<div class="tsd-signature tsd-kind-icon">Extract<wbr>Event<wbr>Type<wbr>IfContains<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ExtractEventTypeIfContains&lt;TEvent, TType&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L17">lib/EventTypings.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L36">lib/EventTypings.ts:36</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Returns the (union) type of the <code>type</code> property on an event <em>if and only if</em> that type contains
+							the given <code>TType</code></p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>example</dt>
+							<dd><p>If <code>TEvent</code> is an <code>AbstractEvent</code> with <code>type</code> <code>&#39;FOO&#39;|&#39;BAR&#39;</code>, and <code>TType</code> is
+								<code>&#39;BAR&#39;</code>, this will return <code>&#39;FOO&#39;|&#39;BAR&#39;</code></p>
+							</dd>
+							<dt>example</dt>
+							<dd><p>If <code>TEvent</code> is an <code>AbstractEvent</code> with <code>type</code> <code>&#39;FOO&#39;|&#39;BAR&#39;</code>, and <code>TType</code> is
+								<code>&#39;FOOBAR&#39;</code>, this will return <code>never</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 					<a name="typesforevent" class="tsd-anchor"></a>
@@ -183,9 +228,14 @@
 					<div class="tsd-signature tsd-kind-icon">Types<wbr>For<wbr>Event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TEvent[&quot;type&quot;]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L9">lib/EventTypings.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L12">lib/EventTypings.ts:12</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Extract the typeof the <code>type</code> property of an <a href="../classes/seng_event.abstractevent.html">AbstractEvent</a> (which is possibly a union)</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 					<a name="unpackisomorphic" class="tsd-anchor"></a>
@@ -193,9 +243,15 @@
 					<div class="tsd-signature tsd-kind-icon">Unpack<wbr>Isomorphic<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">UnpackIsomorphic&lt;TEvent, TType&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventTypings.ts#L27">lib/EventTypings.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/EventTypings.ts#L54">lib/EventTypings.ts:54</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Takes an event <code>TEvent</code>. If <code>TEvent</code> extends <code>IsomorphicBaseEvent</code>, it will narrow down
+							this <code>IsomorphicBaseEvent</code> to one which has the given <code>TType</code></p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -207,6 +263,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="seng_event.html">seng-<wbr>event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="seng_event_lib_baseevent.html">seng-<wbr>event/lib/<wbr>Base<wbr>Event</a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="seng_event_lib_eventtypings.html">seng-<wbr>event/lib/<wbr>Event<wbr>Typings</a>

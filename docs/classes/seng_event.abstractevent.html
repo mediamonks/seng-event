@@ -73,9 +73,13 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>Abstract base class for all events that can be dispatched through <a href="seng_event.eventdispatcher.html">EventDispatcher</a>. This class
-							should not be instantiated but extended by a specific event class. For an event class with basic
-						functionality that can be instantiated see [[BasicEvent]]</p>
+						should not be instantiated but extended by a specific event class.</p>
 					</div>
+					<dl class="tsd-comment-tags">
+						<dt>see</dt>
+						<dd><p><a href="../modules/seng_event.html#createeventclass">createEventClass</a></p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -85,7 +89,7 @@
 						<span class="target">AbstractEvent</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="seng_event.baseevent.html" class="tsd-signature-type">BaseEvent</a>
+								<a href="seng_event_lib_baseevent.baseevent.html" class="tsd-signature-type">BaseEvent</a>
 							</li>
 						</ul>
 					</li>
@@ -139,7 +143,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L52">lib/AbstractEvent.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L66">lib/AbstractEvent.ts:66</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -173,7 +177,7 @@
 											<p>Indicates if <a href="seng_event.abstractevent.html#preventdefault">preventDefault</a> can be called on this event. This will prevent the &#39;default
 												action&#39; of the event from being executed. It is up to the <a href="seng_event.eventdispatcher.html">EventDispatcher</a> instance that dispatches the
 												event to stop the default action from executing when the <a href="seng_event.eventdispatcher.html#dispatchevent">dispatchEvent</a>
-											method returns <em>false</em></p>
+											method returns <code>false</code></p>
 										</div>
 									</div>
 								</li>
@@ -200,9 +204,15 @@
 					<div class="tsd-signature tsd-kind-icon">bubbles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L21">lib/AbstractEvent.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L29">lib/AbstractEvent.ts:29</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If true, the event will also go through a bubbling phase. See <a href="seng_event.eventdispatcher.html#dispatchevent">EventDispatcher.dispatchEvent</a>
+							for more information on the event phases.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="cancelable" class="tsd-anchor"></a>
@@ -210,9 +220,17 @@
 					<div class="tsd-signature tsd-kind-icon">cancelable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L22">lib/AbstractEvent.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L36">lib/AbstractEvent.ts:36</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Indicates if <a href="seng_event.abstractevent.html#preventdefault">preventDefault</a> can be called on this event. This will prevent the &#39;default
+								action&#39; of the event from being executed. It is up to the <a href="seng_event.eventdispatcher.html">EventDispatcher</a> instance that dispatches the
+								event to stop the default action from executing when the <a href="seng_event.eventdispatcher.html#dispatchevent">dispatchEvent</a>
+							method returns <code>false</code></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="currenttarget" class="tsd-anchor"></a>
@@ -220,14 +238,14 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Target<span class="tsd-signature-symbol">:</span> <a href="seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L29">lib/AbstractEvent.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L43">lib/AbstractEvent.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Will be updated by <a href="seng_event.eventdispatcher.html">EventDispatcher</a> during the dispatch of an event to the target that
 								listeners are currently being called on. After completion of an event dispatch this value
-							will be reset to <em>null</em>.</p>
+							will be reset to <code>null</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -237,12 +255,12 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Prevented<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L52">lib/AbstractEvent.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L66">lib/AbstractEvent.ts:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p> <em>true</em> if <a href="seng_event.abstractevent.html#cancelable">cancelable</a> is true and <a href="seng_event.abstractevent.html#preventdefault">preventDefault</a> has been called on this event.</p>
+							<p> <code>true</code> if <a href="seng_event.abstractevent.html#cancelable">cancelable</a> is true and <a href="seng_event.abstractevent.html#preventdefault">preventDefault</a> has been called on this event.</p>
 						</div>
 					</div>
 				</section>
@@ -252,7 +270,7 @@
 					<div class="tsd-signature tsd-kind-icon">event<wbr>Phase<span class="tsd-signature-symbol">:</span> <a href="../enums/seng_event.eventphase.html" class="tsd-signature-type">EventPhase</a><span class="tsd-signature-symbol"> =&nbsp;EventPhase.NONE</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L42">lib/AbstractEvent.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L56">lib/AbstractEvent.ts:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -270,7 +288,7 @@
 					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <a href="seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L35">lib/AbstractEvent.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L49">lib/AbstractEvent.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -287,14 +305,14 @@
 					<div class="tsd-signature tsd-kind-icon">time<wbr>Stamp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L48">lib/AbstractEvent.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L62">lib/AbstractEvent.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Indicates the time this event is dispatched in the number of milliseconds elapsed since
 								<em>1 January 1970 00:00:00 UTC</em>. This value will only be set if the setTimestamp parameter in the constructor
-							is set to <em>true</em>. Otherwise, this value will be <em>0</em>.</p>
+							is set to <code>true</code>. Otherwise, this value will be <em>0</em>.</p>
 						</div>
 					</div>
 				</section>
@@ -304,9 +322,14 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L20">lib/AbstractEvent.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L24">lib/AbstractEvent.ts:24</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The type of the event. Event listeners will only be called if their eventType match this type.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -321,7 +344,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L116">lib/AbstractEvent.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L130">lib/AbstractEvent.ts:130</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -354,7 +377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L125">lib/AbstractEvent.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L139">lib/AbstractEvent.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -376,12 +399,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L102">lib/AbstractEvent.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L116">lib/AbstractEvent.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>May only be called when the <a href="seng_event.abstractevent.html#cancelable">cancelable</a> property of an event is set to <em>true</em>. Indicates to the
+									<p>May only be called when the <a href="seng_event.abstractevent.html#cancelable">cancelable</a> property of an event is set to <code>true</code>. Indicates to the
 									instance that dispatched the event that the default action for the event should not be executed.</p>
 								</div>
 							</div>
@@ -399,7 +422,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L94">lib/AbstractEvent.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L108">lib/AbstractEvent.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,7 +450,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/AbstractEvent.ts#L83">lib/AbstractEvent.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/AbstractEvent.ts#L97">lib/AbstractEvent.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -455,6 +478,9 @@
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/seng_event.html">seng-<wbr>event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/seng_event_lib_baseevent.html">seng-<wbr>event/lib/<wbr>Base<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/seng_event_lib_eventtypings.html">seng-<wbr>event/lib/<wbr>Event<wbr>Typings</a>
@@ -527,31 +553,16 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="seng_event.baseevent.html" class="tsd-kind-icon">Base<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="seng_event.eventdispatcher.html" class="tsd-kind-icon">Event<wbr>Dispatcher</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="seng_event.eventlistenerdata.html" class="tsd-kind-icon">Event<wbr>Listener<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a>
+						<a href="../modules/seng_event.html#createeventclass" class="tsd-kind-icon">create<wbr>Event<wbr>Class</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#createeventtype" class="tsd-kind-icon">create<wbr>Event<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#createisomorphiceventtype" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/seng_event.html#getcalltree" class="tsd-kind-icon">get<wbr>Call<wbr>Tree</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/seng_event.html#getparents" class="tsd-kind-icon">get<wbr>Parents</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../modules/seng_event.html#removelistenersfrom" class="tsd-kind-icon">remove<wbr>Listeners<wbr>From</a>
+						<a href="../modules/seng_event.html#createisomorphiceventclass" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Class</a>
 					</li>
 				</ul>
 			</nav>

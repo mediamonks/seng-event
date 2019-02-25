@@ -81,7 +81,6 @@
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/seng_event.abstractevent.html" class="tsd-kind-icon">Abstract<wbr>Event</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../classes/seng_event.baseevent.html" class="tsd-kind-icon">Base<wbr>Event</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../classes/seng_event.eventdispatcher.html" class="tsd-kind-icon">Event<wbr>Dispatcher</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../classes/seng_event.eventlistenerdata.html" class="tsd-kind-icon">Event<wbr>Listener<wbr>Data</a></li>
 							</ul>
@@ -89,12 +88,8 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="seng_event.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="seng_event.html#createeventtype" class="tsd-kind-icon">create<wbr>Event<wbr>Type</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="seng_event.html#createisomorphiceventtype" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Type</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="seng_event.html#getcalltree" class="tsd-kind-icon">get<wbr>Call<wbr>Tree</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="seng_event.html#getparents" class="tsd-kind-icon">get<wbr>Parents</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="seng_event.html#removelistenersfrom" class="tsd-kind-icon">remove<wbr>Listeners<wbr>From</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="seng_event.html#createeventclass" class="tsd-kind-icon">create<wbr>Event<wbr>Class</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="seng_event.html#createisomorphiceventclass" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Class</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,266 +98,150 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-					<a name="calllisteners" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> call<wbr>Listeners</h3>
+					<a name="createeventclass" class="tsd-anchor"></a>
+					<h3>create<wbr>Event<wbr>Class</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">call<wbr>Listeners&lt;TEvent&gt;<span class="tsd-signature-symbol">(</span>listeners<span class="tsd-signature-symbol">: </span><a href="seng_event_lib_eventtypings.html#eventlistenermap" class="tsd-signature-type">EventListenerMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span>, event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Event<wbr>Class&lt;TData&gt;<span class="tsd-signature-symbol">(</span>bubbles<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span>, cancelable<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span>, setTimeStamp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">createEventClassHelper</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L361">lib/EventDispatcher.ts:361</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/createEventClass.ts#L56">lib/createEventClass.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Calls all listeners on the given event listener map that should be called when the given event is
-									dispatched. If no matching listeners are present, this function has no effect</p>
+									<p>Utility function to generate a class that extends <a href="../classes/seng_event.abstractevent.html">AbstractEvent</a> and optionally has
+									a <code>data</code> property.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p>For more information on the <code>bubbles</code>, <code>cancelable</code> and <code>setTimestamp</code> parameters,
+										see <a href="../classes/seng_event.abstractevent.html">AbstractEvent</a></p>
+									</dd>
+									<dt>example</dt>
+									<dd><p>The recommended syntax is to use <code>createEventClass</code> in an <code>extends</code> clause:</p>
+									<pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyEvents</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createEventClass</span>(<span class="hljs-params">true</span>)(<span class="hljs-params">'<span class="hljs-type">START</span>', '<span class="hljs-type">STOP</span>'</span>) </span>{}</code></pre></dd>
+									<dt>example</dt>
+									<dd><p>You can also store the result in a <code>const</code>, but the result then cannot be
+										used as a type within TypeScript:</p>
+										<pre><code><span class="hljs-keyword">const</span> MyEvent = createEventClass(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>)(<span class="hljs-string">'START'</span>, <span class="hljs-string">'STOP'</span>);
+<span class="hljs-keyword">const</span> myEventInstance:MyEvent; <span class="hljs-comment">// &lt;= not possible</span></code></pre></dd>
+									<dt>example</dt>
+									<dd><p>set the generic type parameter to specify a <code>data</code> property on the event:</p>
+										<pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyEvents</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createEventClass&lt;</span></span>{ id: number }&gt;()(<span class="hljs-symbol">'STAR</span>T', <span class="hljs-symbol">'STO</span>P') {}
+
+const myEventInstance = <span class="hljs-keyword">new</span> <span class="hljs-type">MyEvent</span>(
+  <span class="hljs-symbol">'STAR</span>T',  <span class="hljs-comment">// &lt;= must be either 'START' or 'STOP',</span>
+  { id: <span class="hljs-number">4</span> } <span class="hljs-comment">// &lt;= must be of type { id: number }</span>
+);</code></pre></dd>
+								</dl>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>TEvent<span class="tsd-signature-symbol">: </span><a href="../classes/seng_event.abstractevent.html" class="tsd-signature-type">AbstractEvent</a></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>listeners: <a href="seng_event_lib_eventtypings.html#eventlistenermap" class="tsd-signature-type">EventListenerMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The object that contains listeners to call. Has the same format as the
-											<a href="../classes/seng_event.eventdispatcher.html#listeners">listeners</a> property on <a href="../classes/seng_event.eventdispatcher.html">EventDispatcher</a></p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>event: <span class="tsd-signature-type">TEvent</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The event that may trigger listeners in the map</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>True if any of the listeners call [[IEvent.stopPropagation|stopPropagation()]] or
-								[[IEvent.stopImmediatePropagation|stopImmediatePropagation]]. False if no listeners are called or none
-								of them call [[IEvent.stopPropagation|stopPropagation()]] or
-							[[IEvent.stopImmediatePropagation|stopImmediatePropagation]]</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-					<a name="createeventtype" class="tsd-anchor"></a>
-					<h3>create<wbr>Event<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Event<wbr>Type&lt;TData&gt;<span class="tsd-signature-symbol">(</span>bubbles<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span>, cancelable<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span>, setTimeStamp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">createEventTypeHelper</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/createEventType.ts#L19">lib/createEventType.ts:19</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
 									<h4>TData</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>The type of the <code>data</code> parameter that must be passed to the constructor,
+											and is made available as a <code>data</code> property on the event. If not set, the type is <code>void</code>
+										and no <code>data</code> property will be set</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bubbles: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Specifies if event bubbling is enabled for this event. Defaults to
+										<code>false</code>.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> cancelable: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Specifies if this events supports cancellation. Defaults to
+										<code>false</code></p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> setTimeStamp: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If <code>true</code>, stores a timestamp of the construction time on the event.
+										Defaults to <code>false</code>.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">createEventTypeHelper</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">createEventClassHelper</span></h4>
+							<p>A callback that is used to pass the string event types. See the examples
+							for more info.</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-					<a name="createisomorphiceventtype" class="tsd-anchor"></a>
-					<h3>create<wbr>Isomorphic<wbr>Event<wbr>Type</h3>
+					<a name="createisomorphiceventclass" class="tsd-anchor"></a>
+					<h3>create<wbr>Isomorphic<wbr>Event<wbr>Class</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Type&lt;TDataTuple&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>eventOptions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/seng_event_lib_isomorphicbaseevent.eventoptions.html" class="tsd-signature-type">EventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">isomorphicStringHelper</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Class&lt;TDataTuple&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>eventOptions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/seng_event_lib_isomorphicbaseevent.eventoptions.html" class="tsd-signature-type">EventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">isomorphicStringHelper</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/createIsomorphicEventType.ts#L12">lib/createIsomorphicEventType.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/98d7e85/src/lib/createIsomorphicEventClass.ts#L40">lib/createIsomorphicEventClass.ts:40</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Advanced variant of the <a href="seng_event.html#createeventclass">createEventClass</a> util. Creates an <em>isomorphic</em> event class.
+									This is an event class where the <code>data</code> property can be different for each event <code>type</code>.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p>For more information on the <code>bubbles</code>, <code>cancelable</code> and <code>setTimestamp</code> parameters,
+										see <a href="../classes/seng_event.abstractevent.html">AbstractEvent</a></p>
+									</dd>
+									<dt>example</dt>
+									<dd><p>The following snippet creates an event class with:</p>
+										<ul>
+											<li>A <code>&#39;SELECT&#39;</code> event that bubbles with an <code>id</code> property on <code>data</code></li>
+											<li>A <code>&#39;CLOSE&#39;</code> event that is cancelable with no <code>data</code></li>
+											<li>A <code>&#39;START&#39;</code> event with an <code>offset</code> property on <code>data</code><pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyEvent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createIsomorphicEvent&lt;</span></span>
+{ id: string }, void, { offset: number }
+&gt;(
+{ bubbles: <span class="hljs-literal">true</span> }, { cancelable: <span class="hljs-literal">true</span> }
+)(
+<span class="hljs-symbol">'SELEC</span>T', <span class="hljs-symbol">'CLOS</span>E', <span class="hljs-symbol">'STAR</span>T'
+) {}</code></pre></li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>TDataTuple<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									<div class="tsd-comment tsd-typography">
+										<p>A tuple type containing the types of the <code>data</code> property for
+											each event <code>type</code>. The order of this tuple corresponds to the order of the <code>type</code>
+										strings passed</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>eventOptions: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/seng_event_lib_isomorphicbaseevent.eventoptions.html" class="tsd-signature-type">EventOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Objects optionally containing the properties <code>bubbles</code>, <code>cancelable</code>
+											and <code>setTimestamp</code>. The order in which these objects are passed corresponds to the order
+										of the <code>type</code> strings passed</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">isomorphicStringHelper</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getcalltree" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Call<wbr>Tree</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Call<wbr>Tree<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a>, bubbles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L336">lib/EventDispatcher.ts:336</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets an array that represents the entire call tree when an event is dispatched on the given target.
-									See <a href="../classes/seng_event.eventdispatcher.html#dispatchevent">EventDispatcher.dispatchEvent</a> for more information on the event phases</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>target: <a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The target to get the call tree for</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>bubbles: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>If true, will also include the target instances of the <em>bubbling</em> phase. If false, will
-											only include the <em>capture</em> and target_ phases.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>An array of EventDispatcher instances in the order that an event will travel during dispatch
-							on the given target.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getparents" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Parents</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Parents<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L317">lib/EventDispatcher.ts:317</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets an array of all parent EventDispatcher instances of the given EventDispatcher. The direct
-									parent (if it has one) will be first in the Array, and the most top-level parent will be last.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>target: <a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The instance to get parents for</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/seng_event.eventdispatcher.html" class="tsd-signature-type">EventDispatcher</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>The array of parents</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-					<a name="removelistenersfrom" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> remove<wbr>Listeners<wbr>From</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Listeners<wbr>From&lt;TEvent&gt;<span class="tsd-signature-symbol">(</span>listeners<span class="tsd-signature-symbol">: </span><a href="seng_event_lib_eventtypings.html#eventlistenermap" class="tsd-signature-type">EventListenerMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span>, eventType<span class="tsd-signature-symbol">?: </span><a href="seng_event_lib_eventtypings.html#typesforevent" class="tsd-signature-type">TypesForEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, handler<span class="tsd-signature-symbol">?: </span><a href="seng_event_lib_eventtypings.html#eventhandlerforevent" class="tsd-signature-type">EventHandlerForEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, useCapture<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/mediamonks/seng-event/blob/80b2a2c/src/lib/EventDispatcher.ts#L278">lib/EventDispatcher.ts:278</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Helper function for <a href="../classes/seng_event.eventdispatcher.html#removeeventlistener">EventDispatcher.removeEventListener</a> and <a href="../classes/seng_event.eventdispatcher.html#removealleventlisteners">EventDispatcher.removeAllEventListeners</a>.
-										Will remove all event listeners that match the given parameters from the given event listener map object.
-										This function differs from <a href="../classes/seng_event.eventdispatcher.html#removeeventlistener">removeEventListener()</a> in that it does not
-										use default values when you emit one of the parameters. Instead, it will remove event listeners of all
-									possible values for that parameter.</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>TEvent<span class="tsd-signature-symbol">: </span><a href="../classes/seng_event.abstractevent.html" class="tsd-signature-type">AbstractEvent</a></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>listeners: <a href="seng_event_lib_eventtypings.html#eventlistenermap" class="tsd-signature-type">EventListenerMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>A map of listeners to remove from. See <a href="../classes/seng_event.eventdispatcher.html#listeners">EventDispatcher.listeners</a></p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> eventType: <a href="seng_event_lib_eventtypings.html#typesforevent" class="tsd-signature-type">TypesForEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>If set, will only remove listeners added with this <em>eventType</em></p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> handler: <a href="seng_event_lib_eventtypings.html#eventhandlerforevent" class="tsd-signature-type">EventHandlerForEvent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TEvent</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>If set, will only remove listeners with this <em>handler</em></p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> useCapture: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>If set, will only remove listeners with the same value for <em>useCapture</em></p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<p>a callback that is used to pass more parameters. See the example</p>
 						</li>
 					</ul>
 				</section>
@@ -376,6 +255,9 @@
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="seng_event.html">seng-<wbr>event</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="seng_event_lib_baseevent.html">seng-<wbr>event/lib/<wbr>Base<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="seng_event_lib_eventtypings.html">seng-<wbr>event/lib/<wbr>Event<wbr>Typings</a>
@@ -400,31 +282,16 @@
 						<a href="../classes/seng_event.abstractevent.html" class="tsd-kind-icon">Abstract<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../classes/seng_event.baseevent.html" class="tsd-kind-icon">Base<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../classes/seng_event.eventdispatcher.html" class="tsd-kind-icon">Event<wbr>Dispatcher</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../classes/seng_event.eventlistenerdata.html" class="tsd-kind-icon">Event<wbr>Listener<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="seng_event.html#calllisteners" class="tsd-kind-icon">call<wbr>Listeners</a>
+						<a href="seng_event.html#createeventclass" class="tsd-kind-icon">create<wbr>Event<wbr>Class</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="seng_event.html#createeventtype" class="tsd-kind-icon">create<wbr>Event<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="seng_event.html#createisomorphiceventtype" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="seng_event.html#getcalltree" class="tsd-kind-icon">get<wbr>Call<wbr>Tree</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="seng_event.html#getparents" class="tsd-kind-icon">get<wbr>Parents</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="seng_event.html#removelistenersfrom" class="tsd-kind-icon">remove<wbr>Listeners<wbr>From</a>
+						<a href="seng_event.html#createisomorphiceventclass" class="tsd-kind-icon">create<wbr>Isomorphic<wbr>Event<wbr>Class</a>
 					</li>
 				</ul>
 			</nav>
