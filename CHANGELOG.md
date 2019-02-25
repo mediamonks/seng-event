@@ -25,6 +25,21 @@ Previously an event class was either fixed to a set of options and a certain
 type of `data`, or it was type too loosely. It is now possible to have the
 options and the `data` depend on the event `type`. 
 
+## Changes
+
+### Static string types on Event classes
+Instead of the types being available directly on the class constructor,
+they are now nested in a `types` property:
+
+```ts
+foo.addEventListener(new SomeEvent(SomeEvent.types.FOO, ...));
+```
+
+### Private fields
+
+A lot of `private` fields have been changed to `protected` to allow for
+more extensibility
+
 ## Removals
 
 ### Removed `CommonEvent` and `BasicEvent`
@@ -51,11 +66,6 @@ Our new `createEventClass` utility has a better syntax
 ## Testing
 Tests are now implemented using Jest. Additional test have been added using 
 `dtslint`, allowing us to do assertions on the types in the TypeScript compiler.
-
-## Other small fixes 
-
-- A lot of `private` fields have been changed to `protected` to allow for
-more extensibility
 
 ## Compatibility
 Requires at least TypeScript 3.1, for the [mapped tuple type](https://github.com/Microsoft/TypeScript/wiki/What%27s-new-in-TypeScript#mapped-types-on-tuples-and-arrays)
