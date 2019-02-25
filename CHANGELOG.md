@@ -60,8 +60,3 @@ more extensibility
 ## Compatibility
 Requires at least TypeScript 3.1, for the [mapped tuple type](https://github.com/Microsoft/TypeScript/wiki/What%27s-new-in-TypeScript#mapped-types-on-tuples-and-arrays)
 functionality.
-
-
- * private => protected
- * remove interfaces
- * typings
