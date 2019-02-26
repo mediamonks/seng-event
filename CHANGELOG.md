@@ -5,7 +5,7 @@ Most new features are centered around better typings
 
 ### EventDispatcher can be restricted to certain event classes
 You can now pass a generic parameter to `EventDispatcher` indicating
-which type of events it will dispatch. Besides it being documentation to
+which type of events it will dispatch. Besides it serving as documentation to
 other developers about which events to expect, it also allows this library
 to add more useful typings to methods like `addEventListener`. Example:
 
