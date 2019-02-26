@@ -61,7 +61,7 @@ function createEventClass<TData = void>(
   function createEventClassHelper<TEventTypes extends Array<string>>(
     ...types: TEventTypes
   ): EventTypeClass<TData, TEventTypes[number]> {
-    class GenerateEventClass extends BaseEvent<any, string> {
+    class GeneratedEventClass extends BaseEvent<any, string> {
       public static types = types.reduce<TypeMap<string>>(
         (result, t) => ({ ...result, [t]: t }),
         {},
@@ -72,7 +72,7 @@ function createEventClass<TData = void>(
       }
     }
 
-    return GenerateEventClass;
+    return GeneratedEventClass;
   }
 
   return createEventClassHelper;
