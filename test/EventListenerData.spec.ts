@@ -1,33 +1,32 @@
-import 'mocha';
-import { expect, use } from 'chai';
-import { spy } from 'sinon';
-import sinonChai from 'sinon-chai';
-
 import EventDispatcher from '../src/lib/EventDispatcher';
 import EventListenerData from '../src/lib/EventListenerData';
-import BasicEvent from '../src/lib/event/BasicEvent';
+import AbstractEvent from "../src/lib/AbstractEvent";
 
-use(sinonChai);
+class BasicEvent extends AbstractEvent {
+  public clone(): BasicEvent {
+    return new BasicEvent(this.type, this.bubbles, this.cancelable, this.timeStamp !== 0);
+  }
+}
 
 describe('EventListenerData', () => {
 	describe('#dispose()', () => {
 		it('should remove the event listener from the attached EventDispatcher', () => {
       const a = new EventDispatcher();
-      const handler = spy();
+      const handler = jest.fn();
       const eventListenerData: EventListenerData = a.addEventListener('T', handler);
       eventListenerData.dispose();
 
 			a.dispatchEvent(new BasicEvent('T'));
-			expect(handler).to.not.have.been.called;
+			expect(handler).not.toHaveBeenCalled();
 		});
 
     it('should not throw when calling dispose twice', () => {
       const a = new EventDispatcher();
-      const handler = spy();
+      const handler = jest.fn();
       const eventListenerData: EventListenerData = a.addEventListener('T', handler);
       eventListenerData.dispose();
 
-			expect(() => eventListenerData.dispose()).to.not.throw();
+			expect(() => eventListenerData.dispose()).not.toThrow();
     });
 	});
 });

@@ -1,33 +1,52 @@
-import { IEvent } from './IEvent';
+/**
+ * @module seng-event
+ */
 import EventPhase from './EventPhase';
-import { IEventDispatcher } from './IEventDispatcher';
-import { EventHandler } from './EventDispatcher';
 import CallListenerResult from './CallListenerResult';
+import { EventHandlerForEvent } from './EventTypings';
+import EventDispatcher from './EventDispatcher';
 
+/**
+ * @ignore
+ */
 let callListenerResult = CallListenerResult.NONE;
 
 /**
  * Abstract base class for all events that can be dispatched through [[EventDispatcher]]. This class
- * should not be instantiated but extended by a specific event class. For an event class with basic
- * functionality that can be instantiated see [[BasicEvent]]
+ * should not be instantiated but extended by a specific event class.
+ *
+ * @see [[createEventClass]]
  */
-abstract class AbstractEvent implements IEvent {
+abstract class AbstractEvent {
+  /**
+   * The type of the event. Event listeners will only be called if their eventType match this type.
+   */
   public type: string;
+  /**
+   * If true, the event will also go through a bubbling phase. See [[EventDispatcher.dispatchEvent]]
+   * for more information on the event phases.
+   */
   public bubbles: boolean;
+  /**
+   * Indicates if [[preventDefault]] can be called on this event. This will prevent the 'default
+   * action' of the event from being executed. It is up to the [[EventDispatcher]] instance that dispatches the
+   * event to stop the default action from executing when the [[EventDispatcher.dispatchEvent|dispatchEvent]]
+   * method returns `false`
+   */
   public cancelable: boolean;
 
   /**
    * Will be updated by [[EventDispatcher]] during the dispatch of an event to the target that
    * listeners are currently being called on. After completion of an event dispatch this value
-   * will be reset to _null_.
+   * will be reset to `null`.
    */
-  public currentTarget: IEventDispatcher = null;
+  public currentTarget: EventDispatcher | null = null;
   /**
    * Will be updated by [[EventDispatcher]] when [[EventDispatcher.dispatchEvent|dispatchEvent]] is
    * called with this event. The value will be set to the EventDispatcher instance that dispatched
    * the event.
    */
-  public target: IEventDispatcher = null;
+  public target: EventDispatcher | null = null;
   /**
    * The current event phase of this event. During event dispatch, this value will be either
    * [[EventPhase.CAPTURING_PHASE|CAPTURING_PHASE]], [[EventPhase.AT_TARGET|AT_TARGET]] or
@@ -38,11 +57,11 @@ abstract class AbstractEvent implements IEvent {
   /**
    * Indicates the time this event is dispatched in the number of milliseconds elapsed since
    * _1 January 1970 00:00:00 UTC_. This value will only be set if the setTimestamp parameter in the constructor
-   * is set to _true_. Otherwise, this value will be _0_.
+   * is set to `true`. Otherwise, this value will be _0_.
    */
   public timeStamp: number;
   /**
-   *  _true_ if [[cancelable]] is true and [[preventDefault]] has been called on this event.
+   *  `true` if [[cancelable]] is true and [[preventDefault]] has been called on this event.
    */
   public defaultPrevented: boolean = false;
 
@@ -54,7 +73,7 @@ abstract class AbstractEvent implements IEvent {
    * @param cancelable Indicates if [[preventDefault]] can be called on this event. This will prevent the 'default
    * action' of the event from being executed. It is up to the [[EventDispatcher]] instance that dispatches the
    * event to stop the default action from executing when the [[EventDispatcher.dispatchEvent|dispatchEvent]]
-   * method returns _false_
+   * method returns `false`
    * @param setTimeStamp If true, will set the [[timeStamp]] property of this event to the current time whenever
    * this event is dispatched.
    */
@@ -91,7 +110,7 @@ abstract class AbstractEvent implements IEvent {
   }
 
   /**
-   * May only be called when the [[cancelable]] property of an event is set to _true_. Indicates to the
+   * May only be called when the [[cancelable]] property of an event is set to `true`. Indicates to the
    * instance that dispatched the event that the default action for the event should not be executed.
    */
   public preventDefault(): void {
@@ -108,7 +127,7 @@ abstract class AbstractEvent implements IEvent {
    * @param handler The event handler to execute
    * @returns An enum value, see [[CallListenerResult]]
    */
-  public callListener(handler: EventHandler): CallListenerResult {
+  public callListener(handler: EventHandlerForEvent<this>): CallListenerResult {
     callListenerResult = CallListenerResult.NONE;
     handler.call(null, this);
     return callListenerResult;

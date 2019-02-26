@@ -1,4 +1,8 @@
 /**
+ * @module seng-event
+ */
+
+/**
  * An enum for possible event phases that an event can be in
  */
 enum EventPhase {
