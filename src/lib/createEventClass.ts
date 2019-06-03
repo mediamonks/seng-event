@@ -2,19 +2,7 @@
  * @module seng-event
  */
 import BaseEvent from './BaseEvent';
-
-/**
- * @ignore
- */
-type TypeMap<TType extends string> = { [P in TType]: P };
-
-/**
- * @ignore
- */
-interface EventTypeClass<TData, TType extends string> {
-  types: TypeMap<TType>;
-  new (type: TType, data: TData): BaseEvent<TData, TType>;
-}
+import { EventTypeClass, TypeMap } from './types';
 
 /**
  * Utility function to generate a class that extends [[AbstractEvent]] and optionally has

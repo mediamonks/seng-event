@@ -6,6 +6,7 @@
  */
 import { default as _export } from './lib/EventDispatcher';
 
+export * from './lib/types';
 export { default as createEventClass } from './lib/createEventClass';
 export { default as createIsomorphicEventClass } from './lib/createIsomorphicEventClass';
 export { default as EventPhase } from './lib/EventPhase';
