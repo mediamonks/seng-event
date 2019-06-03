@@ -3,11 +3,7 @@
  */
 import { DataForIsomorphicEvent } from './EventTypings';
 import IsomorphicBaseEvent, { EventOptions, EventOptionsMap } from './IsomorphicBaseEvent';
-
-/**
- * @ignore
- */
-type TypeMap<TType extends string> = { [P in TType]: P };
+import { TypeMap } from './types';
 
 /**
  * Advanced variant of the [[createEventClass]] util. Creates an _isomorphic_ event class.
