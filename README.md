@@ -194,7 +194,7 @@ interface DogMoveEventData extends DogEventData {
 }
 
 class DogEvent extends createIsomorphicEventClass<
-  DogEventData, DogEventData, DogMoveEventData, DogMoveEventData
+  [DogEventData, DogEventData, DogMoveEventData, DogMoveEventData]
 >(
   {}, {}, {}, { cancelable: true }
 )(
