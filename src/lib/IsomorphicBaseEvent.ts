@@ -46,6 +46,7 @@ class IsomorphicBaseEvent<
     super(type, data, bubbles, cancelable, setTimeStamp);
     this.typeOptions = typeOptions;
     this.type = type;
+    this.data = data;
   }
 
   public clone(): IsomorphicBaseEvent<TTypes, TDataTypes, TType> {

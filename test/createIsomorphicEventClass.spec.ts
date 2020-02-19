@@ -12,7 +12,7 @@ describe('createIsomorphicEventClass', () => {
 
     class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventClass<
       [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
-      >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
+    >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
 
     const playEvent = new IsoPlayerEvent('PLAY', { playerId: 1 });
     expect(playEvent.cancelable).toBe(true);
@@ -46,10 +46,26 @@ describe('createIsomorphicEventClass', () => {
 
     class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventClass<
       [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
-      >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
+    >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
 
     const playEvent = new IsoPlayerEvent('PLAY', { playerId: 1 });
     const playEvent2 = playEvent.clone();
     expect(playEvent).not.toBe(playEvent2);
+  });
+  it('should contain passed event data', () => {
+    interface PlayerEventData {
+      playerId: number;
+    }
+
+    interface PlayerUpdateEventData extends PlayerEventData {
+      currentTime: number;
+    }
+
+    class IsoPlayerEvent<T extends 'PLAY' | 'STOP' | 'UPDATE'> extends createIsomorphicEventClass<
+      [PlayerEventData, PlayerEventData, PlayerUpdateEventData]
+    >({ cancelable: true })('PLAY', 'STOP', 'UPDATE')<T> {}
+
+    const playEvent = new IsoPlayerEvent('PLAY', { playerId: 1 });
+    expect(playEvent.data).toEqual({ playerId: 1 });
   });
 });
